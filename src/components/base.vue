@@ -105,24 +105,14 @@
                                 <el-menu-item index="6-3-1">货品分类管理</el-menu-item>
                             </el-submenu>
                         </el-submenu>
-                        <el-submenu index="7">
-                            <template slot="title">
-                                <i class="el-icon-setting"></i>
-                                统计报表
-                            </template>
-                            <el-menu-item index="7-1">统计图表</el-menu-item>
-                        </el-submenu>
                     </el-menu>
                     <!--右侧内容开始-->
-                </el-aside>
-                <div class="rightdiv">
                     <transition name="move" mode="out-in">
                         <keep-alive>
-                            1
                             <router-view></router-view>
                         </keep-alive>
                     </transition>
-                </div>
+                </el-aside>
             </el-container>
         </div>
     </div>
@@ -135,14 +125,13 @@
 </script>
 
 <style scoped>
-    .leftdiv {
-        height: 1000px;
-        border: 1px solid #eee
+    .el-header {
+        background-color: #B3C0D1;
+        color: #333;
+        line-height: 60px;
     }
 
-    .rightdiv {
-        display: flex;
-        border: 1px solid red;
-        width: 80vw;
+    .el-aside {
+        color: #333;
     }
 </style>
