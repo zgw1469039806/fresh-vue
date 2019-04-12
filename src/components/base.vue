@@ -68,7 +68,7 @@
                                 <i class="el-icon-setting"></i>
                                 销售
                             </template>
-                            <el-menu-item index="4-1">新增订单</el-menu-item>
+                            <el-menu-item index="4-1" @click="$router.push({path:'/orderinsert'})">新增订单</el-menu-item>
                             <el-submenu index="4-2">
                                 <template slot="title">订单管控</template>
                                 <el-menu-item index="4-2-1">订单流水</el-menu-item>
