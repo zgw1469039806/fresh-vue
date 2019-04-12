@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <div id="app">
-            <el-container class="leftdiv">
-                <el-aside width="20vw" style="background-color: rgb(238, 241, 246);border: 1px solid red">
+    <div class="fatherbox">
+        <div class="leftdiv">
+            <el-container>
+                <el-aside width="20vw" class="leftdiv">
                     <!--默认展开项 :default-openeds="['1', '3']"-->
                     <!--左侧导航开始-->
-                    <el-menu>
+                    <el-menu class="list">
                         <el-submenu index="1">
                             <template slot="title">
                                 <i class="el-icon-setting"></i>
@@ -14,7 +14,8 @@
                             <el-submenu index="1-1">
                                 <template slot="title">门店信息编辑</template>
                                 <el-menu-item index="1-1-1">添加门店</el-menu-item>
-                                <el-menu-item index="1-1-2" @click="$router.push({path:'/storeedit'})">编辑门店</el-menu-item>
+                                <el-menu-item index="1-1-2" @click="$router.push({path:'/storeedit'})">编辑门店
+                                </el-menu-item>
                             </el-submenu>
                             <el-submenu index="1-2">
                                 <template slot="title">切换店铺</template>
@@ -107,12 +108,14 @@
                         </el-submenu>
                     </el-menu>
                     <!--右侧内容开始-->
+                </el-aside>
+                <div class="rightdiv">
                     <transition name="move" mode="out-in">
                         <keep-alive>
                             <router-view></router-view>
                         </keep-alive>
                     </transition>
-                </el-aside>
+                </div>
             </el-container>
         </div>
     </div>
@@ -125,13 +128,21 @@
 </script>
 
 <style scoped>
-    .el-header {
-        background-color: #B3C0D1;
-        color: #333;
-        line-height: 60px;
+    .fatherbox{
+        background: #fff;
     }
+    .leftdiv {
+        background: #fff;
+        border: 1px solid red;
+        height: 700px;
 
-    .el-aside {
-        color: #333;
+    }
+    .list:after{
+        background-color: #f4f6f9;
+        border-radius: 5px;
+    }
+    .rightdiv{
+        background: #fff;
+        width: 80vw;
     }
 </style>
