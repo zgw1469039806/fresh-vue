@@ -2,7 +2,7 @@
     <div>
         <div id="app">
             <el-container style="height: 1000px; border: 1px solid #eee">
-                <el-aside width="20vw" style="background-color: rgb(238, 241, 246);border: 1px solid red">
+                <el-aside width="20vw" style="background-color: rgb(238, 241, 246);border: 1px solid red;">
                     <!--默认展开项 :default-openeds="['1', '3']"-->
                     <!--左侧导航开始-->
                     <el-menu>
