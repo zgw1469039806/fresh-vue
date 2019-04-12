@@ -21,6 +21,13 @@ const routes = [
                 }
             },
             {
+                path: '/storeinsert',
+                component: () => import("./view/store/storeinsert.vue"),
+                meta: {
+                    title: "添加页面"
+                }
+            },
+            {
                 path: '/storeedit',
                 component: () => import("./view/staff/staffedit.vue"),
                 meta: {
@@ -123,6 +130,34 @@ const routes = [
                 component: () => import("./view/vip/viplevel.vue"),
                 meta: {
                     title: "会员等级"
+                }
+            },
+            {
+                path: '/commodityinsert',
+                component: () => import("./view/commodity/commodityinsert.vue"),
+                meta: {
+                    title: "新增商品"
+                }
+            },
+            {
+                path: '/commodityUpDown',
+                component: () => import("./view/commodity/commodityUpDown.vue"),
+                meta: {
+                    title: "上下架商品"
+                }
+            },
+            {
+                path: '/commodityattribute',
+                component: () => import("./view/commodity/commodityattribute.vue"),
+                meta: {
+                    title: "修改商品属性"
+                }
+            },
+            {
+                path: '/commoditytype',
+                component: () => import("./view/commodity/commoditytype.vue"),
+                meta: {
+                    title: "商品分类管理"
                 }
             }
         ]

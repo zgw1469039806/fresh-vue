@@ -7,5 +7,5 @@ storeedit.vue - 此页面为门店信息编辑
 ```
 
 ```
-
+storeinsert.vue - 此页面为添加门店页面
 ```

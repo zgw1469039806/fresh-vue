@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="app">
-            <el-container style="height: 1000px; border: 1px solid #eee">
+            <el-container class="leftdiv">
                 <el-aside width="20vw" style="background-color: rgb(238, 241, 246);border: 1px solid red">
                     <!--默认展开项 :default-openeds="['1', '3']"-->
                     <!--左侧导航开始-->
@@ -11,7 +11,11 @@
                                 <i class="el-icon-setting"></i>
                                 门店管理
                             </template>
-                            <el-menu-item index="1-1">门店信息编辑</el-menu-item>
+                            <el-submenu index="1-1">
+                                <template slot="title">门店信息编辑</template>
+                                <el-menu-item index="1-1-1">添加门店</el-menu-item>
+                                <el-menu-item index="1-1-2" @click="$router.push({path:'/storeedit'})">编辑门店</el-menu-item>
+                            </el-submenu>
                             <el-submenu index="1-2">
                                 <template slot="title">切换店铺</template>
                                 <el-menu-item index="1-2-1">店铺01</el-menu-item>
@@ -101,14 +105,24 @@
                                 <el-menu-item index="6-3-1">货品分类管理</el-menu-item>
                             </el-submenu>
                         </el-submenu>
+                        <el-submenu index="7">
+                            <template slot="title">
+                                <i class="el-icon-setting"></i>
+                                统计报表
+                            </template>
+                            <el-menu-item index="7-1">统计图表</el-menu-item>
+                        </el-submenu>
                     </el-menu>
                     <!--右侧内容开始-->
+                </el-aside>
+                <div class="rightdiv">
                     <transition name="move" mode="out-in">
                         <keep-alive>
+                            1
                             <router-view></router-view>
                         </keep-alive>
                     </transition>
-                </el-aside>
+                </div>
             </el-container>
         </div>
     </div>
@@ -121,13 +135,14 @@
 </script>
 
 <style scoped>
-    .el-header {
-        background-color: #B3C0D1;
-        color: #333;
-        line-height: 60px;
+    .leftdiv {
+        height: 1000px;
+        border: 1px solid #eee
     }
 
-    .el-aside {
-        color: #333;
+    .rightdiv {
+        display: flex;
+        border: 1px solid red;
+        width: 80vw;
     }
 </style>
