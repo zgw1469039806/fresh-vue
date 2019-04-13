@@ -14,7 +14,7 @@ const routes = [
         },
         children: [
             {
-                path: '/storeedit',
+                path: '/storeedit/:type',
                 component: () => import("./view/store/storeedit.vue"),
                 meta: {
                     title: "门店信息管理"

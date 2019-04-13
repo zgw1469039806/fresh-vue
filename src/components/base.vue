@@ -13,8 +13,8 @@
                             </template>
                             <el-submenu index="1-1">
                                 <template slot="title">门店信息编辑</template>
-                                <el-menu-item index="1-1-1">添加门店</el-menu-item>
-                                <el-menu-item index="1-1-2" @click="$router.push({path:'/storeedit'})">编辑门店
+                                <el-menu-item index="1-1-1" @click="$router.push({path:'/storeedit/1'})">添加门店</el-menu-item>
+                                <el-menu-item index="1-1-2" @click="$router.push({path:'/storeedit/2'})">编辑门店
                                 </el-menu-item>
                             </el-submenu>
                             <el-submenu index="1-2">
