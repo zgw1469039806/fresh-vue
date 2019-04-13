@@ -22,7 +22,8 @@ const routes = [
                 props : true
             },
             {
-                path: '/storeinsert/:type',
+                name:'storeinsert',
+                path: '/storeinsert',
                 component: () => import("./view/store/storeinsert.vue"),
                 meta: {
                     title: "添加页面"

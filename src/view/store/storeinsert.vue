@@ -1,6 +1,8 @@
 <template>
     <div class="box">
         <div class="forms">
+            Type:{{type}}
+            Sid:{{sid}}
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <h1 style="font-size: 20px" v-text="Local.title">添加店铺</h1>
                 <el-form-item label="店铺名称" prop="name">
@@ -54,7 +56,8 @@
     export default {
         name: "storeinsert",
         props: {
-            type: String
+            type: String,
+            sid:String
         },
         data() {
             return {
@@ -78,7 +81,7 @@
                     ]
                 },
                 Local: {
-                    title: ''
+                    title: '添加店铺',
                 }
             }
         },
@@ -97,7 +100,8 @@
                 });
             },
             isAdd: function () {
-                alert(this.type)
+                this.type = this.$route.params.type;
+                this.sid = this.$route.params.sid;
                 if (this.type == 'insert') {
                     this.Local.title = "添加店铺"
                 } else if (this.type == 'update') {
