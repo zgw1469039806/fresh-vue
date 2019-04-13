@@ -14,18 +14,20 @@ const routes = [
         },
         children: [
             {
-                path: '/storeedit/:type',
+                path: '/storeedit',
                 component: () => import("./view/store/storeedit.vue"),
                 meta: {
                     title: "门店信息管理"
-                }
+                },
+                props : true
             },
             {
-                path: '/storeinsert',
+                path: '/storeinsert/:type',
                 component: () => import("./view/store/storeinsert.vue"),
                 meta: {
                     title: "添加页面"
-                }
+                },
+                props : true
             },
             {
                 path: '/storeedit',
