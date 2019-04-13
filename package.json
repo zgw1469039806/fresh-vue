@@ -47,5 +47,17 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "description": "生鲜前端项目",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zgw1469039806/fresh-vue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zgw1469039806/fresh-vue/issues"
+  },
+  "homepage": "https://github.com/zgw1469039806/fresh-vue#readme"
 }
