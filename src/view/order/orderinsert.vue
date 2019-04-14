@@ -1,6 +1,10 @@
 <template>
     <div>
-        这里是新增订单
+        <div style="border: 1px solid blue;">
+            这里是新增订单
+
+
+        </div>
     </div>
 </template>
 
