@@ -18,14 +18,17 @@ const routes = [
                 component: () => import("./view/store/storeedit.vue"),
                 meta: {
                     title: "门店信息管理"
-                }
+                },
+                props : true
             },
             {
+                name:'storeinsert',
                 path: '/storeinsert',
                 component: () => import("./view/store/storeinsert.vue"),
                 meta: {
                     title: "添加页面"
-                }
+                },
+                props : true
             },
             {
                 path: '/storeedit',
