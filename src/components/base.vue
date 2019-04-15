@@ -13,7 +13,7 @@
                             </template>
                             <el-submenu index="1-1">
                                 <template slot="title">门店信息编辑</template>
-                                <el-menu-item index="1-1-1" @click="$router.push({path:'/storeinsert/add'})">添加门店</el-menu-item>
+                                <el-menu-item index="1-1-1" @click="$router.push({name: 'storeinsert',params:{type:'insert'}})">添加门店</el-menu-item>
                                 <el-menu-item index="1-1-2" @click="$router.push({path:'/storeedit'})">编辑门店
                                 </el-menu-item>
                             </el-submenu>
@@ -36,16 +36,15 @@
                                 员工管理
                             </template>
                             <el-submenu index="2-1">
-                                <template slot="title">员工权限管理</template>
-                                <el-menu-item index="2-1-1">设置员工职务</el-menu-item>
-                                <el-menu-item index="2-1-2">查看操作日志</el-menu-item>
-                                <el-menu-item index="2-1-3">员工流水报表</el-menu-item>
+                                <template slot="title">员工流水管理</template>
+                                <el-menu-item index="2-1-1" @click="$router.push({path:'/stafflog'})">查看操作日志</el-menu-item>
+                                <el-menu-item index="2-1-2">员工流水报表</el-menu-item>
                             </el-submenu>
                             <el-submenu index="2-2">
                                 <template slot="title">员工管理</template>
-                                <el-menu-item index="2-2-1">新增员工</el-menu-item>
+                                <el-menu-item index="2-2-1"  @click="$router.push({name:'staffinsert',params:{type:'insert'}})">新增员工</el-menu-item>
                                 <el-menu-item index="2-2-2">员工详细信息</el-menu-item>
-                                <el-menu-item index="2-2-3">编辑员工</el-menu-item>
+                                <el-menu-item index="2-2-3" @click="$router.push({path:'/staffedit'})">编辑员工</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-submenu index="3">

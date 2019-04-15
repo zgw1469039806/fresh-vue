@@ -57,7 +57,7 @@
         name: "storeinsert",
         props: {
             type: String,
-            sid:String
+            sid: String
         },
         data() {
             return {
@@ -152,4 +152,5 @@
         height: 500px;
         background: #fff;
     }
+
 </style>
