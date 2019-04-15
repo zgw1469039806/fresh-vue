@@ -120,6 +120,8 @@
             },
             handleCurrentChange(index) {
                 // console.log("index:"+index)
+                index,rows
+                this.$router.push({name: 'storeinsert',params:{type:"update",sid:"12"}})
             }
         }
 
