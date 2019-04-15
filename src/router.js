@@ -31,7 +31,7 @@ const routes = [
                 props : true
             },
             {
-                path: '/storeedit',
+                path: '/staffedit',
                 component: () => import("./view/staff/staffedit.vue"),
                 meta: {
                     title: "设置员工职位"
@@ -52,6 +52,7 @@ const routes = [
                 }
             },
             {
+                name: 'staffinsert',
                 path: '/staffinsert',
                 component: () => import("./view/staff/staffinsert.vue"),
                 meta: {
@@ -165,6 +166,7 @@ const routes = [
             }
         ]
     },
+    {path: '/*',component:()=> import("./components/base.vue")}
 ];
 
 routes.forEach(route => {
