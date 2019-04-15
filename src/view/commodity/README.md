@@ -11,7 +11,7 @@ commodityUpDown.vue - 此页面控制商品上下架
 ```
 
 ```
-commodityattribute.vue - 此页面修改商品属性
+commodityattribute.vue - 此页面查看商品详细
 ```
 
 ```
