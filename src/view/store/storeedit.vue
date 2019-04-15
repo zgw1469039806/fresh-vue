@@ -87,6 +87,7 @@
             },
             //单机编辑
             updateRow(index, rows) {
+                index,rows
                 this.$router.push({name: 'storeinsert',params:{type:"update",sid:"12"}})
             }
         }

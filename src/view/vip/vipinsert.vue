@@ -19,15 +19,15 @@
                     </el-select>
                 </el-form-item>-->
 
-                <el-form-item label="会员等级" prop="vipleave">
-                    <el-select v-model="value" placeholder="请选择">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
+                <el-form-item label="会员等级" prop="vipLeave">
+                    <el-select v-model="ruleForm.vipLeave.value" placeholder="请选择">
+                    <el-option
+                            v-for="item in ruleForm.vipLeave"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
                 </el-form-item>
 
                 <el-form-item>
@@ -69,12 +69,13 @@
                         {required: true, message: '请输入用户手机号', trigger: 'blur'},
                         {min: 11, max: 11, message: '手机号格式不正确', trigger: 'blur'}
                     ]
-                    ,
+                    ,vipLeave: [
+                        {required: true, message: '请输入会员初始等级', trigger: 'blur'}
+                    ]
                 }
             }
         }, methods: {
             submitForm(formName) {
-                alert(this.ruleForm.userPhone);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         alert('submit!');
