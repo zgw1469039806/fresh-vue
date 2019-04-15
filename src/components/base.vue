@@ -80,7 +80,7 @@
                                 <i class="el-icon-setting"></i>
                                 会员中心
                             </template>
-                            <el-menu-item index="5-1">新增会员</el-menu-item>
+                            <el-menu-item index="5-1" @click="$router.push({path:'/vipinsert'})">新增会员</el-menu-item>
                             <el-submenu index="5-2">
                                 <template slot="title">会员管控</template>
                                 <el-menu-item index="5-2-1">会员详细</el-menu-item>
@@ -108,10 +108,10 @@
                     </el-menu>
                     <!--右侧内容开始-->
                 </el-aside>
-                <div class="rightdiv">
+                <div class="rightdiv" >
                     <transition name="move" mode="out-in">
                         <keep-alive>
-                            <router-view></router-view>
+                            <router-view ></router-view>
                         </keep-alive>
                     </transition>
                 </div>
