@@ -2,24 +2,16 @@
     <div class="box">
         <div class="forms">
 
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
                 <!--<p>新增会员</p><br/>-->
-
-                <el-form-item label="用户手机号:" prop="userPhone">
-                    <el-input v-model="ruleForm.userPhone"></el-input>
+                <el-form-item >
+                    <h3>新增会员</h3>
                 </el-form-item>
-                <!--<el-form-item label="会员等级" prop="vipleave">
-                    <el-select v-model="addSalePar.id" placeholder="请选择">
-                        <el-option
-                                v-for="p in product"
-                                :key="p.id"
-                                :label="p.productname"
-                                :value="p.id"
-                        ></el-option>
-                    </el-select>
-                </el-form-item>-->
+                <el-form-item label="用户手机号:" prop="userPhone" >
+                    <el-input  v-model="ruleForm.userPhone"></el-input>
+                </el-form-item>
 
-                <el-form-item label="会员等级" prop="vipLeave">
+                <el-form-item label="会员初始等级:" prop="vipLeave" >
                     <el-select v-model="ruleForm.vipLeave.value" placeholder="请选择">
                     <el-option
                             v-for="item in ruleForm.vipLeave"
@@ -28,6 +20,14 @@
                             :value="item.value">
                     </el-option>
                 </el-select>
+                </el-form-item>
+
+                <el-form-item label="会员初始积分:" prop="vipIntegral" >
+                    <el-input-number v-model="ruleForm.vipIntegral" :min="0" :max="5000"></el-input-number>
+                </el-form-item>
+
+                <el-form-item label="会员初始余额:" prop="vipMoney" >
+                    <el-input-number v-model="ruleForm.vipMoney" :precision="2" :step="0.1" :min="0.00" ></el-input-number>
                 </el-form-item>
 
                 <el-form-item>
@@ -46,21 +46,23 @@
             return{
                 ruleForm: {
                     userPhone: '',
-                    vipLeave: [{
-                        value: '选项1',
-                        label: '黄金糕'
+                    vipIntegral:'0', //积分
+                    vipMoney:'0.00',
+                    vipLeave: [{ //等级
+                        value: '1',
+                        label: '1级'
                     }, {
-                        value: '选项2',
-                        label: '双皮奶'
+                        value: '2',
+                        label: '2级'
                     }, {
-                        value: '选项3',
-                        label: '蚵仔煎'
+                        value: '3',
+                        label: '3级'
                     }, {
-                        value: '选项4',
-                        label: '龙须面'
-                    }, {
-                        value: '选项5',
-                        label: '北京烤鸭'
+                        value: '4',
+                        label: '4级'
+                    },{
+                        value: '5',
+                        label: '5级'
                     }],
 
                 },
@@ -78,30 +80,12 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        alert('submit!'+this.ruleForm.userPhone+","+this.ruleForm.vipLeave.value);
                     } else {
                         return false;
                     }
                 });
-            },
-            /*resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            handleAvatarSuccess(res, file) {
-                this.ruleForm.region = URL.createObjectURL(file.raw);
-            },
-            beforeAvatarUpload(file) {
-                const isJPG = file.type === 'image/jpeg';
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
-                if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
-                }
-                if (!isLt2M) {
-                    this.$message.error('上传头像图片大小不能超过 2MB!');
-                }
-                return isJPG && isLt2M;
-            }*/
+            }
         }
     }
 </script>
@@ -112,6 +96,14 @@
         display: flex;
         margin-top: 5vw;
         height: 500px;
+    }
+
+    .bor{
+        border: 1px solid red;
+    }
+
+    .subform{
+        width: 200px;
     }
 
     .forms {

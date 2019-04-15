@@ -112,15 +112,17 @@
             },
             //单机编辑
             updateRow(index, rows) {
+                index,rows
                 this.$router.push({name: 'storeinsert', params: {type: "update", sid: "12"}})
             },
             //一页多少条改变
             handleSizeChange(index) {
+                index
                 // this.console.log("index"+index)
             },
             handleCurrentChange(index) {
                 // console.log("index:"+index)
-                index,rows
+                index
                 this.$router.push({name: 'storeinsert',params:{type:"update",sid:"12"}})
             }
         }
