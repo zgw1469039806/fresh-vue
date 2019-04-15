@@ -115,6 +115,7 @@
 
             //单机编辑
             updateRow(index, rows) {
+                var a = index + "" + rows;
                 this.$router.push({name: 'staffinsert', params: {type: "update", sid: "12"}})
             },
             //一页多少条改变

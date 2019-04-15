@@ -81,6 +81,13 @@ const routes = [
                 }
             },
             {
+                path: '/purchasereport',
+                component: () => import("./view/purchase/purchasereport.vue"),
+                meta: {
+                    title: "进货流水"
+                }
+            },
+            {
                 path: '/depositwarehousing',
                 component: () => import("./view/deposit/depositwarehousing.vue"),
                 meta: {
