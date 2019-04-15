@@ -163,6 +163,21 @@ const routes = [
                 meta: {
                     title: "商品分类管理"
                 }
+            },
+            {
+                path: '/add_viplevel',
+                component: () => import("./view/vip/vip_level_crud/add_viplevel.vue"),
+                meta: {
+                    title: "增加会员等级"
+                }
+            },
+            {
+                path: '/upd_viplevel',
+                name:'upd_viplevel',
+                component: () => import("./view/vip/vip_level_crud/upd_viplevel.vue"),
+                meta: {
+                    title: "修改会员等级"
+                }
             }
         ]
     },

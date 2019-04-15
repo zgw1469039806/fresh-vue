@@ -90,7 +90,7 @@
                                 <template slot="title">会员管控</template>
                                 <el-menu-item index="5-2-1">会员详细</el-menu-item>
                                 <el-menu-item index="5-2-2">积分设置</el-menu-item>
-                                <el-menu-item index="5-2-3">会员等级设定</el-menu-item>
+                                <el-menu-item index="5-2-3" @click="$router.push({path:'/viplevel'})">会员等级设定</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-submenu index="6">
