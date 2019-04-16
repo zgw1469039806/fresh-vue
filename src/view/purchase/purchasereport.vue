@@ -26,7 +26,7 @@
                             end-placeholder="结束日期">
                     </el-date-picker>
                     <el-button style="margin-left: 5px" type="success">查询</el-button>
-                    <el-button type="success">新增</el-button>
+                    <el-button type="success" @click="$router.push({path:'/purchaseinsert'})">新增</el-button>
                 </el-form>
             </div>
             <template>
