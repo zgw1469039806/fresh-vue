@@ -179,11 +179,19 @@ const routes = [
                 }
             },
             {
-                path: '/upd_viplevel',
+                path: '/upd_viplevel/:vipleaveid',
                 name:'upd_viplevel',
                 component: () => import("./view/vip/vip_level_crud/upd_viplevel.vue"),
                 meta: {
                     title: "修改会员等级"
+                }
+            },
+            {
+                path: '/vipedit/:vipId',
+                name:'vipedit',
+                component: () => import("./view/vip/vipedit.vue"),
+                meta: {
+                    title: "编辑会员信息"
                 }
             }
         ]

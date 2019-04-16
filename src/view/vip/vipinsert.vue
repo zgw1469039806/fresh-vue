@@ -11,6 +11,10 @@
                     <el-input  v-model="ruleForm.userPhone"></el-input>
                 </el-form-item>
 
+                <el-form-item label="会员名称:" prop="vipName" >
+                    <el-input  v-model="ruleForm.vipName"></el-input>
+                </el-form-item>
+
                 <el-form-item label="会员初始等级:" prop="vipLeave" >
                     <el-select v-model="ruleForm.vipLeave.value" placeholder="请选择">
                     <el-option
@@ -48,6 +52,7 @@
                     userPhone: '',
                     vipIntegral:'0', //积分
                     vipMoney:'0.00',
+                    vipName:'',
                     vipLeave: [{ //等级
                         value: '1',
                         label: '1级'
@@ -70,6 +75,9 @@
                     userPhone: [
                         {required: true, message: '请输入用户手机号', trigger: 'blur'},
                         {min: 11, max: 11, message: '手机号格式不正确', trigger: 'blur'}
+                    ],
+                    vipName: [
+                        {required: true, message: '请输入会员名称', trigger: 'blur'},
                     ]
                     ,vipLeave: [
                         {required: true, message: '请输入会员初始等级', trigger: 'blur'}

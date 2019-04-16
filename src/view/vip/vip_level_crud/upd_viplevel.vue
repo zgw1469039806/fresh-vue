@@ -40,8 +40,7 @@
         name: "upd_viplevel",
         data(){
             return{
-                vipid:''
-                ,
+                vipid:this.$route.params.vipleaveid,
                 ruleForm: {
                     vip_leave: [{ //等级
                         value: '1',
@@ -76,6 +75,7 @@
                             return false;
                         }
                         alert('submit!'+this.ruleForm.vip_leave.value);
+                        this.$router.back(-1);
                     } else {
                         return false;
                     }
@@ -83,7 +83,8 @@
             },
         },
         created() {
-             this.vipid = this.$route.params.vipleaveid;
+
+             //this.vipid = this.$route.params.vipleaveid;
         }
     }
 </script>
