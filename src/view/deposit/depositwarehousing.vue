@@ -66,7 +66,7 @@
             doPost: function () {
                 this.$axios.defaults.withCredentials=true;
                 this.$axios.get("/userinfo2").then((response) => {
-
+                    response
                 });
             }
         }
