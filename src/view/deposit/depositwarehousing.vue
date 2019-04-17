@@ -64,8 +64,8 @@
             }
         }, methods: {
             doPost: function () {
-                this.$axios.defaults.withCredentials=true;
-                this.$axios.get("/userinfo2").then((response) => {
+
+                this.axios.get("/userinfo2").then((response) => {
 
                 });
             }
