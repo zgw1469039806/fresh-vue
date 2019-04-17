@@ -12,7 +12,7 @@ const inter = axios.create({ // 创建服务
     withCredentials: true
 });
 //携带认证信息
-this.axios.defaults.withCredentials=true;
+inter.defaults.withCredentials=true;
 //axios拦截器
 inter.interceptors.response.use(function (response) {
     if (response.data.code == undefined) {
