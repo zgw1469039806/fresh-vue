@@ -59,8 +59,8 @@
                             </template>
                             <el-submenu index="3-1">
                                 <template slot="title">进货管控</template>
-                                <el-menu-item index="3-1-1">新进货物</el-menu-item>
-                                <el-menu-item index="3-1-2">进货流水</el-menu-item>
+                                <el-menu-item index="3-1-1" @click="$router.push({path:'/purchasereport'})">进货流水
+                                </el-menu-item>
                             </el-submenu>
                             <el-submenu index="3-2">
                                 <template slot="title">入库管控</template>
@@ -88,9 +88,12 @@
                             <el-menu-item index="5-1" @click="$router.push({path:'/vipinsert'})">新增会员</el-menu-item>
                             <el-submenu index="5-2">
                                 <template slot="title">会员管控</template>
-                                <el-menu-item index="5-2-1">会员详细</el-menu-item>
-                                <el-menu-item index="5-2-2">积分设置</el-menu-item>
-                                <el-menu-item index="5-2-3">会员等级设定</el-menu-item>
+                                <el-menu-item index="5-2-1" @click="$router.push({path:'/vipdetails'})">会员详细
+                                </el-menu-item>
+                                <el-menu-item index="5-2-2" @click="$router.push({path:'/vipintegral'})">积分设置
+                                </el-menu-item>
+                                <el-menu-item index="5-2-3" @click="$router.push({path:'/viplevel'})">会员等级设定
+                                </el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-submenu index="6">
@@ -115,10 +118,9 @@
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
+                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭狗屎</span></span></span>
                     <transition name="move" mode="out-in">
-                        <keep-alive>
                             <router-view></router-view>
-                        </keep-alive>
                     </transition>
                 </div>
             </el-container>
@@ -152,5 +154,22 @@
     .rightdiv {
         background: #fff;
         width: 80vw;
+    }
+
+    #head {
+        display: block;
+        height: 50px;
+        border-radius: 2px;
+        width: 79vw;
+        background: #67c23a;
+        margin-bottom: 15px;
+    }
+
+    #huanying {
+        display: block;
+        text-align: center;
+        line-height: 50px;
+        font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+
     }
 </style>
