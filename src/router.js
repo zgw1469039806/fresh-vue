@@ -81,6 +81,13 @@ const routes = [
                 }
             },
             {
+                path: '/purchasereport',
+                component: () => import("./view/purchase/purchasereport.vue"),
+                meta: {
+                    title: "进货流水"
+                }
+            },
+            {
                 path: '/depositwarehousing',
                 component: () => import("./view/deposit/depositwarehousing.vue"),
                 meta: {
@@ -162,6 +169,29 @@ const routes = [
                 component: () => import("./view/commodity/commoditytype.vue"),
                 meta: {
                     title: "商品分类管理"
+                }
+            },
+            {
+                path: '/add_viplevel',
+                component: () => import("./view/vip/vip_level_crud/add_viplevel.vue"),
+                meta: {
+                    title: "增加会员等级"
+                }
+            },
+            {
+                path: '/upd_viplevel/:vipleaveid',
+                name:'upd_viplevel',
+                component: () => import("./view/vip/vip_level_crud/upd_viplevel.vue"),
+                meta: {
+                    title: "修改会员等级"
+                }
+            },
+            {
+                path: '/vipedit/:vipId',
+                name:'vipedit',
+                component: () => import("./view/vip/vipedit.vue"),
+                meta: {
+                    title: "编辑会员信息"
                 }
             }
         ]

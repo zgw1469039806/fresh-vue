@@ -64,7 +64,7 @@
                             </el-submenu>
                             <el-submenu index="3-2">
                                 <template slot="title">入库管控</template>
-                                <el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>
+                                <el-menu-item index="3-2-1">入库</el-menu-item>
                                 <el-menu-item index="3-2-2">入库流水</el-menu-item>
                             </el-submenu>
                         </el-submenu>
