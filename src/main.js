@@ -4,9 +4,46 @@ import axios from "axios"
 import {router} from './router';
 import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
+const serivce = axios.create({ // 创建服务
+    baseURL: 'http://localhost:8777/', // 基础路径
+    timeout: 5000, // 请求延时
+    headers: {"Content-Type": "application/json"},
+    withCredentials: true
+});
+
+
+
+//axios拦截器
+serivce.interceptors.response.use(function (response)
+{
+    alert(response.data.code)
+    if (response.data && response.data.code) {
+        if (response.data.code != 0)
+        {
+            alert("--------")
+            alert(response.data.msg);
+            return response;
+        }
+    }
+    return response;
+}, function (error) {
+    alert(error)
+    if (!error.response) {
+        window.location.href = "http://localhost:8777/";
+    } else {
+        if (error.response.status == 400) {
+            alert("提交的参数有误!");
+        }
+    }
+});
+
+
+
+
+
 
 Vue.config.productionTip = false;
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = serivce;
 Vue.use(ElementUI);
 
 new Vue({
