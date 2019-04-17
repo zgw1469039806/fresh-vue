@@ -172,7 +172,7 @@
                 index + 0
                 // console.log("index:"+index)
             },handleEdit(index, row) { //index是行号  row 是行的对象
-                index
+                index+0
                 alert("编辑:等级为 "+row.vipName);
                 this.$router.push({name:'vipedit',params:{vipId:index}})
 

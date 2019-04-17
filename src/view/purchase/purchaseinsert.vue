@@ -61,17 +61,25 @@
                                 prop="num"
                                 label="采购数量"
                                 width="120">
-                                <el-input  width="110px"></el-input>
+                            <template slot-scope="scope">
+                                <el-input v-model="scope.row.num"></el-input>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 prop="song"
                                 label="赠送数量"
                                 width="120">
+                            <template slot-scope="scope">
+                                <el-input v-model="scope.row.song"></el-input>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 prop="caigprice"
                                 label="采购价"
                                 width="120">
+                            <template slot-scope="scope">
+                                <el-input v-model="scope.row.caigprice"></el-input>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 prop="money"
