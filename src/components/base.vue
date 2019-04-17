@@ -118,9 +118,9 @@
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
-                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭董事</span></span></span>
+                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭狗屎</span></span></span>
                     <transition name="move" mode="out-in">
-                        <router-view></router-view>
+                            <router-view></router-view>
                     </transition>
                 </div>
             </el-container>
