@@ -17,13 +17,13 @@
 
                 <el-form-item label="会员初始等级:" prop="vipLeave" >
                     <el-select v-model="ruleForm.vipLeave.value" placeholder="请选择">
-                    <el-option
-                            v-for="item in ruleForm.vipLeave"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                        <el-option
+                                v-for="item in ruleForm.vipLeave"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
 
                 <el-form-item label="会员初始积分:" prop="vipIntegral" >
@@ -89,6 +89,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         alert('submit!'+this.ruleForm.userPhone+","+this.ruleForm.vipLeave.value);
+
                     } else {
                         return false;
                     }
