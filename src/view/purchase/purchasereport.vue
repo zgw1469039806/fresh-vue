@@ -105,6 +105,10 @@
                             label="送达时间"
                             prop="storageTime">
                     </el-table-column>
+                    <el-table-column
+                            label="操作">
+                        <el-button type="success">入库</el-button>
+                    </el-table-column>
                 </el-table>
                 <div class="block">
                     <el-pagination
@@ -182,7 +186,6 @@
                 ]
             }
         }, methods: {
-
             //单机编辑
             updateRow(index, rows) {
                 index + "";
