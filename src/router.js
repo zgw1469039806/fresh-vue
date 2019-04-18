@@ -197,11 +197,11 @@ const routes = [
         ]
     },
     {path: '/*',component:()=> import("./components/base.vue")}
+
 ];
 
 routes.forEach(route => {
     route.path = route.path || '/' + (route.name || '');
-    alert(route.path);
 });
 const router = new Router({routes});
 

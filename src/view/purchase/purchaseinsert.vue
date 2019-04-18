@@ -8,7 +8,7 @@
         </div>
         <div class="xiahua">
             <div class="inputbox">
-                <el-form inline="true" :model="Form" :rules="rules" ref="ruleFrom">
+                <el-form :inline=true :model="Form" :rules="rules" ref="ruleFrom">
                     <el-form-item label="供应商" prop="gy">
                         <el-select v-model="Form.gy" placeholder="请选择供应商">
                             <el-option label="双汇肉类批发" value="shanghai"></el-option>
@@ -22,7 +22,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="success" @click="addDomain">选择商品</el-button>
+                        <el-button type="success" @click="showDialog()">选择商品</el-button>
                     </el-form-item>
                 </el-form>
                 <el-form>
@@ -58,7 +58,6 @@
                                 width="120">
                         </el-table-column>
                         <el-table-column
-                                prop="num"
                                 label="采购数量"
                                 width="120">
                             <template slot-scope="scope">
@@ -66,7 +65,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="song"
                                 label="赠送数量"
                                 width="120">
                             <template slot-scope="scope">
@@ -74,7 +72,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="caigprice"
                                 label="采购价"
                                 width="120">
                             <template slot-scope="scope">
@@ -82,9 +79,11 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="money"
                                 label="小计金额"
                                 width="120">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.caigprice * scope.row.num }}</span>
+                            </template>
                         </el-table-column>
                         <el-table-column
                                 fixed="right"
@@ -100,12 +99,17 @@
                 </template>
             </div>
         </div>
+        <puchase-choice :dialog-form-visible="dialogFormVisible" @isOkclick="addtable"></puchase-choice>
     </div>
 </template>
 
 <script>
+
+    import PuchaseChoice from "./puchaseChoice";
+
     export default {
         name: "purchaseinsert",
+        components: {PuchaseChoice},
         data() {
             return {
                 Form: {
@@ -140,19 +144,11 @@
                         {required: true, message: '请选择供应商', trigger: 'change'}
                     ]
                 },
-                tableData: [{
-                    comdityname: '双汇王中王',//品名
-                    comditydw: '箱',//规格
-                    comdityprice: '1554',//零售价
-                    num: 15,//采购数量
-                    song: '3',//赠送数量
-                    caigprice: 55,//采购价
-                    money: '',
-                }
-                ]
+                tableData: [],
+                dialogFormVisible: false,//控制dialog是否打开
             }
         }, methods: {
-            submitForm(formName) {
+            submitForm(formName) {//DB操作
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         alert('submit!');
@@ -160,33 +156,40 @@
                         return false;
                     }
                 });
-            },
+            }
+            ,
             deleteRow(index, rows) {
                 rows.splice(index, 1);
                 this.$message.success("删除成功!")
             },
-            addDomain() {
-                this.tableData.push({
-                    comdityname: '双汇王中王',//品名
-                    comditydw: '箱',//规格
-                    comdityprice: '1554',//零售价
-                    num: 15,//采购数量
-                    song: '3',//赠送数量
-                    caigprice: 55,//采购价
-                    money: '',
-                });
-                this.moneyadd();
-            },
-            indexMethod(index) {
+            indexMethod(index) {//下标
                 return index + 1;
             },
-            moneyadd() {
-                for (let i = 0; i < this.tableData.length; i++) {
-                    this.tableData[i].money = this.tableData[i].num * this.tableData[i].caigprice
+            showDialog() {
+                this.$refs['ruleFrom'].validate((valid) => {
+                    if (valid) {
+                        this.dialogFormVisible = true
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            addtable: function (multipleSelection) {
+                var rows = multipleSelection;
+                for (let i = 0; i < rows.length; i++) {
+                    var gobj = {
+                        comdityname: rows[i].comdityname,
+                        comditydw: rows[i].comditydw,
+                        comdityprice: rows[i].comdityprice,
+                        num: 1,
+                        caigprice: 0,
+                        song: 0
+                    }
+
+                    this.tableData.push(gobj);
                 }
+                this.dialogFormVisible = false;
             }
-        }, created: function () {
-            this.moneyadd();
         }
     }
 </script>
