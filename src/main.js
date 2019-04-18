@@ -12,28 +12,29 @@ const inter = axios.create({ // 创建服务
     withCredentials: true
 });
 //携带认证信息
-this.axios.defaults.withCredentials=true;
+inter.defaults.withCredentials=true;
 //axios拦截器
-inter.interceptors.response.use(function (response) {
-    if (response.data.code == undefined) {
-        window.location.href = "http://localhost:8777/";
-    }
-    if (response.data && response.data.code) {
-        if (response.data.code != 0) {
-            return response;
-        }
-    }
-    return response;
-}, function (error) {
-    alert(error);
-    if (!error.response) {
-        window.location.href = "http://localhost:8777/";
-    } else {
-        if (error.response.status == 400) {
-            alert("提交的参数有误!");
-        }
-    }
-});
+// inter.interceptors.response.use(function (response) {
+//    alert(response.data.code)
+//     if (response.data.code == undefined) {
+//         window.location.href = "http://localhost:8777/";
+//     }
+//     if (response.data && response.data.code) {
+//         if (response.data.code != 0) {
+//             return response;
+//         }
+//     }
+//     return resp  onse;
+// }, function (error) {
+//     alert(error);
+//     if (!error.response) {
+//         window.location.href = "http://localhost:8777/";
+//     } else {
+//         if (error.response.status == 400) {
+//             alert("提交的参数有误!");
+//         }
+//     }
+// });
 
 
 Vue.config.productionTip = false;

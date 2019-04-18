@@ -201,7 +201,6 @@ const routes = [
 
 routes.forEach(route => {
     route.path = route.path || '/' + (route.name || '');
-    alert(route.path);
 });
 const router = new Router({routes});
 
