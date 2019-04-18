@@ -8,7 +8,7 @@
                 <el-form-item label="店铺名称" prop="name">
                     <el-form :inline="true" class="demo-form-inline">
                         <el-form-item>
-                            <el-input v-model="ruleForm.name" placeholder="审批人"></el-input>
+                            <el-input v-model="ruleForm.storename" placeholder="审批人"></el-input>
                         </el-form-item>
                         <el-form-item label="手机号">
                             <el-input v-model="ruleForm.phone" placeholder="审批人"></el-input>
@@ -29,7 +29,7 @@
                     </el-upload>
                 </el-form-item>
                 <el-form-item label="门店介绍" prop="desc">
-                    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+                    <el-input type="textarea" v-model="ruleForm.storeaddress"></el-input>
                 </el-form-item>
                 <el-form-item label="门店照片">
                     <el-upload
@@ -63,20 +63,20 @@
             return {
                 ruleForm: {
                     logomodel: '',
-                    name: '',
+                    storename: '',
                     phone: '',
                     logo: '',
-                    desc: '',
+                    storeaddress: '',
                     fileList: []
                 }, rules: {
-                    name: [
+                    storename: [
                         {required: true, message: '请输入门店名称', trigger: 'blur'},
                         {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
                     ],
                     region: [
                         {required: true, message: '请选择活动区域', trigger: 'change'}
                     ],
-                    desc: [
+                    storeaddress: [
                         {required: true, message: '请输入门店介绍', trigger: 'blur'},
                     ]
                 },
@@ -87,8 +87,14 @@
         },
         methods: {
             submitForm(formName) {
+
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        alert(this.ruleForm.storename)
+                        this.axios.post("/manAdd",this.ruleForm).then((response)=>{
+                            alert(response.data)
+                        })
+
                         // var multipartFile = new FormData();//将文件转成二进制形式
                         // multipartFile.append("file", this.ruleForm.logomodel);
                         // this.$axios.post('', multipartFile).then((response) => {
@@ -133,6 +139,9 @@
             next(vm => {
                 vm.isAdd();
             });
+        },
+        addStore:function () {
+
         }
     }
 </script>

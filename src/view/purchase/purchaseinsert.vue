@@ -3,7 +3,7 @@
         <div class="anniu">
             <div class="anniubox">
                 <el-button type="success" @click="submitForm('ruleFrom')">保存</el-button>
-                <el-button type="success">返回</el-button>
+                <el-button type="success" @click="$router.push({path:'/purchasereport'})">返回</el-button>
             </div>
         </div>
         <div class="xiahua">
@@ -99,7 +99,8 @@
                 </template>
             </div>
         </div>
-        <puchase-choice :dialog-form-visible="dialogFormVisible" @isOkclick="addtable"></puchase-choice>
+        <puchase-choice :dialog-form-visible="dialogFormVisible" @isOkclick="addtable"
+                        @isClose="isClose"></puchase-choice>
     </div>
 </template>
 
@@ -170,6 +171,7 @@
                     if (valid) {
                         this.dialogFormVisible = true
                     } else {
+                        this.dialogFormVisible = false;
                         return false;
                     }
                 });
@@ -188,6 +190,9 @@
 
                     this.tableData.push(gobj);
                 }
+                this.dialogFormVisible = false;
+            },
+            isClose: function () {
                 this.dialogFormVisible = false;
             }
         }

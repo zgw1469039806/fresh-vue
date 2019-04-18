@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog width="65vw" class="box1" title="商品选择" :visible.sync="dialogFormVisible">
+        <el-dialog width="65vw" :before-close="close" class="box1" title="商品选择" :visible.sync="dialogFormVisible">
             <div class="b1">
                 <el-tree :data="trees" @node-click="handleNodeClick"></el-tree>
             </div>
@@ -56,9 +56,10 @@
 <script>
     export default {
         name: "purchaseinsert",
-        props:{
+        props: {
             dialogFormVisible: Boolean,//控制dialog是否打开
-            isOkclick: Function
+            isOkclick: Function,
+            isClose:Function
         },
         data() {
             return {
@@ -76,7 +77,6 @@
                         comdityprice: '500'//零售价
                     }
                 ],
-
                 trees: [
                     {
                         label: '新鲜水果',
@@ -133,6 +133,7 @@
             //确认添加
             addtable: function () {
                 this.$emit('isOkclick', this.multipleSelection);
+                this.dialogFormVisible = false;
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -146,6 +147,9 @@
                     }
                 });
             },
+            close: function () {
+                this.$emit('isClose', false);
+            }
         }
     }
 </script>
