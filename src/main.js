@@ -11,6 +11,8 @@ const inter = axios.create({ // 创建服务
     headers: {"Content-Type": "application/json"},
     withCredentials: true
 });
+
+// Vue.prototype.$axios = inter
 //携带认证信息
 inter.defaults.withCredentials=true;
 //axios拦截器

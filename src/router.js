@@ -197,6 +197,7 @@ const routes = [
         ]
     },
     {path: '/*',component:()=> import("./components/base.vue")}
+
 ];
 
 routes.forEach(route => {

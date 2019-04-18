@@ -64,8 +64,7 @@
                             </el-submenu>
                             <el-submenu index="3-2">
                                 <template slot="title">入库管控</template>
-                                <el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库
-                                </el-menu-item>
+                                <el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>
                                 <el-menu-item index="3-2-2">入库流水</el-menu-item>
                             </el-submenu>
                         </el-submenu>
@@ -119,16 +118,14 @@
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
-                    <span id="head"><span id="huanying">欢迎您，<span id="name">{{username}}</span></span></span>
+                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭狗屎</span></span></span>
                     <transition name="move" mode="out-in">
-                        <router-view></router-view>
+                            <router-view></router-view>
                     </transition>
                 </div>
             </el-container>
         </div>
     </div>
-
-
 </template>
 
 <script>
