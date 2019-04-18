@@ -118,7 +118,7 @@
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
-                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭董事</span></span></span>
+                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭狗屎</span></span></span>
                     <transition name="move" mode="out-in">
                             <router-view></router-view>
                     </transition>
@@ -130,7 +130,17 @@
 
 <script>
     export default {
-        name: "base"
+        name: "base",
+        data() {
+            return {
+                username: ''
+            }
+        }, created() {
+            this.axios.get("/getPrinciple").then((response) => {
+
+                this.username = response.data;
+            })
+        }
     }
 </script>
 
