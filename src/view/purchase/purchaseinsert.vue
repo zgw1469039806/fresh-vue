@@ -105,7 +105,7 @@
 
 <script>
 
-    import PuchaseChoice from "./puchaseChoice";
+    import PuchaseChoice from "../../components/puchaseChoice";
 
     export default {
         name: "purchaseinsert",

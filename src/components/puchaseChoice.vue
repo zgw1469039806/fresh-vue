@@ -64,11 +64,13 @@
             return {
                 tableData1: [//选择商品的数据
                     {
+                        comdid:1,
                         comdityname: '双汇王中王',//品名
                         comditydw: '箱',//规格
                         comdityprice: '1554'//零售价
                     },
                     {
+                        comdid:2,
                         comdityname: '阿强哥鱼类批发',//品名
                         comditydw: '箱',//规格
                         comdityprice: '500'//零售价
