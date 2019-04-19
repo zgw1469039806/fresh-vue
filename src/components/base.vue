@@ -137,7 +137,6 @@
             }
         }, created() {
             this.axios.get("/getPrinciple").then((response) => {
-
                 this.username = response.data;
             })
         }
