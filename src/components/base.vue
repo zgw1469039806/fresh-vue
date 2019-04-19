@@ -76,7 +76,12 @@
                             <el-menu-item index="4-1" @click="$router.push({path:'/orderinsert'})">新增订单</el-menu-item>
                             <el-submenu index="4-2">
                                 <template slot="title">订单管控</template>
-                                <el-menu-item index="4-2-1">订单流水</el-menu-item>
+                                <!--<el-menu-item index="4-2-1" @click="$router.push({path:'/orderrepost'})">订单</el-menu-item>-->
+                                <el-submenu index="4-2-1">
+                                    <template slot="title">订单</template>
+                                    <el-menu-item index="4-2-1-1" @click="$router.push({path:'/orderrepost'})">线上订单</el-menu-item>
+                                    <el-menu-item index="4-2-1-2" @click="$router.push({path:'/orderoffline'})">线下订单</el-menu-item>
+                                </el-submenu>
                                 <el-menu-item index="4-2-2">挂弹管理</el-menu-item>
                             </el-submenu>
                         </el-submenu>

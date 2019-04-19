@@ -16,8 +16,8 @@
                     <p>名称：{{ruleForm.vipMsg.na}},积分：{{ruleForm.vipMsg.jifen}},余额：{{ruleForm.vipMsg.yue}}</p>
                 </el-form-item>
 
-                <el-form-item label="会员折扣:" prop="vipDiscount" >
-                    <el-input  v-model="ruleForm.vipDiscount"></el-input>
+                <el-form-item label="会员折扣:" prop="vipDiscount" v-show="ifshow">
+                    <el-input  v-model="ruleForm.vipMsg.zhekou" disabled style="width: 200px;"></el-input>
                 </el-form-item>
 
                 <el-form-item label="选择商品:" prop="goods" >
@@ -25,7 +25,7 @@
 
                     <template>
                         <el-table
-                                :data="tableData"
+                                :data="ruleForm.tableData"
                                 border
                                 style="width: 100%;">
 
@@ -51,7 +51,7 @@
                                     label="数量"
                                     width="160">
                                 <template slot-scope="scope">
-                                    <el-input-number v-model="scope.row.comdnum" :precision="2" :step="0.01" :min="0.00" ></el-input-number>
+                                    <el-input-number v-model="scope.row.comdnum" :precision="2" :step="0.01" :min="0.00" style="width: 140px;"></el-input-number>
                                 </template>
                             </el-table-column>
 
@@ -70,7 +70,7 @@
                                     width="100">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini"
-                                               @click.native.prevent="deleteRow(scope.$index, tableData)">删除
+                                               @click.native.prevent="deleteRow(scope.$index, ruleForm.tableData)">删除
                                     </el-button>
                                 </template>
                             </el-table-column>
@@ -80,23 +80,20 @@
 
                 <el-form-item label="选择付款方式:" prop="payWay" >
                     <el-radio-group v-model="ruleForm.radio">
-                        <el-radio :label="1">会员余额</el-radio>
+                        <el-radio :label="1" v-show="ifshow">会员余额</el-radio>
                         <el-radio :label="2">支付宝</el-radio>
                         <el-radio :label="3">微信</el-radio>
                     </el-radio-group>
                     <p>总价：<span style="color: red;">{{sumMoney.toFixed(2)}}</span> 元</p>
-                    <p>打折后总价：<span style="color: red;">{{}}</span> 元</p>
+                    <p v-show="ifshow">打折后总价：<span style="color: red;">{{(sumMoney.toFixed(2) * ruleForm.vipMsg.zhekou).toFixed(2)}}</span> 元</p>
                 </el-form-item>
-
-
 
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                    <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
             </el-form>
         </div>
-        <puchase-choice :dialog-form-visible="dialogFormVisible" @isOkclick="addtable"></puchase-choice>
+        <puchase-choice :dialog-form-visible="dialogFormVisible" @isOkclick="addtable"  @isClose="isClose"></puchase-choice>
     </div>
 </template>
 
@@ -117,31 +114,27 @@
                       na:'小明',
                       jifen:'1000',
                       yue:'200',
-                      zhekou:'90%'
+                      zhekou:0.9 ,
                     },
-                    vipDiscount:'100%',
+                    tableData: [],
+                    // vipDiscount:'100',
                     radio:'',
 
                 },
+                dialogFormVisible: false,//控制dialog是否打开
                 rules: {
-                    userPhone: [
-                        {required: true, message: '请输入用户手机号', trigger: 'blur'},
-                        {min: 11, max: 11, message: '手机号格式不正确', trigger: 'blur'}
+                    tableData: [
+                        {required: true, message: '请选择商品', trigger: 'blur'}
                     ]
 
                 },
-
-                tableData: [],
-                dialogFormVisible: false,//控制dialog是否打开
-
             }
         },
 
         computed: {
             sumMoney(){
-                /*return this.tableData.map(row=>row.comdnum*row.comdityprice).reduce(
-                    (acc, cur) => (parseFloat(cur) + acc), 0)*/
-
+                return this.ruleForm.tableData.map(row=>row.comdnum*row.comdityprice).reduce(
+                    (acc, cur) => (parseFloat(cur) + acc), 0)
 
             }
         },
@@ -149,6 +142,13 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        if(this.ifshow){ //如果ifshow为true 表示拥有会员 传入打折后价格
+                            alert("商品为："+this.ruleForm.tableData)
+                            alert("会员,价格为:"+(this.sumMoney.toFixed(2) * this.ruleForm.vipMsg.zhekou).toFixed(2))
+                        }else{      //为false 表示没有会员 传入真实价格
+                            alert("商品为："+this.ruleForm.tableData)
+                            alert("不是会员,价格为："+this.sumMoney.toFixed(2))
+                        }
                         alert('submit!');
                     } else {
                         return false;
@@ -187,7 +187,7 @@
                         comdnum:1
                     }
 
-                    this.tableData.push(gobj);
+                    this.ruleForm.tableData.push(gobj);
                 }
 
                 this.dialogFormVisible = false;
@@ -195,6 +195,9 @@
             deleteRow(index, rows) {
                 rows.splice(index, 1);
                 this.$message.success("删除成功!")
+            },
+            isClose: function () { //关闭模态框
+                this.dialogFormVisible = false;
             }
         }
     }
@@ -219,7 +222,6 @@
         width: 50vw;
         display: flex;
         justify-content: center;
-        border: 1px solid red;
         margin: 0px auto;
         background: #fff;
     }
