@@ -5,53 +5,60 @@
                 <el-form-item label="订单号：">
                     <el-input v-model="Form.orderId"></el-input>
                 </el-form-item>
-                <el-date-picker
-                        v-model="Form.statictime"
-                        type="daterange"
-                        align="right"
-                        unlink-panels
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-                </el-date-picker>
-                <el-select v-model="value" placeholder="全部">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-button style="margin-left: 5px" type="primary">查询</el-button>
+
+                <el-form-item label="日期：">
+                    <el-date-picker
+                            v-model="Form.statictime"
+                            type="daterange"
+                            align="right"
+                            unlink-panels
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+
+                <el-form-item label="状态：">
+                    <el-select v-model="Form.orsvalue" placeholder="全部">
+                        <el-option
+                                v-for="item in orderStart"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="店铺：">
+                    <el-select v-model="Form.orStoreValue" placeholder="请选择">
+                        <el-option
+                                v-for="item in orStore"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="会员号：">
+                    <el-input v-model="Form.vipId"></el-input>
+                </el-form-item>
+
+
+                <el-button style="margin-left: 5px" type="primary" >查询</el-button>
             </el-form>
             <template>
                 <el-table
                         :data="tableData"
-                        style="width: 100%">
-                    <el-table-column type="expand">
-                        <template slot-scope="props">
-                            <el-form label-position="left" inline class="demo-table-expand">
-                                <el-form-item label="员工姓名:">
-                                    <span>{{ props.row.name }}</span>
-                                </el-form-item>
-                                <el-form-item label="操作日期:">
-                                    <span>{{ props.row.date }}</span>
-                                </el-form-item>
-                                <el-form-item label="所属店铺:">
-                                    <span>{{ props.row.store }}</span>
-                                </el-form-item>
-                                <el-form-item label="员工职务:">
-                                    <span>{{ props.row.zhiwu }}</span>
-                                </el-form-item>
-                                <el-form-item label="描述:">
-                                    <span>{{ props.row.caozuo }}</span>
-                                </el-form-item>
-                                <el-form-item label="操作记录:">
-                                    <span>{{ props.row.desc }}</span>
-                                </el-form-item>
-                            </el-form>
-                        </template>
+                        style="width: 100%"
+                        @row-click="selOrder"
+                >
+
+                    <el-table-column
+                            label="序号"
+                            type="index">
                     </el-table-column>
+
                     <el-table-column
                             label="订单编号"
                             prop="orderId">
@@ -73,6 +80,11 @@
                     </el-table-column>
 
 
+                    <el-table-column
+                            sortable
+                            label="交易金额"
+                            prop="orderMoney">
+                    </el-table-column>
 
                     <el-table-column
                             sortable
@@ -81,9 +93,14 @@
                     </el-table-column>
 
                     <el-table-column
+                            label="订单状态"
+                            prop="orderState"> <!--消费、退款-->
+                    </el-table-column>
+
+                    <!--<el-table-column
                             label="描述"
                             prop="desc">
-                    </el-table-column>
+                    </el-table-column>-->
                 </el-table>
                 <div class="block">
                     <el-pagination
@@ -97,6 +114,84 @@
                     </el-pagination>
                 </div>
             </template>
+            <el-dialog
+                    title="订单详情"
+                    :visible.sync="dialogVisible"
+                    :close-on-click-modal="false">
+                <div slot="footer" >
+
+                    <template>
+                        <el-table
+                                :data="tableData1"
+                                style="width: 100%;margin-top: -80px;">
+                            <el-table-column
+                                    label="序号"
+                                    type="index">
+                            </el-table-column>
+
+                            <el-table-column
+                                    label="商品编号"
+                                    prop="orderId">
+                            </el-table-column>
+
+                            <el-table-column
+                                    label="商品名称"
+                                    prop="goodsName">
+                            </el-table-column>
+
+                            <el-table-column
+                                    label="商品规格"
+                                    prop="goodsGuige">
+                            </el-table-column>
+
+                            <el-table-column
+                                    label="商品数量"
+                                    prop="goodsNum">
+                            </el-table-column>
+
+                            <el-table-column
+                                    label="商品单价"
+                                    prop="goodsPrice">
+                            </el-table-column>
+
+                        </el-table>
+                    </template>
+
+                    <div >
+                        <h5 class="flot_left">收货地址：</h5>
+                        <p class="close_left flot_left ">{{ordAddress}}</p>
+                        <h5 class="close_left flot_left">修改订单状态：</h5>
+                        <el-button
+                                class="close_left flot_left"
+                                v-if="updordstart == '待发货'"
+                                @click="fahuo()"
+                        >立即发货</el-button>
+
+                        <el-button
+                                class="close_left flot_left"
+                                v-if="updordstart == '已发货'"
+                        >已发货</el-button>
+
+                        <el-button
+                                class="close_left flot_left"
+                                v-if="updordstart == '未支付'"
+                        >未支付</el-button>
+
+                        <el-button
+                                class="close_left flot_left"
+                                v-if="updordstart == '已完成'"
+                        >已完成</el-button>
+
+
+                    </div>
+
+                    <div style="clear: left;">
+                        <el-button @click.native="dialogVisible = false">取消</el-button>
+                        <el-button type="primary" >确定</el-button>
+                    </div>
+
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -106,39 +201,60 @@
         name: "orderrepost",
         data(){
             return{
+
                 tableData: [
                     {
-                        date: '2016-05-07',
-                        name: '王小虎',
-                        store: '老城店',
-                        address: '河南省洛阳市老城区丽景门大街 1518号',
-                        phone: '18238817862',
-                        zhiwu: "采购员",
-                        caozuo:'卖出商品',
-                        desc:'出售商品'
+                        orderId: '1a23123',
+                        vipId: '00001',
+                        dealWay: '支付宝',
+                        dealType: '消费',
+                        orderDate: '2019-12-12',
+                        orderMoney:'567.00',
+                        orderState:'待发货',
+                        orderAddress:'河南省洛阳市涧西区九都西路北大青鸟洛阳融科一楼创客空间'
+
                     },
                     {
-                        date: '2019-04-10',
-                        name: '王老虎',
-                        store: '万达店',
-                        address: '河南省洛阳市涧西区万达三楼 王老虎生鲜店',
-                        phone: '13083658064',
-                        zhiwu: "收银员",
-                        caozuo:'卖出商品',
-                        desc:'出售商品'
+                        orderId: '9876543',
+                        vipId: '',
+                        dealWay: '微信',
+                        dealType: '消费',
+                        orderMoney:'789.00',
+                        orderDate: '2019-12-11',
+                        orderState:'已完成',
+                        orderAddress:'河南省洛阳市涧西区九都西路北大青鸟洛阳融科3楼304'
                     }
                 ],
+                tableData1:[{
+                    orderId:'232301',
+                    goodsName:'可口可乐',
+                    goodsGuige:'瓶',
+                    goodsNum:4,
+                    goodsPrice:2.98
+
+                },{
+                    orderId:'232302',
+                    goodsName:'芒果干',
+                    goodsGuige:'袋',
+                    goodsNum:2,
+                    goodsPrice:9.98
+                }],
                 Form: {
                     name: '',
                     statictime:'',
-                    endtime:''
+                    endtime:'',
+                    orsvalue:'0',
+                    orStoreValue:'', //订单所属店铺
+                    vipId:''
                 },
                 page: {
                     total: 20,
                     current: 1,
 
                 },
-                options: [
+                dialogVisible:false,     //模态框是否显示
+                //addLoading: false,      //是否显示loading
+                orderStart: [
                 {
                     value: '0',
                     label: '全部'
@@ -158,12 +274,33 @@
                     value: '5',
                     label: '退款'
                 }],
-                value: '0'
+                orStore: [
+                    {
+                        value: '1',
+                        label: '店铺1'
+                    },{
+                        value: '2',
+                        label: '店铺2'
+                    }],
+                updordstart:null ,//订单详情 -- 订单状态 -- 修改
+                ordAddress:null ,//订单详情 -- 订单地址
             }
+
         }, methods: {
 
+            selOrder(row, event, column){
+                alert("订单编号："+row.orderId);
+                this.dialogVisible = true;
+                this.updordstart = row.orderState
+                this.ordAddress = row.orderAddress
+                row,event, column
+            },
 
+            fahuo(){
+              alert("点击待发货，订单状态改为已发货");
 
+              //重新调用查询方法 ，刷新数据
+            },
 
             //单机编辑
             updateRow(index, rows) {
@@ -200,4 +337,11 @@
         margin-bottom: 0;
         width: 50%;
     }
+    .flot_left{
+        float: left;
+    }
+    .close_left{
+        clear: left;
+    }
+
 </style>
