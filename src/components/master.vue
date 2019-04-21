@@ -135,7 +135,7 @@
 
 <script>
     export default {
-        name: "base",
+        name: "master",
         data() {
             return {
                 username: ''
