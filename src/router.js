@@ -112,7 +112,14 @@ const routes = [
                 path: '/orderrepost',
                 component: () => import("./view/order/orderrepost.vue"),
                 meta: {
-                    title: "订购流水"
+                    title: "线上订单"
+                }
+            },
+            {
+                path: '/orderoffline',
+                component: () => import("./view/order/orderoffline.vue"),
+                meta: {
+                    title: "线下订单"
                 }
             },
             {
