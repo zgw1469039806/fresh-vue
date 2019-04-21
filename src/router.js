@@ -8,7 +8,7 @@ vue.use(Router);
 const routes = [
     {
         path: '/base',
-        component: () => import("./components/base.vue"),
+        component: () => import("./components/master.vue"),
         meta: {
             title: "格调生鲜"
         },
@@ -203,7 +203,7 @@ const routes = [
             }
         ]
     },
-    {path: '/*',component:()=> import("./components/base.vue")}
+    {path: '/*',component:()=> import("./components/master.vue")}
 
 ];
 

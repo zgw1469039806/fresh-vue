@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <div>
             <el-form :inline="true" ref="Form" label-width="80px">
                 <el-form-item label="员工名称">

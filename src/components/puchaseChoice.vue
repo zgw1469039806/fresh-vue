@@ -4,50 +4,52 @@
             <div class="b1">
                 <el-tree :data="trees" @node-click="handleNodeClick"></el-tree>
             </div>
-            <div class="b2">
-                <template>
-                    <el-form>
-                        <el-form-item label="请输入商品名称">
-                            <el-input style="width: 300px;padding-right: 15px"></el-input>
-                            <el-button type="success">搜索</el-button>
-                        </el-form-item>
-                    </el-form>
-                    <el-table
-                            :border="true"
-                            :data="tableData1"
-                            tooltip-effect="dark"
-                            style="width: 100%;background: #646265"
-                            @selection-change="handleSelectionChange">
-                        <el-table-column
-                                type="selection"
-                                width="55">
-                        </el-table-column>
-                        <el-table-column
-                                label="货号"
-                                width="120">
-                            <template slot-scope="scope">{{ scope.row.comdityname }}</template>
-                        </el-table-column>
-                        <el-table-column
-                                prop="comdityname"
-                                label="品名"
-                                width="120">
-                        </el-table-column>
-                        <el-table-column
-                                prop="comditydw"
-                                label="规格"
-                                show-overflow-tooltip>
-                        </el-table-column>
-                        <el-table-column
-                                prop="comdityprice"
-                                label="零售价"
-                                show-overflow-tooltip>
-                        </el-table-column>
-                    </el-table>
-                    <div style="margin-top: 20px">
-                        <el-button @click="toggleSelection()">取消选择</el-button>
-                        <el-button @click="addtable" type="success">确认</el-button>
-                    </div>
-                </template>
+            <div class="b2box">
+                <div class="b2">
+                    <template>
+                        <el-form>
+                            <el-form-item label="请输入商品名称">
+                                <el-input style="width: 300px;padding-right: 15px"></el-input>
+                                <el-button type="success">搜索</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <el-table
+                                :border="true"
+                                :data="tableData1"
+                                tooltip-effect="dark"
+                                style="width: 100%;background: #646265"
+                                @selection-change="handleSelectionChange">
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column
+                                    label="货号"
+                                    width="120">
+                                <template slot-scope="scope">{{ scope.row.comdityname }}</template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="comdityname"
+                                    label="品名"
+                                    width="120">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="comditydw"
+                                    label="规格"
+                                    show-overflow-tooltip>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="comdityprice"
+                                    label="零售价"
+                                    show-overflow-tooltip>
+                            </el-table-column>
+                        </el-table>
+                        <div style="margin-top: 20px">
+                            <el-button @click="toggleSelection()">取消选择</el-button>
+                            <el-button @click="addtable" type="success">确认</el-button>
+                        </div>
+                    </template>
+                </div>
             </div>
         </el-dialog>
     </div>
@@ -59,19 +61,19 @@
         props: {
             dialogFormVisible: Boolean,//控制dialog是否打开
             isOkclick: Function,
-            isClose:Function
+            isClose: Function
         },
         data() {
             return {
                 tableData1: [//选择商品的数据
                     {
-                        comdid:1,
+                        comdid: 1,
                         comdityname: '双汇王中王',//品名
                         comditydw: '箱',//规格
                         comdityprice: '1554'//零售价
                     },
                     {
-                        comdid:2,
+                        comdid: 2,
                         comdityname: '阿强哥鱼类批发',//品名
                         comditydw: '箱',//规格
                         comdityprice: '500'//零售价
@@ -115,7 +117,8 @@
                 ],
                 query: ''
             }
-        }, methods: {
+        },
+        methods: {
             //单击树状菜单的回调函数
             handleNodeClick(data) {
                 data + ''
@@ -164,6 +167,14 @@
         width: 15vw;
         height: 30vw;
         margin: 0px auto;
+    }
+
+    .b1:hover {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 4px;
+    }
+
+    .b2box {
+        margin-left: 15px;
     }
 
     .b2 {

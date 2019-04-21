@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div>
         <div>
             <el-form :inline="true" ref="Form" label-width="80px">
                 <el-form-item label="商品名称">
@@ -47,6 +47,9 @@
                                 <el-form-item label="会员是否可享折扣:">
                                     <span @click="vipchang(props.row)" v-if="props.row.isnodiscount==0"><el-button type="text">否</el-button></span>
                                     <span @click="vipchang(props.row)" v-if="props.row.isnodiscount==1"><el-button type="text">是</el-button></span>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="text"> 保存修改 </el-button>
                                 </el-form-item>
                             </el-form>
                         </template>
@@ -178,7 +181,16 @@
         display: flex;
         justify-content: center;
     }
-    a{
-
+    .demo-table-expand {
+        font-size: 0;
+    }
+    .demo-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+    }
+    .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
     }
 </style>

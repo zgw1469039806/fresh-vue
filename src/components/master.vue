@@ -116,14 +116,14 @@
                             </el-submenu>
                             <el-submenu index="6-3">
                                 <template slot="title">货品属性管理</template>
-                                <el-menu-item index="6-3-1">货品分类管理</el-menu-item>
+                                <el-menu-item index="6-3-1" @click="$router.push({path:'/commoditytype'})">货品分类管理</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                     </el-menu>
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
-                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭狗屎</span></span></span>
+                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭董事</span></span></span>
                     <transition name="move" mode="out-in">
                             <router-view></router-view>
                     </transition>
