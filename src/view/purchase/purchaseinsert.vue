@@ -178,17 +178,31 @@
             },
             addtable: function (multipleSelection) {
                 var rows = multipleSelection;
-                for (let i = 0; i < rows.length; i++) {
-                    var gobj = {
-                        comdityname: rows[i].comdityname,
-                        comditydw: rows[i].comditydw,
-                        comdityprice: rows[i].comdityprice,
-                        num: 1,
-                        caigprice: 0,
-                        song: 0
+                if (rows.length != 0) {
+                    var map = new Map();
+                    for (let j = 0; j < rows.length; j++) {
+                        var row = rows[j];
+
+                        var gobj = {
+                            comdityId: row.comdid,
+                            comdityname: row.comdityname,
+                            comditydw: row.comditydw,
+                            comdityprice: row.comdityprice,
+                            num: 1,
+                            caigprice: 0,
+                            song: 0
+                        }
+                        map.set(gobj.comdityId,gobj)
                     }
 
-                    this.tableData.push(gobj);
+                    for (let i = 0; i < this.tableData.length; i++) {
+                        map.set(this.tableData[i].comdityId,this.tableData[i])
+                    }
+                    this.tableData = new Array();
+                    for (var [key,value] of map) {
+                        key+"1";
+                        this.tableData.push(value)
+                    }
                 }
                 this.dialogFormVisible = false;
             },
