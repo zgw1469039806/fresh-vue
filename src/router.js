@@ -102,6 +102,13 @@ const routes = [
                 }
             },
             {
+                path: '/orderlist',
+                component: () => import("./view/order/orderlist.vue"),
+                meta: {
+                    title: "挂单管理"
+                }
+            },
+            {
                 path: '/vipinsert',
                 component: () => import("./view/vip/vipinsert.vue"),
                 meta: {

@@ -33,6 +33,16 @@
                     <el-input v-model="Form.vipId"></el-input>
                 </el-form-item>
 
+                <el-form-item label="状态：">
+                    <el-select v-model="Form.orderState" placeholder="请选择">
+                        <el-option
+                                v-for="item in orderState"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
 
                 <el-button style="margin-left: 5px" type="primary" >查询</el-button>
             </el-form>
@@ -40,8 +50,7 @@
                 <el-table
                         :data="tableData"
                         style="width: 100%"
-                        @row-click="selOrder"
-                >
+                        @row-click="selOrder">
 
                     <el-table-column
                             label="序号"
@@ -68,11 +77,15 @@
                             prop="dealType"> <!--消费、退款-->
                     </el-table-column>
 
-
                     <el-table-column
                             sortable
                             label="交易金额"
                             prop="orderMoney">
+                    </el-table-column>
+
+                    <el-table-column
+                            label="交易状态"
+                            prop="orderState">
                     </el-table-column>
 
                     <el-table-column
@@ -143,8 +156,9 @@
 
                         <el-button
                                 class="close_left flot_left"
-                                v-if="updordstart == '未支付'"
-                        >未支付</el-button>
+                                v-if="updordstart == '挂单中'"
+                                @click="goPay()"
+                        >确认付款</el-button>
 
                         <el-button
                                 class="close_left flot_left"
@@ -179,7 +193,7 @@
                         dealType: '消费',
                         orderDate: '2019-12-12',
                         orderMoney:'567.00',
-                        orderState:'未支付',
+                        orderState:'已完成',
 
                     },
                     {
@@ -189,7 +203,7 @@
                         dealType: '消费',
                         orderMoney:'789.00',
                         orderDate: '2019-12-11',
-                        orderState:'已完成',
+                        orderState:'挂单中',
                     }
                 ],
                 tableData1:[{
@@ -211,7 +225,8 @@
                     statictime:'',
                     endtime:'',
                     orStoreValue:'', //订单所属店铺
-                    vipId:''
+                    vipId:'',
+                    orderState:'0'
                 },
                 page: {
                     total: 20,
@@ -228,6 +243,18 @@
                         value: '2',
                         label: '店铺2'
                     }],
+                orderState: [
+                    {
+                        value: '0',
+                        label: '全部'
+                    },
+                    {
+                        value: '1',
+                        label: '已完成'
+                    },{
+                        value: '2',
+                        label: '挂单中'
+                    }],
                 updordstart:null ,//订单详情 -- 订单状态 -- 修改
             }
 
@@ -238,6 +265,10 @@
                 this.dialogVisible = true;
                 this.updordstart = row.orderState
                 row,event, column
+            },
+
+            goPay(){
+                alert("去付款")
             },
 
             //单机编辑
