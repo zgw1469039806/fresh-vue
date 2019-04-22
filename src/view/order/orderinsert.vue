@@ -83,6 +83,7 @@
                         <el-radio :label="1" v-show="ifshow">会员余额</el-radio>
                         <el-radio :label="2">支付宝</el-radio>
                         <el-radio :label="3">微信</el-radio>
+                        <el-radio :label="4">现金</el-radio>
                     </el-radio-group>
                     <p>总价：<span style="color: red;">{{sumMoney.toFixed(2)}}</span> 元</p>
                     <p v-show="ifshow">打折后总价：<span style="color: red;">{{(sumMoney.toFixed(2) * ruleForm.vipMsg.zhekou).toFixed(2)}}</span> 元</p>
@@ -182,17 +183,28 @@
             },
             addtable: function (multipleSelection) {
                 var rows = multipleSelection;
-                for (let i = 0; i < rows.length; i++) {
+                if (rows.length != 0) {
+                    var map = new Map();
 
-                    var gobj = {
-                        comdid:rows[i].id,
-                        comdityname: rows[i].comdityname,
-                        comditydw:rows[i].comditydw,
-                        comdityprice: rows[i].comdityprice,
-                        comdnum:1
+                    for (let j = 0; j < rows.length; j++) {
+                        var gobj = {
+                            comdid:rows[j].comdid,
+                            comdityname: rows[j].comdityname,
+                            comditydw:rows[j].comditydw,
+                            comdityprice: rows[j].comdityprice,
+                            comdnum:1
+                        }
+                        map.set(gobj.comdid,gobj);
+                    }
+                    for (let i = 0; i < this.ruleForm.tableData.length; i++) {
+                        map.set(this.ruleForm.tableData[i].comdid,this.ruleForm.tableData[i]);
                     }
 
-                    this.ruleForm.tableData.push(gobj);
+                    this.ruleForm.tableData = new Array();
+                    for (var [key,value] of map) {
+                        key+"1";
+                        this.ruleForm.tableData.push(value);
+                    }
                 }
 
                 this.dialogFormVisible = false;

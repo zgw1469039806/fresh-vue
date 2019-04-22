@@ -109,8 +109,7 @@
                             <el-menu-item index="6-1">新建货品</el-menu-item>
                             <el-submenu index="6-2">
                                 <template slot="title">货品控制</template>
-                                <el-menu-item index="6-2-1">上架货物</el-menu-item>
-                                <el-menu-item index="6-2-2">下架货物</el-menu-item>
+                                <el-menu-item index="6-2-1" @click="$router.push({path:'/commodityUpDown'})">上\下架货物</el-menu-item>
                                 <el-menu-item index="6-2-3" @click="$router.push({path:'/commodityattribute'})">货品详细
                                 </el-menu-item>
                             </el-submenu>
