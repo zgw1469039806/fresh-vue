@@ -7,7 +7,7 @@ vue.use(Router);
 
 const routes = [
     {
-        path: '/base',
+        path: '/master',
         component: () => import("./components/master.vue"),
         meta: {
             title: "格调生鲜"

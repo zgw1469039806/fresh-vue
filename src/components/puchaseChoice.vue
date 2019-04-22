@@ -7,17 +7,19 @@
             <div class="b2box">
                 <div class="b2">
                     <template>
-                        <el-form>
-                            <el-form-item label="请输入商品名称">
+                        <div class="input">
+                            <div class="forms">
+                                <span class="shpoinname">商品名称:</span>
                                 <el-input style="width: 300px;padding-right: 15px"></el-input>
                                 <el-button type="success">搜索</el-button>
-                            </el-form-item>
-                        </el-form>
+                            </div>
+                        </div>
                         <el-table
+                                :header-cell-style="{background:'#eef1f6',color:'#606266'}"
                                 :border="true"
                                 :data="tableData1"
                                 tooltip-effect="dark"
-                                style="width: 100%;background: #646265"
+                                style="width: 100%;"
                                 @selection-change="handleSelectionChange">
                             <el-table-column
                                     type="selection"
@@ -44,8 +46,8 @@
                                     show-overflow-tooltip>
                             </el-table-column>
                         </el-table>
-                        <div style="margin-top: 20px">
-                            <el-button @click="toggleSelection()">取消选择</el-button>
+                        <div style="margin-top: 20px;float: right;margin-right: 15px;">
+                            <el-button @click="close" type="success">取消</el-button>
                             <el-button @click="addtable" type="success">确认</el-button>
                         </div>
                     </template>
@@ -124,19 +126,9 @@
                 data + ''
                 // console.log(data);
             },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
             //确认添加
             addtable: function () {
                 this.$emit('isOkclick', this.multipleSelection);
-                this.dialogFormVisible = false;
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -144,7 +136,6 @@
             showDialog() {
                 this.$refs['ruleFrom'].validate((valid) => {
                     if (valid) {
-                        this.dialogFormVisible = true
                     } else {
                         return false;
                     }
@@ -163,10 +154,11 @@
     }
 
     .b1 {
+        border: 1px solid #c4c6cc;
         float: left;
         width: 15vw;
         height: 30vw;
-        margin: 0px auto;
+        margin-right: 10px;
     }
 
     .b1:hover {
@@ -174,13 +166,32 @@
     }
 
     .b2box {
-        margin-left: 15px;
+
     }
 
     .b2 {
+        border: 1px solid #67c23a;
         margin: 0px auto;
         width: 45vw;
         height: 30vw;
         float: left;
+    }
+
+    .input {
+        line-height: 60px;
+        height: 60px;
+        width: 45vw;
+        border-bottom: 1px solid #67c23a;
+    }
+
+    .forms {
+        line-height: 60px;
+        height: 60px;
+        margin: 0px auto;
+    }
+
+    .shpoinname {
+        margin-left: 15px;
+        margin-right: 15px;
     }
 </style>
