@@ -82,7 +82,7 @@
                                     <el-menu-item index="4-2-1-1" @click="$router.push({path:'/orderrepost'})">线上订单</el-menu-item>
                                     <el-menu-item index="4-2-1-2" @click="$router.push({path:'/orderoffline'})">线下订单</el-menu-item>
                                 </el-submenu>
-                                <el-menu-item index="4-2-2">挂弹管理</el-menu-item>
+                                <el-menu-item index="4-2-2" @click="$router.push({path:'/orderlist'})">挂弹管理</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-submenu index="5">
@@ -135,7 +135,7 @@
 
 <script>
     export default {
-        name: "base",
+        name: "master",
         data() {
             return {
                 username: ''

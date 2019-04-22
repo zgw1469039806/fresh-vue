@@ -90,6 +90,7 @@
 
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                    <el-button type="primary" @click="guaForm('ruleForm')">挂单</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -155,6 +156,9 @@
                     }
                 });
             },
+            guaForm(formName){ //挂单方法
+                formName
+            },
             selVip(){ //查询会员方法
 
                 //1、先根据手机号查询会员信息
@@ -179,6 +183,7 @@
             addtable: function (multipleSelection) {
                 var rows = multipleSelection;
                 for (let i = 0; i < rows.length; i++) {
+
                     var gobj = {
                         comdid:rows[i].id,
                         comdityname: rows[i].comdityname,
