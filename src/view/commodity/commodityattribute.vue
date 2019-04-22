@@ -11,6 +11,7 @@
                     <el-option label="老城店" value="lcd"></el-option>
                 </el-select>
                 <el-button style="margin-left: 5px" type="primary">查询</el-button>
+                <el-button type="success" @click="dialogVisible = true">新增商品</el-button>
             </el-form>
             <template>
                 <el-table
@@ -45,11 +46,13 @@
                                     <el-input v-model="props.row.comdityprice"></el-input>
                                 </el-form-item>
                                 <el-form-item label="会员是否可享折扣:">
-                                    <span @click="vipchang(props.row)" v-if="props.row.isnodiscount==0"><el-button type="text">否</el-button></span>
-                                    <span @click="vipchang(props.row)" v-if="props.row.isnodiscount==1"><el-button type="text">是</el-button></span>
+                                    <span @click="vipchang(props.row)" v-if="props.row.isnodiscount==0"><el-button
+                                            type="text">否</el-button></span>
+                                    <span @click="vipchang(props.row)" v-if="props.row.isnodiscount==1"><el-button
+                                            type="text">是</el-button></span>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="text"> 保存修改 </el-button>
+                                    <el-button type="text"> 保存修改</el-button>
                                 </el-form-item>
                             </el-form>
                         </template>
@@ -98,6 +101,75 @@
                 </div>
             </template>
         </div>
+        <div>
+            <el-dialog width="80vw" :before-close="close" class="box1" title="商品添加" :visible.sync="dialogVisible">
+                <el-form :model="ruleForm" inline :rules="rules" ref="ruleForm" label-width="100px"
+                         class="demo-ruleForm">
+                    <div class="spxx">
+                        <el-form-item label="活动名称" prop="name">
+                            <el-input v-model="ruleForm.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品分类">
+                            <el-select v-model="ruleForm.type" filterable multiple placeholder="请选择">
+                                <el-option
+                                        v-for="item in options"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="单位">
+                            <el-input></el-input>
+                        </el-form-item>
+                        <el-form-item label="简介">
+                            <el-input></el-input>
+                        </el-form-item>
+                    </div>
+                    <div class="jgxx">
+                        <el-form-item label="活动时间" required>
+                            <el-col :span="11">
+                                <el-form-item prop="date1">
+                                    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1"
+                                                    style="width: 100%;"></el-date-picker>
+                                </el-form-item>
+                            </el-col>
+                            <el-col class="line" :span="2">-</el-col>
+                            <el-col :span="11">
+                                <el-form-item prop="date2">
+                                    <el-time-picker placeholder="选择时间" v-model="ruleForm.date2"
+                                                    style="width: 100%;"></el-time-picker>
+                                </el-form-item>
+                            </el-col>
+                        </el-form-item>
+                        <el-form-item label="即时配送" prop="delivery">
+                            <el-switch v-model="ruleForm.delivery"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="活动性质" prop="type">
+                            <el-checkbox-group v-model="ruleForm.type">
+                                <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
+                                <el-checkbox label="地推活动" name="type"></el-checkbox>
+                                <el-checkbox label="线下主题活动" name="type"></el-checkbox>
+                                <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+                            </el-checkbox-group>
+                        </el-form-item>
+                        <el-form-item label="特殊资源" prop="resource">
+                            <el-radio-group v-model="ruleForm.resource">
+                                <el-radio label="线上品牌商赞助"></el-radio>
+                                <el-radio label="线下场地免费"></el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="活动形式" prop="desc">
+                            <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                            <el-button @click="resetForm('ruleForm')">重置</el-button>
+                        </el-form-item>
+                    </div>
+                </el-form>
+            </el-dialog>
+        </div>
     </div>
 </template>
 
@@ -134,18 +206,66 @@
                         comdityprice: '1500'//商品单价
                     }
                 ],
+                ruleForm: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                rules: {
+                    name: [
+                        {required: true, message: '请输入活动名称', trigger: 'blur'},
+                        {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                    ],
+                    region: [
+                        {required: true, message: '请选择活动区域', trigger: 'change'}
+                    ],
+                    date1: [
+                        {type: 'date', required: true, message: '请选择日期', trigger: 'change'}
+                    ],
+                    date2: [
+                        {type: 'date', required: true, message: '请选择时间', trigger: 'change'}
+                    ],
+                    type: [
+                        {type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change'}
+                    ],
+                    resource: [
+                        {required: true, message: '请选择活动资源', trigger: 'change'}
+                    ],
+                    desc: [
+                        {required: true, message: '请填写活动形式', trigger: 'blur'}
+                    ]
+                },
                 Form: {
                     name: '',
-                    md: ''
+                    md: '',
+                    type: []
                 },
                 page: {
                     total: 20,
                     current: 1,
 
                 },
+                dialogVisible: false,
+                options: [{
+                    value: '选项1',
+                    label: '黄金糕'
+                }, {
+                    value: '选项2',
+                    label: '双皮奶'
+                }, {
+                    value: '选项3',
+                    label: '蚵仔煎'
+                }, {
+                    value: '选项4',
+                    label: '龙须面'
+                }]
             }
         }, methods: {
-
             //单机编辑
             updateRow(index, rows) {
                 index, rows
@@ -171,6 +291,9 @@
                         break;
                     }
                 }
+            },
+            close: function () {
+                this.dialogVisible = false;
             }
         }
     }
@@ -181,16 +304,29 @@
         display: flex;
         justify-content: center;
     }
+
     .demo-table-expand {
         font-size: 0;
     }
+
     .demo-table-expand label {
         width: 90px;
         color: #99a9bf;
     }
+
     .demo-table-expand .el-form-item {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
+    }
+
+    .spxx {
+        border: 1px solid red;
+        margin: 10px;
+    }
+
+    .jgxx {
+        margin: 10px;
+        border: 1px solid red;
     }
 </style>

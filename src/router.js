@@ -45,25 +45,11 @@ const routes = [
                 }
             },
             {
-                path: '/staffreport',
-                component: () => import("./view/staff/staffreport.vue"),
-                meta: {
-                    title: "员工流水"
-                }
-            },
-            {
                 name: 'staffinsert',
                 path: '/staffinsert',
                 component: () => import("./view/staff/staffinsert.vue"),
                 meta: {
                     title: "新增员工"
-                }
-            },
-            {
-                path: '/staffdetailed',
-                component: () => import("./view/staff/staffdetailed.vue"),
-                meta: {
-                    title: "员工详细"
                 }
             },
             {
@@ -92,13 +78,6 @@ const routes = [
                 component: () => import("./view/deposit/depositwarehousing.vue"),
                 meta: {
                     title: "入库"
-                }
-            },
-            {
-                path: '/depositrepost',
-                component: () => import("./view/deposit/depositrepost.vue"),
-                meta: {
-                    title: "入库流水"
                 }
             },
             {
@@ -148,20 +127,6 @@ const routes = [
                 component: () => import("./view/vip/viplevel.vue"),
                 meta: {
                     title: "会员等级"
-                }
-            },
-            {
-                path: '/commodityinsert',
-                component: () => import("./view/commodity/commodityinsert.vue"),
-                meta: {
-                    title: "新增商品"
-                }
-            },
-            {
-                path: '/commodityUpDown',
-                component: () => import("./view/commodity/commodityUpDown.vue"),
-                meta: {
-                    title: "上下架商品"
                 }
             },
             {

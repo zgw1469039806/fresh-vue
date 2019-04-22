@@ -182,7 +182,6 @@
                     var map = new Map();
                     for (let j = 0; j < rows.length; j++) {
                         var row = rows[j];
-
                         var gobj = {
                             comdityId: row.comdid,
                             comdityname: row.comdityname,
