@@ -81,6 +81,13 @@ const routes = [
                 }
             },
             {
+                path: '/depositrepost',
+                component: () => import("./view/deposit/depositrepost.vue"),
+                meta: {
+                    title: "入库流水"
+                }
+            },
+            {
                 path: '/orderinsert',
                 component: () => import("./view/order/orderinsert.vue"),
                 meta: {

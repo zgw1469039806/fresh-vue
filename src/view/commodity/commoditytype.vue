@@ -14,7 +14,7 @@
                 class="filter-tree"
                 :data="data"
                 :props="defaultProps"
-                default-expand-all
+                :default-expand-all=false
                 :filter-node-method="filterNode"
                 ref="tree2">
             <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -119,11 +119,10 @@
                 },
                 rules: {
                     name: [
-                        {required: true, message: '请输入活动名称', trigger: 'blur'},
-                        {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                        {required: true, message: '请输入分类名称', trigger: 'blur'}
                     ],
                     fatherid: [
-                        {required: true, message: '请选择活动区域', trigger: 'change'}
+                        {required: true, message: '请选择父级分类', trigger: 'change'}
                     ]
                 },
                 options: [
@@ -136,43 +135,32 @@
                     },
                     {
                         label: '一级分类',
-                        options: [{
-                            value: 'Shanghai',
-                            label: '上海'
-                        }, {
-                            value: 'Beijing',
-                            label: '北京'
-                        }]
+                        options: [
+                            // {
+                            //     value: 'Shanghai',
+                            //     label: '上海'
+                            // }, {
+                            //     value: 'Beijing',
+                            //     label: '北京'
+                            // }
+                        ]
                     }, {
                         label: '二级分类',
-                        options: [{
-                            value: 'Chengdu',
-                            label: '成都'
-                        }, {
-                            value: 'Shenzhen',
-                            label: '深圳'
-                        }, {
-                            value: 'Guangzhou',
-                            label: '广州'
-                        }, {
-                            value: 'Dalian',
-                            label: '大连'
-                        }]
-                    }, {
-                        label: '三级分类',
-                        options: [{
-                            value: 'Chengdu',
-                            label: '成都'
-                        }, {
-                            value: 'Shenzhen',
-                            label: '深圳'
-                        }, {
-                            value: 'Guangzhou',
-                            label: '广州'
-                        }, {
-                            value: 'Dalian',
-                            label: '大连'
-                        }]
+                        options: [
+                            // {
+                            //     value: 'Chengdu',
+                            //     label: '成都'
+                            // }, {
+                            //     value: 'Shenzhen',
+                            //     label: '深圳'
+                            // }, {
+                            //     value: 'Guangzhou',
+                            //     label: '广州'
+                            // }, {
+                            //     value: 'Dalian',
+                            //     label: '大连'
+                            // }
+                        ]
                     }
                 ]
             };
@@ -183,10 +171,23 @@
                 return data.label.indexOf(value) !== -1;
             },
             remove(node, data) {//删除分类
-                const parent = node.parent;
-                const children = parent.data.children || parent.data;
-                const index = children.findIndex(d => d.id === data.id);
-                children.splice(index, 1);
+                this.axios.post("delType", {
+                    "data": data.id
+                }).then((response) => {
+                    if (response.data.msg == "删除成功") {
+                        this.$message.success("删除成功!")
+                        const parent = node.parent;
+                        const children = parent.data.children || parent.data;
+                        const index = children.findIndex(d => d.id === data.id);
+                        children.splice(index, 1);
+                    } else if (response.data.msg == "分类下有商品") {
+                        this.$message.error("删除失败！请先清空该分类下的商品!")
+                    } else {
+                        this.$message.error("删除失败!请检查网络或与管理员联系!")
+                    }
+                }).catch((error) => {
+                    this.$message.error("Error:" + error)
+                })
             },
             handleClose() {//关闭dialog
                 this.dialogVisible = false;
@@ -194,7 +195,23 @@
             submitForm(formName) {//增加表单提交
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        var requestData = {
+                            "data": {
+                                "parent": this.ruleForm.fatherid,
+                                "typename": this.ruleForm.name
+                            }
+                        }
+                        // alert("name：" + this.ruleForm.name + "父级Id" + this.ruleForm.fatherid)
+                        this.axios.post("http://localhost:8777/unification/sevaType", requestData).then((response) => {
+                            if (response.data.msg == "处理成功") {
+                                this.$message.success("添加成功")
+                                this.dialogVisible = false;
+                            } else {
+                                this.$message.error("添加失败，请检查网络或与管理员联系")
+                            }
+                        }).catch((error) => {
+                            alert(error)
+                        })
                     } else {
                         return false;
                     }
@@ -209,6 +226,69 @@
                 this.$refs.tree2.filter(val);
             }
         },
+        created: function () {
+            this.data = new Array();
+            this.axios.get("http://localhost:8777/unification/selTypeAll", {}).then((response) => {
+                var res = response.data.data;
+                var opt = {
+                    value: '',
+                    label: ''
+                }
+                var content = {
+                    id: 1,
+                    label: '一级 1',
+                    children: []
+                }
+                for (let i = 0; i < res.length; i++) {
+                    if (res[i].parent == 0) {
+                        content = {
+                            id: res[i].comditytypeId,
+                            label: res[i].typename,
+                            children: []
+                        }
+                        opt = {
+                            value: res[i].comditytypeId,
+                            label: res[i].typename
+                        }
+                        this.options[1].options.push(opt)
+                        this.data.push(content);
+                    } else {
+                        for (let j = 0; j < this.data.length; j++) {
+                            if (res[i].parent == this.data[j].id) {
+                                content = {
+                                    id: res[i].comditytypeId,
+                                    label: res[i].typename,
+                                    children: []
+                                }
+                                opt = {
+                                    value: res[i].comditytypeId,
+                                    label: res[i].typename
+                                }
+                                this.options[2].options.push(opt)
+                                this.data[j].children.push(content);
+                            } else {
+                                for (let k = 0; k < this.data[j].children.length; k++) {
+                                    if (this.data[j].children[k].id == res[i].parent) {
+                                        content = {
+                                            id: res[i].comditytypeId,
+                                            label: res[i].typename,
+                                            children: []
+                                        }
+                                        opt = {
+                                            value: res[i].comditytypeId,
+                                            label: res[i].typename
+                                        }
+                                        this.data[j].children[k].children.push(content);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }).catch((error) => {
+                this.$message.error(error)
+            })
+        }
     }
 </script>
 

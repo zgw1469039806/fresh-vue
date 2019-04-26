@@ -1,6 +1,6 @@
 <template>
     <div class="fatherbox">
-        <div class="leftdiv">
+        <div>
             <el-container>
                 <el-aside width="20vw" class="leftdiv">
                     <!--默认展开项 :default-openeds="['1', '3']"-->
@@ -8,7 +8,7 @@
                     <el-menu class="list">
                         <el-submenu index="1">
                             <template slot="title">
-                                <i class="el-icon-setting"></i>
+                                <i class="el-icon-edit"></i>
                                 门店管理
                             </template>
                             <el-submenu index="1-1">
@@ -64,8 +64,9 @@
                             </el-submenu>
                             <el-submenu index="3-2">
                                 <template slot="title">入库管控</template>
-                                <el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>
-                                <el-menu-item index="3-2-2">入库流水</el-menu-item>
+                                <!--<el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>-->
+                                <el-menu-item index="3-2-1" @click="$router.push({path:'/depositrepost'})">入库流水
+                                </el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-submenu index="4">
@@ -79,10 +80,11 @@
                                 <!--<el-menu-item index="4-2-1" @click="$router.push({path:'/orderrepost'})">订单</el-menu-item>-->
                                 <el-submenu index="4-2-1">
                                     <template slot="title">订单</template>
-                                    <el-menu-item index="4-2-1-1" @click="$router.push({path:'/orderrepost'})">线上订单</el-menu-item>
-                                    <el-menu-item index="4-2-1-2" @click="$router.push({path:'/orderoffline'})">线下订单</el-menu-item>
+                                    <el-menu-item index="4-2-1-1" @click="$router.push({path:'/orderrepost'})">线上订单
+                                    </el-menu-item>
+                                    <el-menu-item index="4-2-1-2" @click="$router.push({path:'/orderoffline'})">线下订单
+                                    </el-menu-item>
                                 </el-submenu>
-                                <el-menu-item index="4-2-2" @click="$router.push({path:'/orderlist'})">挂弹管理</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-submenu index="5">
@@ -106,16 +108,17 @@
                                 <i class="el-icon-setting"></i>
                                 货物管控
                             </template>
-                            <el-menu-item index="6-1">新建货品</el-menu-item>
-                            <el-submenu index="6-2">
+                            <el-submenu index="6-1">
                                 <template slot="title">货品控制</template>
-                                <el-menu-item index="6-2-1" @click="$router.push({path:'/commodityUpDown'})">上\下架货物</el-menu-item>
-                                <el-menu-item index="6-2-3" @click="$router.push({path:'/commodityattribute'})">货品详细
+                                <el-menu-item index="6-1-1" @click="$router.push({path:'/commodityUpDown'})">上\下架货物
+                                </el-menu-item>
+                                <el-menu-item index="6-1-2" @click="$router.push({path:'/commodityattribute'})">货品详细
                                 </el-menu-item>
                             </el-submenu>
                             <el-submenu index="6-3">
                                 <template slot="title">货品属性管理</template>
-                                <el-menu-item index="6-3-1" @click="$router.push({path:'/commoditytype'})">货品分类管理</el-menu-item>
+                                <el-menu-item index="6-2-1" @click="$router.push({path:'/commoditytype'})">货品分类管理
+                                </el-menu-item>
                             </el-submenu>
                         </el-submenu>
                     </el-menu>
@@ -124,7 +127,7 @@
                 <div class="rightdiv">
                     <span id="head"><span id="huanying">欢迎您，<span id="name">郭董事</span></span></span>
                     <transition name="move" mode="out-in">
-                            <router-view></router-view>
+                        <router-view></router-view>
                     </transition>
                 </div>
             </el-container>
@@ -149,14 +152,14 @@
 
 <style scoped>
     .fatherbox {
-        background: #fff;
+        background: #f4f6f9;
     }
 
     .leftdiv {
         background: #fff;
-        border: 1px solid red;
+        border: 1px solid #67c23a;
         height: 700px;
-
+        border-radius: 3px;
     }
 
     .list:after {
