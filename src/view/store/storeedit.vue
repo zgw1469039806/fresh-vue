@@ -6,7 +6,7 @@
                 <el-form-item label="店铺名称">
                     <el-input v-model="Form.name"></el-input>
                 </el-form-item>
-                <el-button type="primary">查询</el-button>
+                <el-button type="success">查询</el-button>
             </el-form>
             <template>
                 <el-table

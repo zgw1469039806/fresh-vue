@@ -19,12 +19,18 @@
                 ref="tree2">
             <span class="custom-tree-node" slot-scope="{ node, data }">
         <span>{{ node.label }}</span>
-        <span>
+        <span style="display: block;">
           <el-button
                   type="text"
                   size="mini"
                   @click="() => remove(node, data)">
-            删除当前分类
+            删除此分类
+          </el-button>
+             <el-button
+                     type="text"
+                     size="mini"
+                     @click="() => edittype(node, data)">
+            修改此分类
           </el-button>
         </span>
       </span>

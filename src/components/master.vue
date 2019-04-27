@@ -8,7 +8,7 @@
                     <el-menu class="list">
                         <el-submenu index="1">
                             <template slot="title">
-                                <i class="el-icon-edit"></i>
+                                <i class="el-icon-setting"></i>
                                 门店管理
                             </template>
                             <el-submenu index="1-1">
