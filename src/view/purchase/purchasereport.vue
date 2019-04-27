@@ -25,7 +25,7 @@
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
                     </el-date-picker>
-                    <el-button style="margin-left: 5px" type="success">查询</el-button>
+                    <el-button style="margin-left: 5px" type="success" @click="Query">查询</el-button>
                     <el-button type="success" @click="$router.push({path:'/purchaseinsert'})">新增</el-button>
                 </el-form>
             </div>
@@ -37,40 +37,43 @@
                         <template slot-scope="props">
                             <el-form label-position="left" inline class="demo-table-expand">
                                 <el-form-item label="进货单号:">
-                                    <span>{{ props.row.replenishId }}</span>
+                                    <span>{{ props.row.receiptNo }}</span>
                                 </el-form-item>
                                 <el-form-item label="所属门店:">
                                     <span>{{ props.row.storeid}}</span>
                                 </el-form-item>
                                 <el-form-item label="供应商编号:">
-                                    <span>{{ props.row.gongyingid }}</span>
+                                    <span>{{ props.row.supplierBM }}</span>
                                 </el-form-item>
                                 <el-form-item label="供应商名称:">
-                                    <span>{{ props.row.gongying }}</span>
+                                    <span>{{ props.row.supplierName }}</span>
                                 </el-form-item>
                                 <el-form-item label="制单人员:">
-                                    <span>{{ props.row.userId }}</span>
+                                    <span>{{ props.row.username }}</span>
                                 </el-form-item>
                                 <el-form-item label="制单时间:">
                                     <span>{{ props.row.replenishTime}}</span>
                                 </el-form-item>
                                 <el-form-item label="入库时间:">
-                                    <span>{{ props.row.storageTime }}</span>
+                                    <span v-if="props.row.isnostorage==0">未入库</span>
+                                    <span v-if="props.row.isnostorage==1">{{ props.row.storageTime }}</span>
                                 </el-form-item>
                                 <el-form-item label="入库人员:">
-                                    <span>{{ props.row.storageuserid }}</span>
+                                    <span v-if="props.row.isnostorage==0">{{ props.row.storageuserid }}未入库</span>
+                                    <span v-if="props.row.isnostorage==1">{{ props.row.storageuserid }}</span>
                                 </el-form-item>
                                 <el-form-item label="备注:">
-                                    <span>{{ props.row.beizhu }}</span>
+                                    <span>{{ props.row.remarks }}</span>
                                 </el-form-item>
                                 <el-form-item label="单据金额:">
                                     <span>{{ props.row.money }}</span>
                                 </el-form-item>
                                 <el-form-item label="状态:">
-                                    <span>{{ props.row.zhuangtai }}</span>
+                                    <span v-if="props.row.isnostorage==0">未入库</span>
+                                    <span v-if="props.row.isnostorage==1">已入库</span>
                                 </el-form-item>
                                 <el-form-item label="商品详细:">
-                                    <span>{{ props.row.commodity }}</span>
+                                    <span>{{ props.row.commodity}}</span>
                                 </el-form-item>
                             </el-form>
                         </template>
@@ -78,7 +81,7 @@
                     <el-table-column
                             sortable
                             label="进货单号"
-                            prop="replenishId">
+                            prop="receiptNo">
                     </el-table-column>
                     <el-table-column
                             sortable
@@ -88,12 +91,12 @@
                     <el-table-column
                             sortable
                             label="供应商名称"
-                            prop="gongying">
+                            prop="supplierName">
                     </el-table-column>
                     <el-table-column
                             sortable
                             label="制单人员"
-                            prop="zhidan">
+                            prop="username">
                     </el-table-column>
                     <el-table-column
                             sortable
@@ -133,32 +136,19 @@
             return {
                 tableData: [
                     {
-                        replenishId: 'SWA544884',//进货单号
+                        replenishId: '1',//进货ID
+                        receiptNo: 'SWA544884',//进货单号
                         storeid: '1',//所属店铺ID
-                        gongyingid: 'DDAWS554',//供应商编号
-                        gongying: '双汇肉类批发',//供应商
-                        zhidan: '1',//制单人员
+                        supplierBM: 'DDAWS554',//供应商编号
+                        supplierName: '双汇肉类批发',//供应商
+                        username: '1',//制单人员
                         replenishTime: '2019-10-10',//制单时间
                         storageTime: '2019-10-15',//入库时间
                         storageuserid: '1',//入库人员
-                        beizhu: '双汇王中王，火腿肠中的战斗肠',//备注
-                        zhuangtai: '未收货',//收获状态
+                        remarks: '双汇王中王，火腿肠中的战斗肠',//备注
+                        isnostorage: '未收货',//收获状态
                         money: '44885',//单据金额
-                        commodity: '1'//商品详细
-                    },
-                    {
-                        replenishId: 'FGW8585',
-                        storeid: '2',
-                        gongyingid: 'FGWA5422',
-                        gongying: '阿强哥鱼类批发',
-                        zhidan: '2',
-                        replenishTime: '2019-11-13',
-                        storageTime: '2019-6-25',
-                        storageuserid: '3',
-                        beizhu: '阿强鱼类批发，鱼类批发中的战斗批发',
-                        zhuangtai: '已收货',
-                        money: '66489',
-                        commodity: '2'
+                        commodity: '暂无数据'//商品详细
                     }
                 ],
                 Form: {
@@ -200,23 +190,44 @@
             handleCurrentChange(index) {
                 index + 0
                 // console.log("index:"+index)
+            },
+            Query: function () {
+                var stime = this.Form.statictime[0]
+                var etime = this.Form.statictime[1]
+                var date = new Date();
+                if (stime != undefined && stime != null && stime != '') {
+                    date = new Date(stime);
+                    stime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                }
+                if (etime != undefined && etime != null && etime != '') {
+                    date = new Date(etime);
+                    etime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+                }
+                this.axios.post("/selGdShopAll", {
+                    "data": {
+                        "endTime": etime,
+                        "receiptNo": this.Form.replenishId,
+                        "startTime": stime
+                    }
+                }).then((response) => {
+                    var data = response.data.data;
+                    this.tableData = data;
+                    if (response.data.msg == "处理成功") {
+                        for (let i = 0; i < data.length; i++) {
+                            this.tableData[i].commodity = ''
+                            this.tableData[i].money = ''
+                            for (let j = 0; j < data[i].list.length; j++) {
+                                this.tableData[i].money += data[i].list[j].subtotal
+                                this.tableData[i].commodity += '商品名：' + data[i].list[j].comdityname + "\t数量：" + data[i].list[j].shopNumber + "\t小结：" + data[i].list[j].subtotal+"\t"
+                            }
+                        }
+                    }
+                }).catch((error) => {
+                    this.$message.error(error)
+                })
             }
         }, created: function () {
-            var commodity = [
-                {
-                    comdityname: '双汇王中王',//商品名称
-                    num: 12,//进货数量
-                    comditydw: '箱',//商品单位
-                },
-                {
-                    comdityname: '阿里巴巴深海鲍鱼',
-                    num: 24,
-                    comditydw: '箱',
-                }
-            ]
-            for (let i = 0; i < commodity.length; i++) {
-                this.tableData[i].commodity = '商品名:' + commodity[i].comdityname + "\t购入数量:" + commodity[i].num + commodity[i].comditydw
-            }
+
         }
     }
 </script>
@@ -259,7 +270,8 @@
         width: 75vw;
         border-bottom: 1px solid #67c23a;
     }
-    .danhao{
+
+    .danhao {
         margin-top: 10px;
     }
 </style>

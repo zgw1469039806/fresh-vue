@@ -34,7 +34,7 @@
                         </el-submenu>
                         <el-submenu index="2">
                             <template slot="title">
-                                <i class="el-icon-setting"></i>
+                                <i class="el-icon-share"></i>
                                 员工管理
                             </template>
                             <el-submenu index="2-1">
@@ -54,7 +54,7 @@
                         </el-submenu>
                         <el-submenu index="3">
                             <template slot="title">
-                                <i class="el-icon-setting"></i>
+                                <i class="el-icon-sold-out"></i>
                                 进存管控
                             </template>
                             <el-submenu index="3-1">
@@ -71,7 +71,7 @@
                         </el-submenu>
                         <el-submenu index="4">
                             <template slot="title">
-                                <i class="el-icon-setting"></i>
+                                <i class="el-icon-goods"></i>
                                 销售
                             </template>
                             <el-menu-item index="4-1" @click="$router.push({path:'/orderinsert'})">新增订单</el-menu-item>
@@ -89,7 +89,7 @@
                         </el-submenu>
                         <el-submenu index="5">
                             <template slot="title">
-                                <i class="el-icon-setting"></i>
+                                <i class="el-icon-star-off"></i>
                                 会员中心
                             </template>
                             <el-menu-item index="5-1" @click="$router.push({path:'/vipinsert'})">新增会员</el-menu-item>
@@ -105,7 +105,7 @@
                         </el-submenu>
                         <el-submenu index="6">
                             <template slot="title">
-                                <i class="el-icon-setting"></i>
+                                <i class="el-icon-news"></i>
                                 货物管控
                             </template>
                             <el-submenu index="6-1">
@@ -125,7 +125,7 @@
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
-                    <span id="head"><span id="huanying">欢迎您，<span id="name">郭董事</span></span></span>
+                    <span id="head"><span id="huanying">欢迎您，<span id="name">{{username}}</span></span></span>
                     <transition name="move" mode="out-in">
                         <router-view></router-view>
                     </transition>
@@ -153,11 +153,14 @@
 <style scoped>
     .fatherbox {
         background: #f4f6f9;
+        border-bottom: 1px solid #67c23a;
+        border-right: 1px solid #67c23a;
     }
 
     .leftdiv {
         background: #fff;
         border: 1px solid #67c23a;
+        border-bottom: 0px;
         height: 700px;
         border-radius: 3px;
     }
@@ -186,6 +189,5 @@
         text-align: center;
         line-height: 50px;
         font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-
     }
 </style>

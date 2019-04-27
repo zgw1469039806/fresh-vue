@@ -226,6 +226,11 @@
             resetForm(formName) {//添加表单重置
                 this.$refs[formName].resetFields();
             },
+            edittype:function (node, data) {
+                this.ruleForm.fatherid = data.id;
+                this.ruleForm.name = data.label;
+                this.dialogVisible = true;
+            }
         },
         watch: {
             filterText(val) {

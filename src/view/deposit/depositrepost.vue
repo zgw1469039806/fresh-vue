@@ -202,16 +202,16 @@
                     comditydw: '箱',
                 }
             ]
-            this.axios.post("http://localhost:8777/unification/selGdShopAll",{
-
-            }).then((response)=>{
-                var data = response.data.data;
-                if (data.msg=="处理成功"){
-
-                }
-            }).catch((error)=>{
-                this.$message.error("Error:"+error)
-            })
+            // this.axios.post("http://localhost:8777/unification/selGdShopAll",{
+            //
+            // }).then((response)=>{
+            //     var data = response.data.data;
+            //     if (data.msg=="处理成功"){
+            //
+            //     }
+            // }).catch((error)=>{
+            //     this.$message.error("Error:"+error)
+            // })
             for (let i = 0; i < commodity.length; i++) {
                 this.tableData[i].commodity = '商品名:' + commodity[i].comdityname + "\t购入数量:" + commodity[i].num + commodity[i].comditydw
             }

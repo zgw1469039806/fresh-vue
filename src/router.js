@@ -173,6 +173,13 @@ const routes = [
                 }
             },
             {
+                path: '/commodityUpDown',
+                component: () => import("./view/commodity/commodityUpDown.vue"),
+                meta: {
+                    title: "上下架商品"
+                }
+            },
+            {
                 path: '/vipedit/:vipId',
                 name:'vipedit',
                 component: () => import("./view/vip/vipedit.vue"),

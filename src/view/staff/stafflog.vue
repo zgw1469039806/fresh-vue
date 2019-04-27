@@ -14,7 +14,7 @@
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
                     </el-date-picker>
-                <el-button style="margin-left: 5px" type="primary">查询</el-button>
+                <el-button style="margin-left: 5px" type="success">查询</el-button>
             </el-form>
             <template>
                 <el-table
