@@ -69,7 +69,7 @@
             return {
                 tableData1: [//选择商品的数据
                     {
-                        comdid: 1,
+                        comdityId: 1,
                         comdityname: '双汇王中王',//品名
                         comditydw: '箱',//规格
                         comdityprice: '1554'//零售价
@@ -123,8 +123,16 @@
         methods: {
             //单击树状菜单的回调函数
             handleNodeClick(data) {
-                data + ''
-                // console.log(data);
+                this.axios.post('http://localhost:8777/unification/QueryByType', {
+                    "data": data.id
+                }).then((response) => {
+                    var com = response.data.data;
+                    if (response.data.msg == "处理成功"){
+                        this.tableData1 = com;
+                    }
+                }).catch((error) => {
+                    this.$message.error(error)
+                })
             },
             //确认添加
             addtable: function () {
@@ -136,7 +144,7 @@
             showDialog() {
                 this.$refs['ruleFrom'].validate((valid) => {
                     if (valid) {
-                    //    逻辑代码
+                        //    逻辑代码
                     } else {
                         return false;
                     }
@@ -145,6 +153,52 @@
             close: function () {
                 this.$emit('isClose', false);
             }
+        }, created: function () {
+            this.axios.get('http://localhost:8777/unification/selTypeAll', {}).then((response) => {
+                var tree = response.data.data;
+                if (response.data.msg == "处理成功") {
+                    this.trees = [];
+                    var content = {
+                        id: 1,
+                        label: '一级 1',
+                        children: []
+                    }
+                    for (let i = 0; i < tree.length; i++) {
+                        if (tree[i].parent == 0) {
+                            content = {
+                                id: tree[i].comditytypeId,
+                                label: tree[i].typename,
+                                children: []
+                            }
+                            this.trees.push(content);
+                        } else {
+                            for (let j = 0; j < this.trees.length; j++) {
+                                if (tree[i].parent == this.trees[j].id) {
+                                    content = {
+                                        id: tree[i].comditytypeId,
+                                        label: tree[i].typename,
+                                        children: []
+                                    }
+                                    this.trees[j].children.push(content);
+                                } else {
+                                    for (let k = 0; k < this.trees[j].children.length; k++) {
+                                        if (this.trees[j].children[k].id == tree[i].parent) {
+                                            content = {
+                                                id: tree[i].comditytypeId,
+                                                label: tree[i].typename,
+                                                children: []
+                                            }
+                                            this.trees[j].children[k].children.push(content);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }).catch((error) => {
+                this.$message.error("Error:" + error)
+            })
         }
     }
 </script>

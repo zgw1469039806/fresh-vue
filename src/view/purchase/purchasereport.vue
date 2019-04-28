@@ -40,7 +40,7 @@
                                     <span>{{ props.row.receiptNo }}</span>
                                 </el-form-item>
                                 <el-form-item label="所属门店:">
-                                    <span>{{ props.row.storeid}}</span>
+                                    <span>{{ props.row.storename}}</span>
                                 </el-form-item>
                                 <el-form-item label="供应商编号:">
                                     <span>{{ props.row.supplierBM }}</span>
@@ -139,6 +139,7 @@
                         replenishId: '1',//进货ID
                         receiptNo: 'SWA544884',//进货单号
                         storeid: '1',//所属店铺ID
+                        storename: '涧西店',//所属店铺名称
                         supplierBM: 'DDAWS554',//供应商编号
                         supplierName: '双汇肉类批发',//供应商
                         username: '1',//制单人员
