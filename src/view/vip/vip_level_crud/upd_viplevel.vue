@@ -8,23 +8,17 @@
                     <h3>设定会员等级</h3>
                 </el-form-item>
 
-                <el-form-item label="会员等级:" prop="vip_leave" >
-                    <el-select v-model="ruleForm.vip_leave.value" placeholder="请选择">
-                        <el-option
-                                v-for="item in ruleForm.vip_leave"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
+                <el-form-item label="会员等级:" prop="vip_leave">
+                    <el-input v-model="ruleForm.viplv" disabled></el-input>
                 </el-form-item>
 
-                <el-form-item label="会员折扣:" prop="vip_discount" >
-                    <el-input-number v-model="ruleForm.vip_discount" :precision="2" :step="0.01" :min="0.00" :max="1"></el-input-number>
+                <el-form-item label="会员折扣:" prop="vipdiscount">
+                    <el-input-number v-model="ruleForm.vipdiscount" :precision="2" :step="0.01" :min="0.00"
+                                     :max="1"></el-input-number>
                 </el-form-item>
 
-                <el-form-item label="会员升级所需积分:" prop="vip_integral" >
-                    <el-input-number v-model="ruleForm.vip_integral" :step="1" :min="0" :max="5000"></el-input-number>
+                <el-form-item label="会员升级所需积分:" prop="vipintegration">
+                    <el-input-number v-model="ruleForm.vipintegration" :step="1" :min="0" :max="5000"></el-input-number>
                 </el-form-item>
 
                 <el-form-item>
@@ -38,44 +32,49 @@
 <script>
     export default {
         name: "upd_viplevel",
-        data(){
-            return{
-                vipid:this.$route.params.vipleaveid,
+        data() {
+            return {
+                vipid: this.$route.params.vipleaveid,
                 ruleForm: {
-                    vip_leave: [{ //等级
-                        value: '1',
-                        label: '1级'
-                    }, {
-                        value: '2',
-                        label: '2级'
-                    }, {
-                        value: '3',
-                        label: '3级'
-                    }, {
-                        value: '4',
-                        label: '4级'
-                    },{
-                        value: '5',
-                        label: '5级'
-                    }],
-                    vip_discount:'0.10',
-                    vip_integral:'0'
+                    viplv: 0,
+                    vipdiscount: 0,
+                    vipintegration: 0
                 },
                 rules: {
-
+                    vipdiscount: [
+                        {required: true, message: '请输入折扣', trigger: 'blur'}
+                    ],
+                    vipintegration: [
+                        {required: true, message: '请输入积分', trigger: 'blur'}
+                    ]
                 }
             }
         },
-        methods:{
+        methods: {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert(this.vipid)
-                        if(this.ruleForm.vip_leave.value == null){
-                            return false;
-                        }
-                        alert('submit!'+this.ruleForm.vip_leave.value);
-                        this.$router.back(-1);
+                        this.axios.post("vipLvController/updVipLv", {
+                            "data": this.ruleForm,
+                        })
+                            .then((response) => {
+                                if (response.data.code == 0) {
+                                    this.$alert(response.data.msg ,'提示', {
+                                        confirmButtonText: '确定',
+                                        callback: action => {
+                                            action
+                                            this.$router.push({path: '/viplevel'})
+                                        }
+                                    });
+                                } else {
+                                    this.$message.error(response.data.msg);
+                                }
+
+                            })
+                            .catch((error) => {
+                                this.$message.error("Error:" + error);
+                            })
+
                     } else {
                         return false;
                     }
@@ -83,8 +82,15 @@
             },
         },
         created() {
-
-             //this.vipid = this.$route.params.vipleaveid;
+            this.axios.post("vipLvController/selVipLvById", {
+                "data": this.vipid,
+            })
+                .then((response) => {
+                    this.ruleForm = response.data.data;
+                })
+                .catch((error) => {
+                    this.$message.error("Error:" + error);
+                })
         }
     }
 </script>
@@ -97,11 +103,11 @@
         margin-top: 50px;
     }
 
-    .bor{
+    .bor {
         border: 1px solid red;
     }
 
-    .subform{
+    .subform {
         width: 200px;
     }
 

@@ -35,8 +35,8 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                    <el-button @click="resetForm('ruleForm')">重置</el-button>
+                    <el-button type="success" @click="submitForm('ruleForm')">立即创建</el-button>
+                    <!--<el-button @click="resetForm('ruleForm')">重置</el-button>-->
                 </el-form-item>
             </el-form>
         </div>
@@ -48,6 +48,7 @@
         name: "vipinsert",
         data(){
             return{
+                vipLeave:null,
                 ruleForm: {
                     userPhone: '',
                     vipIntegral:'0', //积分
@@ -95,6 +96,14 @@
                     }
                 });
             }
+        },created(){
+            this.axios.get("vipLvController/selAllVipLv")
+                .then((response) => {
+                    this.vipLeave = response.data.data
+                })
+                .catch((error) => {
+                    this.$message.error("Error:" + error);
+                })
         }
     }
 </script>
@@ -119,7 +128,6 @@
         width: 50vw;
         display: flex;
         justify-content: center;
-        border: 1px solid red;
         margin: 0px auto;
         height: 500px;
         background: #fff;

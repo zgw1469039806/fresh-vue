@@ -1,5 +1,5 @@
 <template>
-    <div class="div_01 bor">
+    <div class="div_01 ">
         <div class="forms">
 
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
@@ -49,7 +49,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
+                    <el-button type="success" @click="submitForm('ruleForm')">修改</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -136,7 +136,6 @@
         width: 50vw;
         display: flex;
         justify-content: center;
-        border: 1px solid red;
         margin: 0px auto;
         background: #fff;
     }
