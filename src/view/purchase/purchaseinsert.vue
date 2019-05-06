@@ -9,16 +9,16 @@
         <div class="xiahua">
             <div class="inputbox">
                 <el-form :inline=true :model="Form" :rules="rules" ref="ruleFrom">
-                    <el-form-item label="供应商" prop="gy">
-                        <el-select v-model="Form.gy" placeholder="请选择供应商">
-                            <el-option label="双汇肉类批发" value="shanghai"></el-option>
-                            <el-option label="阿强哥鱼类批发" value="beijing"></el-option>
+                    <el-form-item label="供应商" prop="gongying">
+                        <el-select v-model="Form.gongying" placeholder="请选择供应商">
+                            <el-option v-for="(g,index) in gongyingopt" :key="index" :label="g.supplierName"
+                                       :value="g.supplierId"></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="门店" prop="md">
-                        <el-select v-model="Form.md" placeholder="请选择门店">
-                            <el-option label="万达店" value="shanghai"></el-option>
-                            <el-option label="老城店" value="beijing"></el-option>
+                    <el-form-item label="门店" prop="mendian">
+                        <el-select v-model="Form.mendian" placeholder="请选择门店">
+                            <el-option v-for="(m,index) in mendianopt" :key="index" :label="m.storename"
+                                       :value="m.storeid"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
@@ -118,6 +118,19 @@
                     mendian: '',
                     bz: ''
                 },
+                gongyingopt: [
+                    {
+                        supplierBM: 'DDWAS',//供应商编号
+                        supplierName: '牛逼供货'//供应商名称
+                    }
+                ],//供应商
+                mendianopt: [
+                    {
+                        storeid: '1',//门店ID
+                        storename: '老沉淀',//门店名称
+                        storeaddress: '门店地址'
+                    }
+                ],//门店
                 optionsFrogy: [
                     {
                         value: '1',
@@ -138,10 +151,10 @@
                     }
                 ],
                 rules: {
-                    md: [
+                    mendian: [
                         {required: true, message: '请选择门店', trigger: 'change'}
                     ],
-                    gy: [
+                    gongying: [
                         {required: true, message: '请选择供应商', trigger: 'change'}
                     ]
                 },
@@ -152,7 +165,43 @@
             submitForm(formName) {//DB操作
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        let list = [];
+                        for (let i = 0; i < this.tableData.length; i++) {
+                            list.push(
+                                {
+                                    "comdityname": this.tableData[i].comdityname,//商品名称
+                                    "giveNumber": this.tableData[i].song,//赠送数量
+                                    "purchase": this.tableData[i].caigprice,//采购数量
+                                    "purchasingPrice": this.tableData[i].num,//采购价格
+                                    "replenishId": 0,//进货ID
+                                    "shopId": this.tableData[i].comdityId,//商品ID
+                                    "shopNumber": this.tableData[i].song + this.tableData[i].caigprice,//商品数量
+                                    "subtotal": this.tableData[i].caigprice * this.tableData[i].caigprice
+                                }
+                            )
+                        }
+                        var data = {
+                            "data": {
+                                "isnostorage": 0,//是否入库
+                                "list": list,//购买的商品
+                                "receiptNo": "string",//单号
+                                "remarks": this.Form.bz,//备注
+                                "replenishId": 0,//进货ID
+                                "replenishTime": "string",//进货时间
+                                "storeid": this.Form.mendian,//店铺ID
+                                "supplierID": this.Form.gongying,//提供商ID
+                                "username": "28"//采购人员ID
+                            },
+                        }
+                        this.axios.post('http://localhost:8777/unification/savegdReplen', data).then((response) => {
+                            if (response.data.msg == "处理成功") {
+                                this.$message.success("添加成功!")
+                            } else {
+                                this.$message.warning("似乎出现了一点问题~")
+                            }
+                        }).catch((error) => {
+                            this.$message.error("Error:" + error)
+                        })
                     } else {
                         return false;
                     }
@@ -183,7 +232,7 @@
                     for (let j = 0; j < rows.length; j++) {
                         var row = rows[j];
                         var gobj = {
-                            comdityId: row.comdid,
+                            comdityId: row.comdityId,
                             comdityname: row.comdityname,
                             comditydw: row.comditydw,
                             comdityprice: row.comdityprice,
@@ -191,15 +240,15 @@
                             caigprice: 0,
                             song: 0
                         }
-                        map.set(gobj.comdityId,gobj)
+                        map.set(gobj.comdityId, gobj)
                     }
 
                     for (let i = 0; i < this.tableData.length; i++) {
-                        map.set(this.tableData[i].comdityId,this.tableData[i])
+                        map.set(this.tableData[i].comdityId, this.tableData[i])
                     }
                     this.tableData = new Array();
-                    for (var [key,value] of map) {
-                        key+"1";
+                    for (var [key, value] of map) {
+                        key + "1";
                         this.tableData.push(value)
                     }
                 }
@@ -208,6 +257,27 @@
             isClose: function () {
                 this.dialogFormVisible = false;
             }
+        },
+        created: function () {
+            //查询所有供应商
+            this.axios.post('http://localhost:8777/unification/QueryAll', {}).then((response) => {
+                var supplier = response.data.data;
+                if (response.data.msg == "处理成功") {
+                    this.gongyingopt = supplier;
+                }
+            }).catch((error) => {
+                this.$message.error("Error:" + error)
+            })
+
+            //查询所有门店
+            this.axios.post('http://localhost:8777/unification/GdStoreQueryAll', {}).then((respose) => {
+                var Storea = respose.data.data;
+                if (respose.data.msg == "处理成功") {
+                    this.mendianopt = Storea;
+                }
+            }).catch((error) => {
+                this.$message.error("Error:" + error)
+            })
         }
     }
 </script>

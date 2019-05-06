@@ -3,30 +3,30 @@
         <div>
             <el-form :inline="true" ref="Form" label-width="80px">
                 <el-form-item label="员工名称">
-                    <el-input v-model="Form.name"></el-input>
+                    <el-input v-model="Form.useraccount"></el-input>
                 </el-form-item>
-                <el-button type="success">查询</el-button>
+                <el-button type="success" @click="selByYg()">查询</el-button>
             </el-form>
             <template>
                 <el-table
                         :data="tableData"
                         style="width: 100%"
                         max-height="250">
+                    <!--<el-table-column-->
+                            <!--fixed-->
+                            <!--prop="date"-->
+                            <!--label="进店日期"-->
+                            <!--sortable-->
+                            <!--width="150">-->
+                    <!--</el-table-column>-->
                     <el-table-column
-                            fixed
-                            prop="date"
-                            label="进店日期"
-                            sortable
-                            width="150">
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
+                            prop="useraccount"
                             label="姓名"
                             sortable
                             width="120">
                     </el-table-column>
                     <el-table-column
-                            prop="store"
+                            prop="gdStoreName"
                             label="所属店铺"
                             sortable
                             width="120">
@@ -39,12 +39,12 @@
                     </el-table-column>
                     <el-table-column
                             sortable
-                            prop="address"
+                            prop="storeaddress"
                             label="店铺地址"
                             width="300">
                     </el-table-column>
                     <el-table-column
-                            prop="zhiwu"
+                            prop="username"
                             sortable
                             label="当前职务"
                             width="120">
@@ -86,24 +86,15 @@
             return {
                 tableData: [
                     {
-                        date: '2016-05-07',
-                        name: '王小虎',
-                        store: '老城店',
-                        address: '河南省洛阳市老城区丽景门大街 1518号',
-                        phone: '18238817862',
-                        zhiwu: "采购员"
-                    },
-                    {
-                        date: '2019-04-10',
-                        name: '王老虎',
-                        store: '万达店',
-                        address: '河南省洛阳市涧西区万达三楼 王老虎生鲜店',
-                        phone: '13083658064',
-                        zhiwu: "收银员"
+                        useraccount: '',
+                        gdStoreName: '',
+                        storeaddress: '',
+                        phone: '',
+                        username: ""
                     }
                 ],
                 Form: {
-                    name: ''
+                    useraccount: ''
                 },
                 page: {
                     total: 20,
@@ -112,6 +103,17 @@
                 },
             }
         }, methods: {
+            /**
+             * 查询员工信息
+             */
+            selByYg() {
+                var data = {"useraccount": this.Form.useraccount}
+                this.axios.post("/selAllAndByUsername", {data}).then((response) => {
+                    this.tableData=response.data.data;
+
+
+                });
+            },
 
             //单机编辑
             updateRow(index, rows) {
@@ -128,6 +130,11 @@
                 index
                 // console.log("index:"+index)
             }
+
+        }, created() {
+
+            this.selByYg();
+
         }
     }
 </script>
@@ -137,5 +144,4 @@
         display: flex;
         justify-content: center;
     }
-
 </style>

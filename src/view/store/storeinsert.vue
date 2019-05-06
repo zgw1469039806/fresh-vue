@@ -87,11 +87,10 @@
         },
         methods: {
             submitForm(formName) {
-
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         alert(this.ruleForm.storename)
-                        this.axios.post("/manAdd",this.ruleForm).then((response)=>{
+                        this.axios.post("/manAdd", this.ruleForm).then((response) => {
                             alert(response.data)
                         })
 
