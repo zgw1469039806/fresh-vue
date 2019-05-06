@@ -58,10 +58,6 @@
                                     <span v-if="props.row.isnostorage==0">未入库</span>
                                     <span v-if="props.row.isnostorage==1">{{ props.row.storageTime }}</span>
                                 </el-form-item>
-                                <el-form-item label="入库人员:">
-                                    <span v-if="props.row.isnostorage==0">{{ props.row.storageuserid }}未入库</span>
-                                    <span v-if="props.row.isnostorage==1">{{ props.row.storageuserid }}</span>
-                                </el-form-item>
                                 <el-form-item label="备注:">
                                     <span>{{ props.row.remarks }}</span>
                                 </el-form-item>
@@ -74,6 +70,14 @@
                                 </el-form-item>
                                 <el-form-item label="商品详细:">
                                     <span>{{ props.row.commodity}}</span>
+                                </el-form-item>
+                                <el-form-item label="操作:">
+                                    <el-button type="text" v-if="props.row.isnostorage==0"
+                                               @click="ruku(props.row.receiptNo,props.row.replenishId)">入库
+                                    </el-button>
+                                    <el-button type="text"
+                                               @click="delPur(props.row.replenishId,props.row.isnostorage)">删除
+                                    </el-button>
                                 </el-form-item>
                             </el-form>
                         </template>
@@ -102,15 +106,6 @@
                             sortable
                             label="制单时间"
                             prop="replenishTime">
-                    </el-table-column>
-                    <el-table-column
-                            sortable
-                            label="送达时间"
-                            prop="storageTime">
-                    </el-table-column>
-                    <el-table-column
-                            label="操作">
-                        <el-button type="success">入库</el-button>
                     </el-table-column>
                 </el-table>
                 <div class="block">
@@ -144,10 +139,8 @@
                         supplierName: '双汇肉类批发',//供应商
                         username: '1',//制单人员
                         replenishTime: '2019-10-10',//制单时间
-                        storageTime: '2019-10-15',//入库时间
-                        storageuserid: '1',//入库人员
                         remarks: '双汇王中王，火腿肠中的战斗肠',//备注
-                        isnostorage: '未收货',//收获状态
+                        isnostorage: '1',//收获状态
                         money: '44885',//单据金额
                         commodity: '暂无数据'//商品详细
                     }
@@ -155,7 +148,7 @@
                 Form: {
                     replenishId: '',//单号
                     statictime: '',//日期范围
-                    zt: '-1'//状态
+                    zt: ''//状态
                 },
                 page: {
                     total: 20,
@@ -163,7 +156,7 @@
                 },
                 options: [
                     {
-                        value: '-1',
+                        value: '',
                         label: '全部'
                     },
                     {
@@ -208,7 +201,8 @@
                     "data": {
                         "endTime": etime,
                         "receiptNo": this.Form.replenishId,
-                        "startTime": stime
+                        "startTime": stime,
+                        "isnostorage": this.Form.zt
                     }
                 }).then((response) => {
                     var data = response.data.data;
@@ -219,16 +213,73 @@
                             this.tableData[i].money = ''
                             for (let j = 0; j < data[i].list.length; j++) {
                                 this.tableData[i].money += data[i].list[j].subtotal
-                                this.tableData[i].commodity += '商品名：' + data[i].list[j].comdityname + "\t数量：" + data[i].list[j].shopNumber + "\t小结：" + data[i].list[j].subtotal+"\t"
+                                this.tableData[i].commodity += '商品名：' + data[i].list[j].comdityname + "\t数量：" + data[i].list[j].shopNumber + "\t小结：" + data[i].list[j].subtotal + "\t"
                             }
                         }
                     }
                 }).catch((error) => {
                     this.$message.error(error)
                 })
+            },
+            ruku: function (receiptNo, replenishId) {
+                var data = {
+                    "receiptNo": receiptNo,
+                    "replenishId": replenishId,
+                    "storageuserid": 28
+                }
+                this.axios.post('http://localhost:8777/unification/updStorage', {
+                    data
+                }).then((response) => {
+                    if (response.data.msg == '处理成功') {
+                        this.$message.success("入库成功!")
+                    } else {
+                        this.$message.error("入库失败!")
+                    }
+                }).catch((error) => {
+                    this.$message.error("Error:" + error)
+                })
+            },
+            delPur: function (rid, isnostorage) {//根据入库ID删除入库信息
+                if (isnostorage == 0) {
+                    this.$confirm('此条进货记录尚未入库, 该操作将永久删除这一记录。是否继续?', '不可逆操作警告', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                } else if (isnostorage == 1) {
+                    this.$confirm('此条进货记录已入库, 该操作将连带删除这条进货信息相对应的入库记录。是否继续?', '不可逆操作警告', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        });
+                    });
+                }
             }
         }, created: function () {
-
+            this.Query();
+        }, beforeRouteEnter: function (to, from, next) {
+            next(vm => {
+                vm.Query();
+            });
         }
     }
 </script>
