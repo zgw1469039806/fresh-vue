@@ -12,7 +12,7 @@
                     <el-form-item label="供应商" prop="gongying">
                         <el-select v-model="Form.gongying" placeholder="请选择供应商">
                             <el-option v-for="(g,index) in gongyingopt" :key="index" :label="g.supplierName"
-                                       :value="g.supplierBM"></el-option>
+                                       :value="g.supplierId"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="门店" prop="mendian">
