@@ -3,21 +3,18 @@
         <div class="forms">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <h1 style="font-size: 20px" v-text="Local.title">添加员工</h1>
-                <el-form-item  label="员工姓名:" prop="name">
-                    <el-input style="width: 500px" v-model="ruleForm.name"></el-input>
+                <el-form-item  label="员工姓名:" prop="useraccount">
+                    <el-input style="width: 500px" v-model="ruleForm.useraccount"></el-input>
                 </el-form-item>
                 <el-form-item label="联系方式:" prop="phone">
                     <el-input  v-model="ruleForm.phone"></el-input>
                 </el-form-item>
-                <el-form-item label="职位" prop="postion">
-                    <el-select v-model="ruleForm.postion" placeholder="请选择员工职位">
+                <el-form-item label="职位" prop="username">
+                    <el-select v-model="ruleForm.username" placeholder="请选择员工职位">
                         <el-option label="采购员" value="shanghai"></el-option>
                         <el-option label="收银员" value="beijing"></el-option>
                         <el-option label="会计" value="kuaiji"></el-option>
                     </el-select>
-                </el-form-item>
-                <el-form-item  label="薪资:" prop="money">
-                    <el-input style="width: 500px" v-model="ruleForm.money"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="success" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -38,12 +35,11 @@
         data() {
             return {
                 ruleForm: {
-                    name: '',
+                    useraccount: '',
                     phone:'',
-                    postion:'',
-                    money:''
+                    username:'',
                 },   rules: {
-                    name: [
+                    useraccount: [
                         { required: true, message: '请输入员工姓名', trigger: 'blur' },
                         { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
                     ],
@@ -51,11 +47,9 @@
                         { required: true, message: '请输入联系方式', trigger: 'blur' },
                         { min: 11, message: '至少 11 位', trigger: 'blur' }
                     ],
-                    postion: [
+                    username: [
                         { required: true, message: '请选择员工职位', trigger: 'change' },
-                    ],
-                    money:[
-                        { required: true, message: '请输入员工薪资', trigger: 'blur' },
+
                     ]
                 },
                 Local: {
@@ -67,6 +61,17 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+
+                          var data={
+                              "phone": this.ruleForm.phone,
+                              "useraccount": this.ruleForm.useraccount,
+                              "username": this.ruleForm.username
+                          };
+
+                          this.axios.post("/savaRoot",{data}).then((response)=>{
+                             alert(response.data);
+                          });
+
                         // var multipartFile = new FormData();//将文件转成二进制形式
                         // multipartFile.append("file", this.ruleForm.logomodel);
                         // this.$axios.post('', multipartFile).then((response) => {

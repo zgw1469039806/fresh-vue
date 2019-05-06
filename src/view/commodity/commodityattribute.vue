@@ -88,17 +88,7 @@
                         <el-button type="success" size="mini">删除商品</el-button>
                     </el-table-column>
                 </el-table>
-                <div class="block">
-                    <el-pagination
-                            @size-change="handleSizeChange"
-                            @current-change="handleCurrentChange"
-                            :current-page="page.current"
-                            :page-sizes="[5, 10]"
-                            :page-size="5"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="page.total">
-                    </el-pagination>
-                </div>
+
             </template>
         </div>
         <div>
@@ -296,7 +286,10 @@
                     }
                 });
             }
-        },
+        },created()
+        {
+
+        }
 
     }
 </script>
