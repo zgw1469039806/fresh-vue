@@ -7,7 +7,7 @@
                         <el-input v-model="Form.vipName"></el-input>
                     </el-form-item>
                     <el-form-item label="会员等级:">
-                        <el-select v-model="Form.vipLevel" placeholder="请选择">
+                        <el-select v-model="Form.viplv" placeholder="请选择">
                             <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -16,13 +16,13 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-button style="margin-left: 5px" type="success">查询</el-button>
+                    <el-button style="margin-left: 5px" type="success" @click="selMyVip()">查询</el-button>
                     <el-button type="success">新增</el-button>
                 </el-form>
             </div>
             <template>
                 <el-table
-                        :data="tableData"
+                        :data="tableData.list"
                         style="width: 100%">
 
                     <el-table-column
@@ -31,36 +31,41 @@
                     </el-table-column>
                     <el-table-column
                             label="会员手机号"
-                            prop="vipPhone">
+                            prop="vipphone">
                     </el-table-column>
                     <el-table-column
                             sortable
                             label="会员积分"
-                            prop="vipIntegral">
+                            prop="vipintegral">
                     </el-table-column>
                     <el-table-column
                             sortable
                             label="会员余额"
-                            prop="vipMoney">
+                            prop="vipbalance">
                     </el-table-column>
                     <el-table-column
                             label="会员等级"
-                            prop="vipLeave"
+                            prop="viplv"
+                            width="90px"
                     >
                     </el-table-column>
                     <el-table-column
                             sortable
                             label="开卡时间"
-                            prop="vipStartTime">
+                            prop="vipStartTime"
+                            width="160px"
+                    >
                     </el-table-column>
                     <el-table-column
                             label="是否挂失"
-                            prop="isPeport">
+                            prop="vipreport"
+                            width="90px">
                     </el-table-column>
                     <el-table-column
                             sortable
                             label="挂失时间"
-                            prop="vipPeportTime">
+                            prop="vipeportTime"
+                            width="160px">
                     </el-table-column>
                     <el-table-column
                             label="操作"
@@ -82,10 +87,9 @@
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
                             :current-page="page.current"
-                            :page-sizes="[5, 10]"
-                            :page-size="5"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="page.total">
+                            :page-size="page.pageSize"
+                            layout="total, prev, pager, next, jumper"
+                            :total="tableData.totalCount">
                     </el-pagination>
                 </div>
             </template>
@@ -98,39 +102,18 @@
         name: "vipdetails",
         data() {
             return {
-                tableData: [
-                    {
-                        vipName :'1',
-                        vipPhone :'1',
-                        vipIntegral :'1',
-                        vipMoney :'1',
-                        vipLeave :'1',
-                        vipStartTime :'2019-02-03',
-                        isPeport :'1',
-                        vipPeportTime :'1'
-                    },
-                    {
-                        vipName :'2',
-                        vipPhone :'2',
-                        vipIntegral :'2',
-                        vipMoney :'2',
-                        vipLeave :'2',
-                        vipStartTime :'2019-02-02',
-                        isPeport :'2',
-                        vipPeportTime :'2'
-                    }
-                ],
+                tableData: null,
                 Form: {
-                    vipName: '',//单号
-                    vipLevel: '-1'//会员等级
+                    vipName: '',//姓名
+                    viplv: '0'//会员等级
                 },
                 page: {
-                    total: 20,
-                    current: 1,
+                    current: 1, //当前页
+                    pageSize: 1 ,//每页显示多少条
                 },
                 options: [
                     {
-                        value: '-1',
+                        value: '0',
                         label: '全部'
                     },
                     {
@@ -156,32 +139,72 @@
                 ]
             }
         }, methods: {
-
-            //单机编辑
-            updateRow(index, rows) {
-                index + "";
-                rows + ''
-                this.$router.push({name: 'staffinsert', params: {type: "update", sid: "12"}})
-            },
             //一页多少条改变
             handleSizeChange(index) {
                 index + 0
-                // this.console.log("index"+index)
             },
+            //页码变换事件
             handleCurrentChange(index) {
-                index + 0
-                // console.log("index:"+index)
-            },handleEdit(index, row) { //index是行号  row 是行的对象
+                this.page.current = index;
+                this.vipPage();
+            },
+            handleEdit(index, row) { //index是行号  row 是行的对象
                 index+0
-                alert("编辑:等级为 "+row.vipName);
-                this.$router.push({name:'vipedit',params:{vipId:index}})
+                alert("编辑编号 "+row.vipId);
+                this.$router.push({name:'vipedit',params:{vipId:row.vipId}})
 
             },
             handleDelete(index, row) {
                 index,row
-                alert("删除"+index+","+row.vipName);
+                this.axios.post("VipController/delVipById", {
+                    "data": row.vipId,
+                })
+                    .then((response) => {
+                        if (response.data.code == 0) {
+                            this.$alert(response.data.msg ,'提示', {
+                                confirmButtonText: '确定',
+                                callback: action => {
+                                    action
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            this.$message.error(response.data.msg);
+                        }
+
+                    })
+                    .catch((error) => {
+                        this.$message.error("Error:" + error);
+                    })
+            },
+            vipPage(){
+                this.axios.post("VipController/selPageListVip", {
+                    "data": {
+                        "pageNo": this.page.current,
+                        "pageSize": this.page.pageSize,
+                        "vipName": this.Form.vipName,
+                        "viplv": this.Form.viplv
+                    },
+                })
+                    .then((response) => {
+                        if (response.data.code == 0) {
+                            this.tableData = response.data.data;
+                        } else {
+                            this.$message.error(response.data.msg);
+                        }
+
+                    })
+                    .catch((error) => {
+                        this.$message.error("Error:" + error);
+                    })
+            },
+            selMyVip(){
+                this.vipPage();
             }
         }, created: function () {
+
+            this.vipPage();
+
 
         }
     }

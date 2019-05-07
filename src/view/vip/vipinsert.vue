@@ -8,7 +8,7 @@
                     <h3>新增会员</h3>
                 </el-form-item>
                 <el-form-item label="用户手机号:" prop="userPhone" >
-                    <el-input  v-model="ruleForm.userPhone"></el-input>
+                    <el-input  v-model="ruleForm.vipphone"></el-input>
                 </el-form-item>
 
                 <el-form-item label="会员名称:" prop="vipName" >
@@ -16,22 +16,22 @@
                 </el-form-item>
 
                 <el-form-item label="会员初始等级:" prop="vipLeave" >
-                    <el-select v-model="ruleForm.vipLeave.value" placeholder="请选择">
+                    <el-select v-model="ruleForm.viplv" placeholder="请选择">
                         <el-option
-                                v-for="item in ruleForm.vipLeave"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="item in vipLeave"
+                                :key="item.viplv"
+                                :label="item.viplv"
+                                :value="item.viplv">
                         </el-option>
                     </el-select>
                 </el-form-item>
 
                 <el-form-item label="会员初始积分:" prop="vipIntegral" >
-                    <el-input-number v-model="ruleForm.vipIntegral" :min="0" :max="5000"></el-input-number>
+                    <el-input-number v-model="ruleForm.vipintegral" :min="0" :max="999"></el-input-number>
                 </el-form-item>
 
                 <el-form-item label="会员初始余额:" prop="vipMoney" >
-                    <el-input-number v-model="ruleForm.vipMoney" :precision="2" :step="0.1" :min="0.00" ></el-input-number>
+                    <el-input-number v-model="ruleForm.vipbalance" :precision="2" :step="0.1" :min="0.00" ></el-input-number>
                 </el-form-item>
 
                 <el-form-item>
@@ -50,37 +50,22 @@
             return{
                 vipLeave:null,
                 ruleForm: {
-                    userPhone: '',
-                    vipIntegral:'0', //积分
-                    vipMoney:'0.00',
+                    vipphone: '',
+                    vipintegral:'0', //积分
+                    vipbalance:'0.00',
                     vipName:'',
-                    vipLeave: [{ //等级
-                        value: '1',
-                        label: '1级'
-                    }, {
-                        value: '2',
-                        label: '2级'
-                    }, {
-                        value: '3',
-                        label: '3级'
-                    }, {
-                        value: '4',
-                        label: '4级'
-                    },{
-                        value: '5',
-                        label: '5级'
-                    }],
+                    viplv: '',
 
                 },
                 rules: {
-                    userPhone: [
+                    vipphone: [
                         {required: true, message: '请输入用户手机号', trigger: 'blur'},
                         {min: 11, max: 11, message: '手机号格式不正确', trigger: 'blur'}
                     ],
                     vipName: [
                         {required: true, message: '请输入会员名称', trigger: 'blur'},
                     ]
-                    ,vipLeave: [
+                    ,viplv: [
                         {required: true, message: '请输入会员初始等级', trigger: 'blur'}
                     ]
                 }
@@ -89,8 +74,26 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!'+this.ruleForm.userPhone+","+this.ruleForm.vipLeave.value);
+                        this.axios.post("VipController/addVip", {
+                            "data": this.ruleForm,
+                        })
+                            .then((response) => {
+                                if (response.data.code == 0) {
+                                    this.$alert(response.data.msg ,'提示', {
+                                        confirmButtonText: '确定',
+                                        callback: action => {
+                                            action
+                                            this.$router.push({path: '/vipdetails'})
+                                        }
+                                    });
+                                } else {
+                                    this.$message.error(response.data.msg);
+                                }
 
+                            })
+                            .catch((error) => {
+                                this.$message.error("Error:" + error);
+                            })
                     } else {
                         return false;
                     }

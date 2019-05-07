@@ -10,25 +10,25 @@
                     <el-input  v-model="ruleForm.vipName" disabled></el-input>
                 </el-form-item>
 
-                <el-form-item label="会员手机号:" prop="vipPhone">
-                    <el-input  v-model="ruleForm.vipPhone" disabled></el-input>
+                <el-form-item label="会员手机号:" prop="vipphone">
+                    <el-input  v-model="ruleForm.vipphone" disabled></el-input>
                 </el-form-item>
 
-                <el-form-item label="会员积分:" prop="vipIntegral" >
-                    <el-input-number v-model="ruleForm.vipIntegral" :min="0" :max="5000"></el-input-number>
+                <el-form-item label="会员积分:" prop="vipintegral" >
+                    <el-input-number v-model="ruleForm.vipintegral" :min="0" :max="5000"></el-input-number>
                 </el-form-item>
 
-                <el-form-item label="会员余额:" prop="vipMoney" >
-                    <el-input-number v-model="ruleForm.vipMoney" :precision="2" :step="0.1" :min="0.00" ></el-input-number>
+                <el-form-item label="会员余额:" prop="vipbalance" >
+                    <el-input-number v-model="ruleForm.vipbalance" :precision="2" :step="0.1" :min="0.00" ></el-input-number>
                 </el-form-item>
 
-                <el-form-item label="会员等级:" prop="vipLeave" >
-                    <el-select v-model="ruleForm.vipLeave" placeholder="请选择">
+                <el-form-item label="会员等级:" prop="viplv" >
+                    <el-select v-model="ruleForm.viplv" placeholder="请选择">
                         <el-option
                                 v-for="item in vipLeave"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                :key="item.viplv"
+                                :label="item.viplv"
+                                :value="item.viplv">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -37,8 +37,8 @@
                     <el-input  v-model="ruleForm.vipStartTime" disabled></el-input>
                 </el-form-item>
 
-                <el-form-item label="是否挂失:" prop="isPeport" >
-                    <el-select v-model="ruleForm.isPeport" placeholder="请选择">
+                <el-form-item label="是否挂失:" prop="vipreport" >
+                    <el-select v-model="ruleForm.vipreport" placeholder="请选择">
                         <el-option
                                 v-for="item in isPeport"
                                 :key="item.value"
@@ -62,43 +62,20 @@
         data(){
             return{
                 vipId : this.$route.params.vipId,
-                ruleForm: {
-                    vipName: '1',
-                    vipPhone: '2',
-                    vipIntegral:'0', //积分
-                    vipMoney:'0.00',
-                    vipStartTime:'1234t',
-                    vipLeave:'1',
-                    isPeport:'0'
-                },
-                vipLeave: [{ //等级
-                    value: '1',
-                    label: '1级'
-                }, {
-                    value: '2',
-                    label: '2级'
-                }, {
-                    value: '3',
-                    label: '3级'
-                }, {
-                    value: '4',
-                    label: '4级'
-                },{
-                    value: '5',
-                    label: '5级'
-                }],
+                ruleForm: null,
+                vipLeave: null,
                 isPeport:[{
-                    value: '0',
+                    value: 0,
                     label: '否'
                 },{
-                    value: '1',
+                    value: 1,
                     label: '是'
                 }],
                 rules: {
                     vipName: [
                         {required: true, message: '请输入会员名称', trigger: 'blur'},
                     ]
-                    ,vipLeave: [
+                    ,viplv: [
                         {required: true, message: '请输入会员初始等级', trigger: 'blur'}
                     ]
                 }
@@ -108,15 +85,59 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        alert('submit!')
+                        this.axios.post("VipController/updOneVip", {
+                            "data": this.ruleForm,
+                        })
+                            .then((response) => {
+                                if (response.data.code == 0) {
+                                    this.$alert(response.data.msg ,'提示', {
+                                        confirmButtonText: '确定',
+                                        callback: action => {
+                                            action
+                                            this.$router.push({path: '/vipdetails'})
+                                        }
+                                    });
+                                } else {
+                                    this.$message.error(response.data.msg);
+                                }
+
+                            })
+                            .catch((error) => {
+                                this.$message.error("Error:" + error);
+                            })
                     } else {
                         return false;
                     }
                 });
-            }
+            },
+
         },
         created() {
              alert(this.$route.params.vipId)
+
+            this.axios.get("vipLvController/selAllVipLv")
+                .then((response) => {
+                    this.vipLeave = response.data.data
+                })
+                .catch((error) => {
+                    this.$message.error("Error:" + error);
+                })
+
+            this.axios.post("VipController/selOneVipById", {
+                "data": this.$route.params.vipId,
+            })
+                .then((response) => {
+                    if (response.data.code == 0) {
+                        this.ruleForm = response.data.data;
+                    } else {
+                        this.$message.error(response.data.msg);
+                    }
+
+                })
+                .catch((error) => {
+                    this.$message.error("Error:" + error);
+                })
         }
     }
 </script>
