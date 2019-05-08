@@ -3,7 +3,7 @@
         <div class="forms">
 
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
-                <el-form-item >
+                <el-form-item>
                     <h3>编辑会员信息</h3>
                 </el-form-item>
                 <el-form-item label="会员姓名:" prop="vipName" >
@@ -61,7 +61,7 @@
         name: "vipedit",
         data(){
             return{
-                vipId : this.$route.params.vipId,
+                vipId: this.$route.params.vipId,
                 ruleForm: null,
                 vipLeave: null,
                 isPeport:[{
@@ -85,7 +85,6 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!')
                         this.axios.post("VipController/updOneVip", {
                             "data": this.ruleForm,
                         })
@@ -114,8 +113,6 @@
 
         },
         created() {
-             alert(this.$route.params.vipId)
-
             this.axios.get("vipLvController/selAllVipLv")
                 .then((response) => {
                     this.vipLeave = response.data.data

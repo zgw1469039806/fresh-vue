@@ -55,7 +55,6 @@
                     vipbalance:'0.00',
                     vipName:'',
                     viplv: '',
-
                 },
                 rules: {
                     vipphone: [

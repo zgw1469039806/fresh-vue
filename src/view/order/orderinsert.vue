@@ -9,15 +9,15 @@
 
                 <el-form-item label="会员手机号:" prop="vipPhone" >
                     <el-input  v-model="ruleForm.vipPhone" style="width:230px;" ></el-input>
-                    <el-button type="primary" @click="selVip()">查询</el-button>
+                    <el-button type="success" @click="selVip()">查询</el-button>
                 </el-form-item>
 
                 <el-form-item label="会员信息:" prop="vipDiscount" v-show="ifshow">
-                    <p>名称：{{ruleForm.vipMsg.na}},积分：{{ruleForm.vipMsg.jifen}},余额：{{ruleForm.vipMsg.yue}}</p>
+                    <p>名称：{{ruleForm.vipMsg.vipName}},积分：{{ruleForm.vipMsg.vipintegral}},余额：{{ruleForm.vipMsg.vipbalance}}</p>
                 </el-form-item>
 
                 <el-form-item label="会员折扣:" prop="vipDiscount" v-show="ifshow">
-                    <el-input  v-model="ruleForm.vipMsg.zhekou" disabled style="width: 200px;"></el-input>
+                    <el-input  v-model="ruleForm.zheKou" disabled style="width: 200px;"></el-input>
                 </el-form-item>
 
                 <el-form-item label="选择商品:" prop="goods" >
@@ -86,12 +86,12 @@
                         <el-radio :label="4">现金</el-radio>
                     </el-radio-group>
                     <p>总价：<span style="color: red;">{{sumMoney.toFixed(2)}}</span> 元</p>
-                    <p v-show="ifshow">打折后总价：<span style="color: red;">{{(sumMoney.toFixed(2) * ruleForm.vipMsg.zhekou).toFixed(2)}}</span> 元</p>
+                    <p v-show="ifshow">打折后总价：<span style="color: red;">{{(sumMoney.toFixed(2) * ruleForm.zheKou).toFixed(2)}}</span> 元</p>
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                    <el-button type="primary" @click="guaForm('ruleForm')">挂单</el-button>
+                    <el-button type="success" @click="submitForm('ruleForm')">立即创建</el-button>
+                    <el-button type="success" @click="guaForm('ruleForm')">挂单</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -112,15 +112,10 @@
                 ruleForm: {
                     vipPhone:"",
                     vipMsg:'',
-                    vipMsgs:{
-                      na:'小明',
-                      jifen:'1000',
-                      yue:'200',
-                      zhekou:0.9 ,
-                    },
                     tableData: [],
                     // vipDiscount:'100',
                     radio:'',
+                    zheKou: 0.1
 
                 },
                 dialogFormVisible: false,//控制dialog是否打开
@@ -137,7 +132,6 @@
             sumMoney(){
                 return this.ruleForm.tableData.map(row=>row.comdnum*row.comdityprice).reduce(
                     (acc, cur) => (parseFloat(cur) + acc), 0)
-
             }
         },
         methods: {
@@ -146,7 +140,7 @@
                     if (valid) {
                         if(this.ifshow){ //如果ifshow为true 表示拥有会员 传入打折后价格
                             alert("商品为："+this.ruleForm.tableData)
-                            alert("会员,价格为:"+(this.sumMoney.toFixed(2) * this.ruleForm.vipMsg.zhekou).toFixed(2))
+                            alert("会员,价格为:"+(this.sumMoney.toFixed(2) * this.ruleForm.zheKou).toFixed(2))
                         }else{      //为false 表示没有会员 传入真实价格
                             alert("商品为："+this.ruleForm.tableData)
                             alert("不是会员,价格为："+this.sumMoney.toFixed(2))
@@ -161,22 +155,45 @@
                 formName
             },
             selVip(){ //查询会员方法
-
-                //1、先根据手机号查询会员信息
-                this.ruleForm.vipMsg = null;
-                //2、把查询到的信息赋值给vipMsg
-                this.ruleForm.vipMsg = this.ruleForm.vipMsgs; //vipMsgs 查询数据库获取
-
-                this.ruleForm.vipDiscount = this.ruleForm.vipMsgs.zhekou; //折扣
-                if(this.ruleForm.vipPhone == null || this.ruleForm.vipPhone == "" || this.ruleForm.vipPhone.trim() == "" || this.ruleForm.vipMsg == null){
-                    alert("此会员不存在！");
-                    this.ruleForm.vipPhone = "";
-                    this.ruleForm.vipDiscount = "100%";
+                if(this.ruleForm.vipPhone == null || this.ruleForm.vipPhone == "" || this.ruleForm.vipPhone.trim() == ""){
                     this.ifshow = false;
                     return false;
                 }
-                //3、显示vipMsg
-                this.ifshow = true;
+                //1、先根据手机号查询会员信息
+                this.axios.post("VipController/selOneVipByPhone", {
+                    "data": this.ruleForm.vipPhone,
+                })
+                    .then((response) => {
+                        if(response.data.data == null){
+                            alert("此会员不存在！");
+                            this.ruleForm.vipPhone = "";
+                            this.ruleForm.vipDiscount = "100%";
+                        }else{
+                            //2、把查询到的信息赋值给vipMsg
+                            this.ruleForm.vipMsg = response.data.data;
+                            //3、显示vipMsg
+                            this.ifshow = true;
+
+                            //根据查到的会员等级获取会员折扣
+
+                            this.axios.post("vipLvController/selVipLvByViplv", {
+                                "data": response.data.data.viplv,
+                            })
+                                .then((response) => {
+                                    if(response.data.data == null){
+                                        this.ruleForm.zheKou = 1;
+                                    }else{
+                                        this.ruleForm.zheKou = response.data.data.vipdiscount;
+                                    }
+                                })
+                                .catch((error) => {
+                                    this.$message.error("Error:" + error);
+                                })
+                        }
+                    })
+                    .catch((error) => {
+                        this.$message.error("Error:" + error);
+                    })
             },
             showDialog() {
                 this.dialogFormVisible = true
@@ -206,7 +223,6 @@
                         this.ruleForm.tableData.push(value);
                     }
                 }
-
                 this.dialogFormVisible = false;
             },
             deleteRow(index, rows) {

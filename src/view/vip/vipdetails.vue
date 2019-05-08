@@ -46,8 +46,7 @@
                     <el-table-column
                             label="会员等级"
                             prop="viplv"
-                            width="90px"
-                    >
+                            width="90px">
                     </el-table-column>
                     <el-table-column
                             sortable
@@ -150,7 +149,6 @@
             },
             handleEdit(index, row) { //index是行号  row 是行的对象
                 index+0
-                alert("编辑编号 "+row.vipId);
                 this.$router.push({name:'vipedit',params:{vipId:row.vipId}})
 
             },

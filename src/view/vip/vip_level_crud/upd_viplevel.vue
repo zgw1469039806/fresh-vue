@@ -115,7 +115,6 @@
         width: 35vw;
         display: flex;
         justify-content: center;
-        border: 1px solid red;
         margin: 0px auto;
         background: #fff;
     }
