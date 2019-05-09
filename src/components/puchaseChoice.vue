@@ -9,7 +9,7 @@
                     <template>
                         <div class="input">
                             <div class="forms">
-                                <span class="shpoinname">商品名称:</span>
+                                <span class="shpoinname">商品条形码:</span>
                                 <el-input style="width: 300px;padding-right: 15px"></el-input>
                                 <el-button type="success">搜索</el-button>
                             </div>
