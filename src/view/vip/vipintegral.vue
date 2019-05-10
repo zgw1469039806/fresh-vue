@@ -110,7 +110,7 @@
             }
         },
         created() {
-            this.axios.post("unification/GdStoreQueryAll")
+            this.axios.post("/GdStoreQueryAll")
                 .then((response) => {
                     this.storeid = response.data.data
                 })

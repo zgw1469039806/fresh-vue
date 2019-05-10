@@ -6,7 +6,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
 
 const inter = axios.create({ // 创建服务
-    baseURL: 'http://localhost:8777/', // 基础路径
+    baseURL: 'http://localhost:8777/unification', // 基础路径
     timeout: 5000, // 请求延时
     headers: {"Content-Type": "application/json"},
     withCredentials: true

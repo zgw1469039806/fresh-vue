@@ -19,16 +19,25 @@ const routes = [
                 meta: {
                     title: "门店信息管理"
                 },
-                props : true
+                props: true
             },
             {
-                name:'storeinsert',
+                name: 'storeinsert',
                 path: '/storeinsert',
                 component: () => import("./view/store/storeinsert.vue"),
                 meta: {
-                    title: "添加页面"
+                    title: "添加门店"
                 },
-                props : true
+                props: true
+            },
+            {
+                name: 'storeupd',
+                path: '/storeupd.vue',
+                component: () => import("./view/store/storeupd.vue"),
+                meta: {
+                    title: "修改门店"
+                },
+                props: true
             },
             {
                 path: '/staffedit',
@@ -166,7 +175,7 @@ const routes = [
             },
             {
                 path: '/upd_viplevel/:vipleaveid',
-                name:'upd_viplevel',
+                name: 'upd_viplevel',
                 component: () => import("./view/vip/vip_level_crud/upd_viplevel.vue"),
                 meta: {
                     title: "修改会员等级"
@@ -181,7 +190,7 @@ const routes = [
             },
             {
                 path: '/vipedit/:vipId',
-                name:'vipedit',
+                name: 'vipedit',
                 component: () => import("./view/vip/vipedit.vue"),
                 meta: {
                     title: "编辑会员信息"
@@ -189,7 +198,7 @@ const routes = [
             }
         ]
     },
-    {path: '/*',component:()=> import("./components/master.vue")}
+    {path: '/*', component: () => import("./components/master.vue")}
 
 ];
 
