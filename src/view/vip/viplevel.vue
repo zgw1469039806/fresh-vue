@@ -68,7 +68,7 @@
             },
             handleDelete(index, row) {
                 index, row
-                this.axios.post("vipLvController/delVipLv", {
+                this.axios.post("/delVipLv", {
                     "data": row.viplv,
                 })
                     .then((response) => {
@@ -90,7 +90,7 @@
                     })
             }
         }, created() {
-            this.axios.get("vipLvController/selAllVipLv")
+            this.axios.get("/selAllVipLv")
                 .then((response) => {
                     this.tableData = response.data.data
                 })

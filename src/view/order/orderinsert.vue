@@ -2,7 +2,7 @@
     <div class="box">
         <div class="forms">
 
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm" v-loading="loading">
                 <el-form-item>
                     <h3>销售单</h3>
                 </el-form-item>
@@ -112,6 +112,7 @@
         components: {PuchaseChoice},
         data() {
             return {
+                loading: false,
                 ifshow: false,
                 ruleForm: {
                     vipId : "",
@@ -119,7 +120,7 @@
                     tableData: [],
                     ordermeans : 4, // 交易手段 ,
                     zheKou: 0.1,
-                    storeid:1, //店铺编号
+                    storeid:1, //TODO:店铺编号 获取当前店铺编号
                     ordertype:0,//交易类型 (0-消费 1-退款)
                     orderscene:1,//交易场景
                     ordermoney:0.00, //总价
@@ -155,14 +156,17 @@
                         alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname+",单位："+this.ruleForm.tableData[0].comditydw+",价格："+this.ruleForm.tableData[0].comdityprice+",货号："+this.ruleForm.tableData[0].comdityId+",数量："+this.ruleForm.tableData[0].comdityId)
 
                         if (this.ifshow) { //如果ifshow为true 表示拥有会员 传入打折后价格
-                            alert("会员,价格为:" + (this.sumMoney.toFixed(2) * this.ruleForm.zheKou).toFixed(2))
+                            //18376645457
                             this.ruleForm.ordermoney = (this.sumMoney.toFixed(2) * this.ruleForm.zheKou).toFixed(2);
 
-                            this.axios.post("unification/insertOrder", {
+                            this.loading = true;
+
+                            this.axios.post("/insertOrder", {
                                 "data": this.ruleForm,
                             })
                                 .then((response) => {
                                     if (response.data.code == 0) {
+                                        this.loading = false;
                                         this.$alert(response.data.msg ,'提示', {
                                             confirmButtonText: '确定',
                                             callback: action => {
@@ -171,22 +175,45 @@
                                             }
                                         });
                                     } else {
+                                        this.loading = false;
                                         this.$message.error(response.data.msg);
                                     }
 
                                 })
                                 .catch((error) => {
+                                    this.loading = false;
                                     this.$message.error("Error:" + error);
                                 })
-
-
-
                         } else {      //为false 表示没有会员 传入真实价格
-                            this.ruleForm.vipId = "0";
+                            this.ruleForm.vipId = "";
                             alert("不是会员,价格为：" + this.sumMoney.toFixed(2))
                             this.ruleForm.ordermoney = this.sumMoney.toFixed(2);
+                            this.loading = true;
+
+                            this.axios.post("/insertOrder", {
+                                "data": this.ruleForm,
+                            })
+                                .then((response) => {
+                                    if (response.data.code == 0) {
+                                        this.loading = false;
+                                        this.$alert(response.data.msg ,'提示', {
+                                            confirmButtonText: '确定',
+                                            callback: action => {
+                                                action
+                                                window.location.reload();
+                                            }
+                                        });
+                                    } else {
+                                        this.loading = false;
+                                        this.$message.error(response.data.msg);
+                                    }
+
+                                })
+                                .catch((error) => {
+                                    this.loading = false;
+                                    this.$message.error("Error:" + error);
+                                })
                         }
-                        alert('submit!');
                     } else {
                         return false;
                     }
@@ -201,14 +228,15 @@
                     return false;
                 }
                 //1、先根据手机号查询会员信息
-                this.axios.post("VipController/selOneVipByPhone", {
+                this.axios.post("/selOneVipByPhone", {
                     "data": this.ruleForm.vipId ,
                 })
                     .then((response) => {
-                        if (response.data.data == null) {
-                            this.$message.error('此会员不存在!');
+                        if (response.data.data == null || response.data.code != 0) {
+                            this.$message.error('此会员不存在或已挂失!');
                             this.ruleForm.vipId  = "";
                             this.ruleForm.vipDiscount = "100%";
+                            this.ifshow = false;
                         } else {
                             //2、把查询到的信息赋值给vipMsg
                             this.ruleForm.vipMsg = response.data.data;
@@ -217,7 +245,7 @@
 
                             //根据查到的会员等级获取会员折扣
 
-                            this.axios.post("vipLvController/selVipLvByViplv", {
+                            this.axios.post("/selVipLvByViplv", {
                                 "data": response.data.data.viplv,
                             })
                                 .then((response) => {

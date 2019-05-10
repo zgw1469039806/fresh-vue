@@ -57,7 +57,7 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.axios.post("vipLvController/addVipLv", {
+                        this.axios.post("/addVipLv", {
                             "data": {
                                 "viplv": this.ruleForm.vip_leave,
                                 "vipdiscount": this.ruleForm.vip_discount,

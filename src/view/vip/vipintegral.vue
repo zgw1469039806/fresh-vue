@@ -69,7 +69,7 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.axios.post("VipInSetController/updVipInSet", {
+                        this.axios.post("/updVipInSet", {
                             "data": this.ruleForm,
                         })
                             .then((response) => {
@@ -97,7 +97,7 @@
             },
             changeSelect() {
                 //查询积分规则
-                this.axios.post("VipInSetController/selVipInSetById", {
+                this.axios.post("/selVipInSetById", {
                     "data": this.ruleForm.storeid
                 })
                     .then((response) => {
@@ -110,7 +110,7 @@
             }
         },
         created() {
-            this.axios.post("unification/GdStoreQueryAll")
+            this.axios.post("/GdStoreQueryAll")
                 .then((response) => {
                     this.storeid = response.data.data
                 })

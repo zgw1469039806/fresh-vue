@@ -85,7 +85,7 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.axios.post("VipController/updOneVip", {
+                        this.axios.post("/updOneVip", {
                             "data": this.ruleForm,
                         })
                             .then((response) => {
@@ -113,7 +113,7 @@
 
         },
         created() {
-            this.axios.get("vipLvController/selAllVipLv")
+            this.axios.get("/selAllVipLv")
                 .then((response) => {
                     this.vipLeave = response.data.data
                 })
@@ -121,7 +121,7 @@
                     this.$message.error("Error:" + error);
                 })
 
-            this.axios.post("VipController/selOneVipById", {
+            this.axios.post("/selOneVipById", {
                 "data": this.$route.params.vipId,
             })
                 .then((response) => {

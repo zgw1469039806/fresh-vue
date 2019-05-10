@@ -154,7 +154,7 @@
             },
             handleDelete(index, row) {
                 index,row
-                this.axios.post("VipController/delVipById", {
+                this.axios.post("/delVipById", {
                     "data": row.vipId,
                 })
                     .then((response) => {
@@ -176,7 +176,7 @@
                     })
             },
             vipPage(){
-                this.axios.post("VipController/selPageListVip", {
+                this.axios.post("/selPageListVip", {
                     "data": {
                         "pageNo": this.page.current,
                         "pageSize": this.page.pageSize,
