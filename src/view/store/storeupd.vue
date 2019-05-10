@@ -1,17 +1,12 @@
 <template>
     <div class="box">
         <div class="forms">
-            Type:{{type}}
-            Sid:{{sid}}
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <h1 style="font-size: 20px" v-text="Local.title">添加店铺</h1>
+                <h1 style="font-size: 20px" v-text="Local.title">修改店铺</h1>
                 <el-form-item label="店铺名称" prop="name">
                     <el-form :inline="true" class="demo-form-inline">
                         <el-form-item>
-                            <el-input v-model="ruleForm.storename" placeholder="审批人"></el-input>
-                        </el-form-item>
-                        <el-form-item label="手机号">
-                            <el-input v-model="ruleForm.phone" placeholder="审批人"></el-input>
+                            <el-input v-model="ruleForm.storename" placeholder="门店名"></el-input>
                         </el-form-item>
                     </el-form>
                 </el-form-item>
@@ -56,13 +51,11 @@
 <script>
     export default {
         name: "storeinsert",
-        props: {
-            type: String,
-            sid: String
-        },
         data() {
             return {
+                row: Object,//传递过来的数据
                 ruleForm: {
+                    storeid: '',
                     logomodel: '',
                     storename: '',
                     phone: '',
@@ -98,23 +91,23 @@
                         for (let i = 0; i < this.ruleForm.filelisturl.length; i++) {
                             list.push({
                                 "storeImages": this.ruleForm.filelisturl[i],
-                                "storeid": 0
+                                "storeid": this.ruleForm.storeid
                             })
                         }
                         let data = {
                             "manageStoreDTOList": list,
-                            "storeImagesUri": "string",
+                            "storeid": this.ruleForm.storeid,
                             "storeaLogo": this.ruleForm.logourl,
                             "storeaddress": this.ruleForm.storeaddress,
                             "storename": this.ruleForm.storename
                         }
-                        const loading = this.$loading({
+                        const $loadinged = this.$loading({
                             lock: true,
                             text: 'Loading',
                             spinner: 'el-icon-loading',
                             background: 'rgba(0, 0, 0, 0.7)'
                         });
-                        this.axios.post("http://localhost:8777/unification/saveMana", data).then((response) => {
+                        this.axios.post("/updMana", {data}).then((response) => {
                             if (response.data.msg == "处理成功") {
                                 this.$message.success("添加成功!")
                             } else if (response.data.msg == '门店名称不能重复') {
@@ -122,10 +115,10 @@
                             } else {
                                 this.$message.warning("添加失败!请检查参数或联系管理员!")
                             }
-                            loading.close();
+                            $loadinged.close();
                         }).catch((error) => {
-                            loading.close();
-                            this.$message.error(error)
+                            $loadinged.close();
+                            this.$message.error(""+error)
                         })
                     } else {
                         return false;
@@ -133,12 +126,18 @@
                 });
             },
             isAdd: function () {
-                this.type = this.$route.params.type;
-                this.sid = this.$route.params.sid;
-                if (this.type == 'insert') {
-                    this.Local.title = "添加店铺"
-                } else if (this.type == 'update') {
-                    this.Local.title = "修改店铺"
+                let row = this.$route.params.md;
+                this.ruleForm.storename = row.storename;
+                this.ruleForm.storeaddress = row.storeaddress;
+                this.ruleForm.storeid = row.storeid;
+                this.ruleForm.logo = row.storeaLogo;
+                this.ruleForm.logourl = row.storeaLogo;
+                if (row.manageStoreDTOList != null) {
+                    for (let i = 0; i < row.manageStoreDTOList.length; i++) {
+                        //this.ruleForm.fileList.push(row.manageStoreDTOList[i].storeImages);
+                        this.ruleForm.fileList.push({name: 'store.jpg', url: row.manageStoreDTOList[i].storeImages});
+                        this.ruleForm.filelisturl.push(row.manageStoreDTOList[i].storeImages)
+                    }
                 }
             },
             resetForm(formName) {
@@ -152,8 +151,12 @@
                 this.ruleForm.filelisturl.push(file.data)
             },
             handleRemove(file, fileList) {//删除文件的沟子
-                file
-                fileList
+                for (let i = 0; i < this.ruleForm.filelisturl.length; i++) {
+                    if (this.ruleForm.filelisturl[i] == file.url) {
+                        this.ruleForm.filelisturl.splice(i);
+                    }
+                }
+                console.log(this.ruleForm.filelisturl)
             },
             beforeAvatarUpload(file) {
                 this.ruleForm.logomodel = file;

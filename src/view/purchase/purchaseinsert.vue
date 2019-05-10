@@ -120,7 +120,7 @@
                 },
                 gongyingopt: [
                     {
-                        supplierBM: 'DDWAS',//供应商编号
+                        supplierId: 'DDWAS',//供应商编号
                         supplierName: '牛逼供货'//供应商名称
                     }
                 ],//供应商

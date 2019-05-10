@@ -21,9 +21,9 @@
                             </el-submenu>
                             <el-submenu index="1-2">
                                 <template slot="title">切换店铺</template>
-                                <el-menu-item index="1-2-1">店铺01</el-menu-item>
-                                <el-menu-item index="1-2-2">店铺02</el-menu-item>
-                                <el-menu-item index="1-2-3">店铺03</el-menu-item>
+                                <span v-for="(list,index) in mendianlist" :key="index">
+                                  <el-menu-item index='index' @click="clickMd(list.storename,list.storeid)">{{list.storename}}</el-menu-item>
+                                </span>
                             </el-submenu>
                             <el-submenu index="1-3">
                                 <template slot="title">小程序管理</template>
@@ -125,7 +125,8 @@
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
-                    <span id="head"><span id="huanying">欢迎您，<span id="name">{{username}}</span></span></span>
+                    <span id="head"><span id="huanying">欢迎您，<span
+                            id="name">{{username}}</span>  当前所在店铺:{{mendian.name}}</span></span>
                     <transition name="move" mode="out-in">
                         <router-view></router-view>
                     </transition>
@@ -140,11 +141,31 @@
         name: "master",
         data() {
             return {
-                username: ''
+                username: '',
+                mendian: {
+                    name: '牛逼门店',
+                    id: '1'
+                },
+                mendianlist: new Array()
+            }
+        }, methods: {
+            clickMd: function (name, id) {
+                this.mendian.name = name;
+                this.mendian.id = id;
             }
         }, created() {
             this.axios.get("/getPrinciple").then((response) => {
                 this.username = response.data;
+            })
+            this.axios.post('/GdStoreQueryAll',{
+
+            }).then((response) => {
+                if (response.data.msg == "处理成功") {
+                    var data = response.data.data;
+                    this.mendianlist = data;
+                    this.mendian.name = data[0].storename;
+                    this.mendian.id = data[0].storeid;
+                }
             })
         }
     }

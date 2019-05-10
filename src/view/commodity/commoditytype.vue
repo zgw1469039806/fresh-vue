@@ -177,7 +177,7 @@
                 return data.label.indexOf(value) !== -1;
             },
             remove(node, data) {//删除分类
-                this.axios.post("unification/delType", {
+                this.axios.post("/delType", {
                     "data": data.id
                 }).then((response) => {
                     if (response.data.msg == "删除成功") {
