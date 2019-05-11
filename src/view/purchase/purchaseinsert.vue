@@ -175,8 +175,8 @@
                                     "purchasingPrice": this.tableData[i].num,//采购价格
                                     "replenishId": 0,//进货ID
                                     "shopId": this.tableData[i].comdityId,//商品ID
-                                    "shopNumber": this.tableData[i].song + this.tableData[i].caigprice,//商品数量
-                                    "subtotal": this.tableData[i].caigprice * this.tableData[i].caigprice
+                                    "shopNumber": parseInt(this.tableData[i].song) + parseInt(this.tableData[i].caigprice),//商品数量
+                                    "subtotal": parseInt(this.tableData[i].caigprice) * parseInt(this.tableData[i].caigprice)
                                 }
                             )
                         }
