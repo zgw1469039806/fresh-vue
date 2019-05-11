@@ -97,7 +97,9 @@ const routes = [
                 }
             },
             {
+                name:'orderinsert',
                 path: '/orderinsert',
+                prop:true,
                 component: () => import("./view/order/orderinsert.vue"),
                 meta: {
                     title: "新增订单"
