@@ -151,12 +151,12 @@
                 this.ruleForm.filelisturl.push(file.data)
             },
             handleRemove(file, fileList) {//删除文件的沟子
+                fileList
                 for (let i = 0; i < this.ruleForm.filelisturl.length; i++) {
                     if (this.ruleForm.filelisturl[i] == file.url) {
                         this.ruleForm.filelisturl.splice(i);
                     }
                 }
-                console.log(this.ruleForm.filelisturl)
             },
             beforeAvatarUpload(file) {
                 this.ruleForm.logomodel = file;

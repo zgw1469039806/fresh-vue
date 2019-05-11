@@ -301,6 +301,9 @@
             isClose: function () { //关闭模态框
                 this.dialogFormVisible = false;
             }
+        },created() {
+            this.ruleForm.storeid = this.$route.params.md.id;
+            alert(this.ruleForm.storeid)
         }
     }
 </script>
