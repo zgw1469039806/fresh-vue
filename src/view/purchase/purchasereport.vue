@@ -249,10 +249,20 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
+                        this.axios.post('/delGdReplen',{
+                            "data": rid
+                        }).then((response)=>{
+                            let data = response.data;
+                            if (data.msg=="处理成功"){
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                            } else{
+                                this.$message.warning("删除失败!n")
+                            }
+                        })
+
                     }).catch(() => {
                         this.$message({
                             type: 'info',
@@ -265,10 +275,19 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
+                        this.axios.post('/delGdReplen',{
+                            "data": rid
+                        }).then((response)=>{
+                            let data = response.data;
+                            if (data.msg=="处理成功"){
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                            } else{
+                                this.$message.warning("删除失败!n")
+                            }
+                        })
                     }).catch(() => {
                         this.$message({
                             type: 'info',
