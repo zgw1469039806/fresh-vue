@@ -52,6 +52,12 @@ const routes = [
                 meta: {
                     title: "员工日志"
                 }
+            },{
+            path:'/water',
+                component:()=>import("./view/staff/water.vue"),
+                meta:{
+                title:"员工流水报表"
+                }
             },
             {
                 name: 'staffinsert',

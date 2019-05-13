@@ -4,6 +4,9 @@ import axios from "axios"
 import {router} from './router';
 import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
+import echarts from 'echarts'
+
+Vue.prototype.$echarts=echarts;
 
 const inter = axios.create({ // 创建服务
     baseURL: 'http://localhost:8777/unification', // 基础路径
@@ -41,6 +44,7 @@ inter.defaults.withCredentials=true;
 
 Vue.config.productionTip = false;
 Vue.prototype.axios = inter;
+
 
 
 Vue.use(ElementUI);

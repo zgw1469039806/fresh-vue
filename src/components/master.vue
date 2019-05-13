@@ -41,7 +41,7 @@
                                 <template slot="title">员工流水管理</template>
                                 <el-menu-item index="2-1-1" @click="$router.push({path:'/stafflog'})">查看操作日志
                                 </el-menu-item>
-                                <el-menu-item index="2-1-2">员工流水报表</el-menu-item>
+                                <el-menu-item index="2-1-2" @click="$router.push({path:'/water'})">员工流水报表</el-menu-item>
                             </el-submenu>
                             <el-submenu index="2-2">
                                 <template slot="title">员工管理</template>
