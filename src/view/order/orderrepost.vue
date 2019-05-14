@@ -6,15 +6,20 @@
                     <el-input v-model="Form.orderId"></el-input>
                 </el-form-item>
 
+                <el-form-item label="会员号：">
+                    <el-input v-model="Form.vipId"></el-input>
+                </el-form-item>
+
                 <el-form-item label="日期：">
                     <el-date-picker
-                            v-model="Form.statictime"
-                            type="daterange"
-                            align="right"
-                            unlink-panels
-                            range-separator="至"
-                            start-placeholder="开始日期"
-                            end-placeholder="结束日期">
+                            v-model="Form.startTime"
+                            type="date"
+                            placeholder="开始时间">
+                    </el-date-picker>
+                    <el-date-picker
+                            v-model="Form.endTime"
+                            type="date"
+                            placeholder="结束时间">
                     </el-date-picker>
                 </el-form-item>
 
@@ -29,22 +34,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="店铺：">
-                    <el-select v-model="Form.orStoreValue" placeholder="请选择">
-                        <el-option
-                                v-for="item in orStore"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-                <el-form-item label="会员号：">
-                    <el-input v-model="Form.vipId"></el-input>
-                </el-form-item>
-
-                <el-button style="margin-left: 5px" type="primary" >查询</el-button>
+                <el-button style="margin-left: 5px" type="primary" @click="chaxun()">查询</el-button>
             </el-form>
             <template>
                 <el-table
@@ -52,7 +42,6 @@
                         style="width: 100%"
                         @row-click="selOrder"
                 >
-
                     <el-table-column
                             label="序号"
                             type="index">
@@ -201,29 +190,8 @@
         data(){
             return{
 
-                tableData: [
-                    {
-                        orderId: '1a23123',
-                        vipId: '00001',
-                        dealWay: '支付宝',
-                        dealType: '消费',
-                        orderDate: '2019-12-12',
-                        orderMoney:'567.00',
-                        orderState:'待发货',
-                        orderAddress:'河南省洛阳市涧西区九都西路北大青鸟洛阳融科一楼创客空间'
-
-                    },
-                    {
-                        orderId: '9876543',
-                        vipId: '',
-                        dealWay: '微信',
-                        dealType: '消费',
-                        orderMoney:'789.00',
-                        orderDate: '2019-12-11',
-                        orderState:'已完成',
-                        orderAddress:'河南省洛阳市涧西区九都西路北大青鸟洛阳融科3楼304'
-                    }
-                ],
+                //TODO：线上分页
+                tableData: [],
                 tableData1:[{
                     orderId:'232301',
                     goodsName:'可口可乐',
@@ -253,25 +221,29 @@
                 },
                 dialogVisible:false,     //模态框是否显示
                 //addLoading: false,      //是否显示loading
+                //订单状态  0:待付款   1:已付款/待发货   2:已取消  3:已发货/待确认  4:已完成  5:订单已取消,6:挂单中
                 orderStart: [
                 {
-                    value: '0',
+                    value: -1,
                     label: '全部'
+                },{
+                    value: 0,
+                    label: '待付款'
                 },{
                     value: '1',
                     label: '待发货'
                 }, {
                     value: '2',
-                    label: '已发货'
+                    label: '已取消'
                 }, {
                     value: '3',
-                    label: '未支付'
+                    label: '已发货'
                 }, {
                     value: '4',
                     label: '已完成'
                 }, {
-                    value: '5',
-                    label: '退款'
+                    value: '6',
+                    label: '挂单中'
                 }],
                 orStore: [
                     {

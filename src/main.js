@@ -10,7 +10,7 @@ Vue.prototype.$echarts=echarts;
 
 const inter = axios.create({ // 创建服务
     baseURL: 'http://localhost:8777/unification', // 基础路径
-    timeout: 5000, // 请求延时
+    timeout: 10000, // 请求延时
     headers: {"Content-Type": "application/json"},
     withCredentials: true
 });
