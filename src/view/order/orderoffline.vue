@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div>
-            <el-form :inline="true" ref="Form" label-width="80px" >
+            <el-form :inline="true" ref="Form" label-width="80px">
                 <el-form-item label="订单号：">
                     <el-input v-model="Form.orderId"></el-input>
                 </el-form-item>
@@ -102,7 +102,7 @@
                     title="订单详情"
                     :visible.sync="dialogVisible"
                     :close-on-click-modal="false">
-                <div slot="footer" >
+                <div slot="footer">
 
                     <template>
                         <el-table
@@ -120,23 +120,23 @@
 
                             <el-table-column
                                     label="商品名称"
-                                    prop="comName">
+                                    prop="comdityname">
                             </el-table-column>
 
                             <el-table-column
                                     label="商品规格"
-                                    prop="comGuiGe">
+                                    prop="comditydw">
                             </el-table-column>
 
                             <el-table-column
                                     label="商品数量"
-                                    prop="comNum">
+                                    prop="num">
                             </el-table-column>
 
-                            <el-table-column
+                            <!--<el-table-column
                                     label="商品单价"
                                     prop="comPrice">
-                            </el-table-column>
+                            </el-table-column>-->
 
                             <el-table-column
                                     label="优惠方式"
@@ -144,37 +144,39 @@
                             </el-table-column>
 
                             <el-table-column
-                                    label="应付"
+                                    label="应付(元)"
                                     prop="comdityprice">
                             </el-table-column>
 
                             <el-table-column
-                                    label="实付"
+                                    label="实付(元)"
                                     prop="comditytrueprice">
                             </el-table-column>
 
                         </el-table>
                     </template>
 
-                    <div >
+                    <div>
                         <h5 class="close_left flot_left">修改订单状态：</h5>
 
                         <el-button
                                 class="close_left flot_left"
                                 v-if="updordstart == '挂单中' || updordstart == 6"
                                 @click="goPay()"
-                        >确认付款</el-button>
+                        >确认付款
+                        </el-button>
 
                         <el-button
                                 class="close_left flot_left"
                                 v-if="updordstart == '已完成' || updordstart == 4 "
-                        >已完成</el-button>
+                        >已完成
+                        </el-button>
 
                     </div>
 
                     <div style="clear: left;">
-                        <el-button @click.native="dialogVisible = false">取消</el-button>
-                        <el-button type="primary" >确定</el-button>
+                        <!--<el-button @click.native="dialogVisible = false">取消</el-button>
+                        <el-button type="primary" >确定</el-button>-->
                     </div>
 
                 </div>
@@ -186,37 +188,26 @@
 <script>
     export default {
         name: "orderoffline",
-        data(){
-            return{
+        data() {
+            return {
                 tableData: null, //订单
-                tableData1:[{
-                    comdityId:"123456789",
-                    comName:'香蕉',
-                    comGuiGe:"个",
-                    comnNm:0,
-                    comPrice:"123.00",
-                    preferentialway:'会员',
-                    comdityprice:'110',
-                    comditytrueprice:'100'
-                }
-
-                ],//订单详情
+                tableData1: [],//订单详情
                 Form: {
                     orderId: '',
-                    startTime:null,
-                    endTime:null,
-                    orderStat:0,
-                    storeId:0,
-                    vipPhone:'',
-                    orderScene:1, //交易场景 1-线下
-                    pageNo:1,
-                    pageSize:10,
+                    startTime: null,
+                    endTime: null,
+                    orderStat: -1,
+                    storeId: 0,
+                    vipPhone: '',
+                    orderScene: 1, //交易场景 1-线下
+                    pageNo: 1,
+                    pageSize: 10,
                 },
                 /*page: {
                     total: 20,
                     current: 1,
                 },*/
-                dialogVisible:false,     //模态框是否显示
+                dialogVisible: false,     //模态框是否显示
                 //addLoading: false,      //是否显示loading
                 orderState: [
                     {
@@ -226,41 +217,51 @@
                     {
                         value: 4,
                         label: '已完成'
-                    },{
+                    }, {
                         value: 6,
                         label: '挂单中'
                     }],
-                updordstart:null ,//订单详情 -- 订单状态 -- 修改
+                updordstart: null,//订单详情 -- 订单状态 -- 修改
+                updOrderId: null
             }
 
         }, methods: {
-            chaxun(){
-                if(this.Form.startTime != null){
+            chaxun() {
+                /*if (this.Form.startTime != null) {
                     this.Form.startTime = (this.Form.startTime).format("yyyy-MM-dd");
                 }
-                if(this.Form.endTime != null){
+                if (this.Form.endTime != null) {
                     this.Form.endTime = (this.Form.endTime).format("yyyy-MM-dd");
                 }
-                alert(this.Form.orderStat)
+                window.console.log(this.Form.startTime+","+this.Form.endTime);*/
                 this.orderPage();
 
             },
-            selOrder(row, event, column){
-                row,event, column
+            selOrder(row, event, column) {
+                row, event, column
                 this.dialogVisible = true;
                 this.updordstart = row.orderStat
+                this.updOrderId = row.orderid
 
                 this.axios.post("/selOrderShopById", {
                     "data": row.orderid,
                 })
                     .then((response) => {
                         if (response.data.code == 0) {
-                            this.tableData1 = response.data.data;
-                            alert(response.data.data.length)
+                            // 动态赋值
+                            let data = response.data.data;
+                            let comList = data["comList"];
+                            let ordList = data["ordList"];
+                            for (let i = 0; i < ordList.length; i++) {
+                                for (let j = 0; j < comList.length; j++) {
+                                    if (ordList[i].comdityId == comList[j].comdityId) {
+                                        ordList[i].comditydw = comList[j].comditydw;
+                                        ordList[i].comdityname = comList[j].comdityname;
+                                    }
+                                }
+                            }
+                            this.tableData1 = ordList;
 
-
-
-                            //TODO:查询根据商品id查询商品
                         } else {
                             this.$message.error(response.data.msg);
                         }
@@ -270,8 +271,27 @@
                     })
             },
 
-            goPay(){
-                alert("去付款")
+            goPay() {
+                alert("去付款:" + this.updOrderId);
+
+                //根据订单编号修改订单状态 已完成
+                this.axios.post("/updOrderStartById", {
+                    "data": {
+                        "ordStart": 4,
+                        "orderId": this.updOrderId
+                    },
+                })
+                    .then((response) => {
+                        if (response.data.code == 0) {
+                            window.location.reload();
+                        } else {
+                            this.$message.error(response.data.msg);
+                        }
+                    })
+                    .catch((error) => {
+                        this.$message.error("Error:" + error);
+                    })
+
             },
             //一页多少条改变
             handleSizeChange(index) {
@@ -280,7 +300,7 @@
             handleCurrentChange(index) {
                 index
             },
-            orderPage(){
+            orderPage() {
                 this.axios.post("/selOrderPage", {
                     "data": this.Form,
                 })
@@ -297,30 +317,30 @@
                     })
             }
 
-        },created() {
+        }, created() {
             this.Form.storeId = this.$route.params.md;
             this.orderPage();
         }
     }
 
-    Date.prototype.format = function(format){
+    Date.prototype.format = function (format) {
         var o = {
-            "M+" : this.getMonth()+1, //month
-            "d+" : this.getDate(), //day
-            "H+" : this.getHours(), //hour
-            "m+" : this.getMinutes(), //minute
-            "s+" : this.getSeconds(), //second
-            "q+" : Math.floor((this.getMonth()+3)/3), //quarter
-            "S" : this.getMilliseconds() //millisecond
+            "M+": this.getMonth() + 1, //month
+            "d+": this.getDate(), //day
+            "H+": this.getHours(), //hour
+            "m+": this.getMinutes(), //minute
+            "s+": this.getSeconds(), //second
+            "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+            "S": this.getMilliseconds() //millisecond
         }
 
-        if(/(y+)/.test(format)) {
-            format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
         }
 
-        for(var k in o) {
-            if(new RegExp("("+ k +")").test(format)) {
-                format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
             }
         }
         return format;
@@ -332,22 +352,27 @@
         display: flex;
         justify-content: center;
     }
+
     .demo-table-expand {
         font-size: 0;
     }
+
     .demo-table-expand label {
         width: 90px;
         color: #99a9bf;
     }
+
     .demo-table-expand .el-form-item {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
     }
-    .flot_left{
+
+    .flot_left {
         float: left;
     }
-    .close_left{
+
+    .close_left {
         clear: left;
     }
 </style>
