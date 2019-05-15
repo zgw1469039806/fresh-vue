@@ -2,15 +2,15 @@
     <div>
         <div>
             <el-form :inline="true" ref="Form" label-width="80px">
-                <el-form-item label="商品名称">
+                <el-form-item label="商品名称/编码">
                     <el-input v-model="Form.name"></el-input>
                 </el-form-item>
                 <el-select v-model="Form.md">
-                    <el-option label="全部" value="0"></el-option>
-                    <el-option label="万达店" value="wdd"></el-option>
-                    <el-option label="老城店" value="lcd"></el-option>
+                    <el-option value="0" label="全部"></el-option>
+                    <el-option v-for="(md,index) in mendians" :key="index" :label="md.storename"
+                               :value="md.storeid"></el-option>
                 </el-select>
-                <el-button style="margin-left: 5px" type="primary">查询</el-button>
+                <el-button style="margin-left: 5px" @click="Query" type="primary">查询</el-button>
                 <el-button type="success" @click="dialogVisible = true">新增商品</el-button>
             </el-form>
             <template>
@@ -25,10 +25,10 @@
                                     <span>{{ props.row.comdityId }}</span>
                                 </el-form-item>
                                 <el-form-item label="商品名称:">
-                                    <span>{{ props.row.comdityname }}</span>
+                                    <el-input v-model="props.row.comdityname"></el-input>
                                 </el-form-item>
                                 <el-form-item label="所属店铺:">
-                                    <span>{{ props.row.ssdp }}</span>
+                                    <spant>{{ props.row.ssmdName }}</spant>
                                 </el-form-item>
                                 <el-form-item label="库存数量:">
                                     <span>{{ props.row.stock }}</span>
@@ -37,13 +37,20 @@
                                     <span>{{ props.row.typename }}</span>
                                 </el-form-item>
                                 <el-form-item label="商品单位:">
-                                    <span>{{ props.row.comditydw }}</span>
+                                    <el-input v-model="props.row.comditydw"></el-input>
                                 </el-form-item>
                                 <el-form-item label="商品描述:">
                                     <el-input v-model="props.row.comditydescribe"></el-input>
                                 </el-form-item>
-                                <el-form-item label="商品单价:">
+                                <el-form-item label="零售价格:">
                                     <el-input v-model="props.row.comdityprice"></el-input>
+                                </el-form-item>
+
+                                <el-form-item label="进货价格:">
+                                    <el-input v-model="props.row.puprice"></el-input>
+                                </el-form-item>
+                                <el-form-item label="换取积分:">
+                                    <el-input v-model="props.row.corresponding"></el-input>
                                 </el-form-item>
                                 <el-form-item label="会员是否可享折扣:">
                                     <span @click="vipchang(props.row)" v-if="props.row.isnodiscount==0"><el-button
@@ -52,7 +59,7 @@
                                             type="text">是</el-button></span>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="text"> 保存修改</el-button>
+                                    <el-button type="text" @click="update(props.row)">保存修改</el-button>
                                 </el-form-item>
                             </el-form>
                         </template>
@@ -80,7 +87,7 @@
                     <el-table-column
                             sortable
                             label="所属店铺"
-                            prop="ssdp">
+                            prop="ssmdName">
                     </el-table-column>
                     <el-table-column
                             sortable
@@ -121,7 +128,6 @@
                     </div>
                     <div class="jgxx">
                         <div class="b1title"><span>商品价格信息</span></div>
-
                         <el-form-item label="进货价" prop="jhj">
                             <el-input v-model="ruleForm.jhj"></el-input>
                         </el-form-item>
@@ -131,11 +137,24 @@
                         <el-form-item label="批发价" prop="pfj">
                             <el-input v-model="ruleForm.pfj"></el-input>
                         </el-form-item>
-                        <el-form-item label="配送价" prop="psj">
+                        <el-form-item label="折扣价" prop="psj">
                             <el-input v-model="ruleForm.psj"></el-input>
                         </el-form-item>
                         <el-form-item label="最低价" prop="zdj">
                             <el-input v-model="ruleForm.zdj"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品对应积分">
+                            <el-input v-model="ruleForm.corresponding"></el-input>
+                        </el-form-item>
+                        <el-form-item label="商品同步至">
+                            <el-select v-model="ruleForm.storeids" filterable multiple placeholder="请选择">
+                                <el-option
+                                        v-for="item in mendians"
+                                        :key="item.storeid"
+                                        :label="item.storename"
+                                        :value="item.storeid">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </div>
                     <div style="float: right;">
@@ -160,7 +179,7 @@
                         isnodiscount: '0',//是否打折
                         stock: '13',//库存数量
                         corresponding: '63',
-                        ssdp: '25',//所属店铺
+                        ssmdName: '25',//所属店铺
                         comditytypeId: '1',
                         typename: "干果",//分类名称
                         comdityname: "核桃",//商品名称
@@ -173,7 +192,7 @@
                         isnodiscount: '0',//是否打折
                         stock: '13',//库存数量
                         corresponding: '63',
-                        ssdp: '25',//所属店铺
+                        ssmdName: '25',//所属店铺
                         comditytypeId: '1',
                         typename: "干果",//分类名称
                         comdityname: "核桃",//商品名称
@@ -190,8 +209,12 @@
                     jhj: '',//进货价
                     lsj: '',//零售价
                     pfj: '0',//批发价
-                    psj: '0',//配送价,
-                    zdj: '0'//最低价
+                    psj: '0',//折扣价
+                    zdj: '0',//最低价
+                    isnodiscount: 0,//是否为打折商品
+                    corresponding: 0,//对应积分
+                    storeids: [],//对应店铺
+                    vipishige: 0,//会员是否可享折扣
                 },
                 rules: {
                     name: [
@@ -216,7 +239,7 @@
                         {required: true, message: '请输入商品批发价', trigger: 'blur'}
                     ],
                     psj: [
-                        {required: true, message: '请输入商品配送价', trigger: 'blur'}
+                        {required: true, message: '请输入商品折扣价', trigger: 'blur'}
                     ],
                     zdj: [
                         {required: true, message: '请输入商品最低价', trigger: 'blur'}
@@ -233,6 +256,9 @@
 
                 },
                 dialogVisible: false,
+                mendians: [
+                    {}
+                ],
                 options: [{
                     value: '选项1',
                     label: '黄金糕'
@@ -280,6 +306,47 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        /**
+                         *
+                         *  name: '',//商品名称
+                         type: [],//商品分类
+                         dw: '',//商品单位
+                         jj: '',//商品简介
+                         jhj: '',//进货价
+                         lsj: '',//零售价
+                         pfj: '0',//批发价
+                         psj: '0',//配送价
+                         zdj: '0',//最低价
+                         isnodiscount: 0,//是否为打折商品
+                         corresponding: 0,//对应积分
+                         storeids: [],//对应店铺
+                         vipishige: 0,//会员是否可享折扣
+                         * */
+                        var data = {
+                            "data": {
+                                "comditydescribe": this.ruleForm.jj,//商品简介
+                                "comditydw": this.ruleForm.dw,//商品单位
+                                "comdityname": this.ruleForm.name,//商品名称
+                                "comdityprice": this.ruleForm.lsj,//零售价
+                                "comditytypeId": this.ruleForm.type[0],//商品分类
+                                "comstate": 1,
+                                "corresponding": this.ruleForm.corresponding,
+                                "discount": this.ruleForm.psj,//折扣价
+                                "isnodiscount": 0,//是否为打折商品
+                                "puprice": this.ruleForm.jhj,//进货价
+                                "storeidlist": this.ruleForm.storeids,
+                                "vipishige": 0
+                            }
+                        }
+                        this.axios.post('/addShop',data).then((response)=>{
+                            if (response.data.msg == "处理成功!"){
+                                this.$message.success("添加成功!")
+                            } else{
+                                this.$message.warning("添加失败!")
+                            }
+                        }).catch((error)=>{
+                            this.$message.error("Error:"+error)
+                        })
                         alert('submit!');
                     } else {
                         return false;
@@ -287,7 +354,13 @@
                 });
             },
             Query: function () {
-                this.axios.post('/QueryShopByWh', {}).then((response) => {
+                var data = {
+                    "data": {
+                        "comdityname": this.Form.name,
+                        "storeid": this.Form.md
+                    },
+                }
+                this.axios.post('/QueryShopByWh', data).then((response) => {
                     if (response.data.msg == "处理成功") {
                         var data = response.data.data;
                         this.tableData = data;
@@ -297,9 +370,66 @@
                         this.$message.error("Error:" + error)
                     }
                 })
+            },
+            update: function (rows) {
+                this.$alert(rows)
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                var data = {
+                    "data": {
+                        "comdityId": rows.comdityId,//商品id
+                        "comditydescribe": rows.comditydescribe,//商品描述
+                        "comditydw": rows.comditydw,//商品单位
+                        "comdityname": rows.comdityname,//商品名称
+                        "comdityprice": rows.comdityprice,//商品价格
+                        "corresponding": rows.corresponding,//对应积分
+                        "discount": rows.discount,//折扣价
+                        "isnodiscount": rows.isnodiscount,//是否打折
+                        "puprice": rows.puprice,//进货价
+                        "vipishige": rows.vipishige,//会员是否可享折扣
+                        // "comditytypeId": 0,//商品分类id
+                    },
+                }
+                this.axios.post('/updShop', data).then((response) => {
+                    $loadinged.close();
+                    if (response.data.msg == "处理成功") {
+                        this.$message.success("修改成功!");
+                    } else {
+                        this.$message.warning("修改失败!");
+                    }
+                }).catch((error) => {
+                    $loadinged.close();
+                    this.$message.error("Error:" + error)
+                })
             }
         }, created() {
             this.Query();
+            this.axios.post('/GdStoreQueryAll', {}).then((response) => {
+                var data = response.data.data;
+                if (response.data.msg == "处理成功") {
+                    this.mendians = data;
+                }
+            })
+            //查询所有分类
+            this.axios.get('/selTypeAll', {}).then((response) => {
+                if (response.data.msg == "处理成功") {
+                    this.options = [];
+                    var data = response.data.data;
+                    for (let i = 0; i < data.length; i++) {
+                        let opt = {
+                            value: data[i].comditytypeId,
+                            label: data[i].typename
+                        }
+                        this.options.push(opt)
+                    }
+                }
+            }).catch((error) => {
+                this.$message.error("Error:" + error)
+            })
         }
 
     }

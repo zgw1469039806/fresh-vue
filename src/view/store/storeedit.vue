@@ -17,24 +17,24 @@
                     <el-table-column
                             fixed
                             prop="storeid"
-                            label="门店编号" >
+                            label="门店编号">
                     </el-table-column>
                     <el-table-column
                             prop="storename"
-                            label="门店名称:" >
+                            label="门店名称:">
                     </el-table-column>
                     <el-table-column
                             prop="storeaddress"
-                            label="门店地址" >
+                            label="门店地址">
                     </el-table-column>
                     <el-table-column
-                            label="门店Logo" >
+                            label="门店Logo">
                         <template slot-scope="scope">
                             <img :src=scope.row.storeaLogo width="150px"/>
                         </template>
                     </el-table-column>
                     <el-table-column
-                            label="操作" >
+                            label="操作">
                         <template slot-scope="scope">
                             <el-button
                                     @click.native.prevent="updateRow(scope.$index, scope)"
@@ -98,7 +98,7 @@
             },
             //单机编辑
             updateRow(index, rows) {
-                this.$router.push({name: 'storeupd', params: {type: "update", md: rows.row,index:index}})
+                this.$router.push({name: 'storeupd', params: {type: "update", md: rows.row, index: index}})
             },
             //一页多少条改变
             handleSizeChange(index) {
@@ -110,8 +110,8 @@
                 index
                 this.$router.push({name: 'storeinsert', params: {type: "update", sid: "12"}})
             },
-            Query:function () {
-                this.axios.post('/GdStoreQueryAll',{
+            Query: function () {
+                this.axios.post('/GdStoreQueryAll', {
                     "data": this.Form.name
                 }).then((response) => {
                     if (response.data.msg == "处理成功") {
@@ -124,7 +124,7 @@
             }
         },
         created: function () {
-           this.Query();
+            this.Query();
         }
     }
 </script>
