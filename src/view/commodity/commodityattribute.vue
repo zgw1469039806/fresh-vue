@@ -203,22 +203,22 @@
                     dw: [
                         {required: true, message: '请输入商品单位', trigger: 'blur'}
                     ],
-                    jj:[
+                    jj: [
                         {required: true, message: '请输入商品简介', trigger: 'blur'}
                     ],
-                    jhj:[
+                    jhj: [
                         {required: true, message: '请输入商品进货价', trigger: 'blur'}
                     ],
-                    lsj:[
+                    lsj: [
                         {required: true, message: '请输入商品零售价', trigger: 'blur'}
                     ],
-                    pfj:[
+                    pfj: [
                         {required: true, message: '请输入商品批发价', trigger: 'blur'}
                     ],
-                    psj:[
+                    psj: [
                         {required: true, message: '请输入商品配送价', trigger: 'blur'}
                     ],
-                    zdj:[
+                    zdj: [
                         {required: true, message: '请输入商品最低价', trigger: 'blur'}
                     ]
                 },
@@ -285,10 +285,21 @@
                         return false;
                     }
                 });
+            },
+            Query: function () {
+                this.axios.post('/QueryShopByWh', {}).then((response) => {
+                    if (response.data.msg == "处理成功") {
+                        var data = response.data.data;
+                        this.tableData = data;
+                    }
+                }).catch((error) => {
+                    if (error != null) {
+                        this.$message.error("Error:" + error)
+                    }
+                })
             }
-        },created()
-        {
-
+        }, created() {
+            this.Query();
         }
 
     }
