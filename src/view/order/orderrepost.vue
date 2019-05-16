@@ -3,28 +3,28 @@
         <div>
             <el-form :inline="true" ref="Form" label-width="80px">
                 <el-form-item label="订单号：">
-                    <el-input v-model="Form.orderId"></el-input>
+                    <el-input v-model="upForm.orderId"></el-input>
                 </el-form-item>
 
                 <el-form-item label="会员号：">
-                    <el-input v-model="Form.vipPhone"></el-input>
+                    <el-input v-model="upForm.vipPhone"></el-input>
                 </el-form-item>
 
                 <el-form-item label="日期：">
                     <el-date-picker
-                            v-model="Form.startTime"
+                            v-model="upForm.startTime"
                             type="date"
                             placeholder="开始时间">
                     </el-date-picker>
                     <el-date-picker
-                            v-model="Form.endTime"
+                            v-model="upForm.endTime"
                             type="date"
                             placeholder="结束时间">
                     </el-date-picker>
                 </el-form-item>
 
                 <el-form-item label="状态：">
-                    <el-select v-model="Form.orderStat" placeholder="全部">
+                    <el-select v-model="upForm.orderStat" placeholder="全部">
                         <el-option
                                 v-for="item in orderStart"
                                 :key="item.value"
@@ -36,11 +36,11 @@
 
                 <el-button style="margin-left: 5px" type="primary" @click="chaxun1()">查询</el-button>
             </el-form>
-            <template>
+            <template >
                 <el-table
                         :data="tableData.list"
                         style="width: 100%"
-                        @row-click="selOrder"
+                        @row-click="upSelOrder"
                 >
                     <el-table-column
                             label="序号"
@@ -95,8 +95,8 @@
                     <el-pagination
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
-                            :current-page="Form.pageNo"
-                            :page-size="Form.pageSize"
+                            :current-page="upForm.pageNo"
+                            :page-size="upForm.pageSize"
                             layout="total, prev, pager, next, jumper"
                             :total="tableData.totalCount"><!--  -->
                     </el-pagination>
@@ -119,56 +119,80 @@
 
                             <el-table-column
                                     label="商品编号"
-                                    prop="orderId">
+                                    prop="comdityId">
                             </el-table-column>
 
                             <el-table-column
                                     label="商品名称"
-                                    prop="goodsName">
+                                    prop="comdityname">
                             </el-table-column>
 
                             <el-table-column
                                     label="商品规格"
-                                    prop="goodsGuige">
+                                    prop="comditydw">
                             </el-table-column>
 
                             <el-table-column
                                     label="商品数量"
-                                    prop="goodsNum">
+                                    prop="num">
+                            </el-table-column>
+
+                            <!--<el-table-column
+                                    label="商品单价"
+                                    prop="comPrice">
+                            </el-table-column>-->
+
+                            <el-table-column
+                                    label="优惠方式"
+                                    prop="preferentialway">
                             </el-table-column>
 
                             <el-table-column
-                                    label="商品单价"
-                                    prop="goodsPrice">
+                                    label="应付(元)"
+                                    prop="comdityprice">
+                            </el-table-column>
+
+                            <el-table-column
+                                    label="实付(元)"
+                                    prop="comditytrueprice">
                             </el-table-column>
 
                         </el-table>
                     </template>
-
+                    <!--订单状态  0:待付款   1:已付款/待发货   2:已取消  3:已发货/待确认  4:已完成 ,6:挂单中-->
                     <div >
                         <h5 class="flot_left">收货地址：</h5>
                         <p class="close_left flot_left ">{{ordAddress}}</p>
                         <h5 class="close_left flot_left">修改订单状态：</h5>
                         <el-button
                                 class="close_left flot_left"
-                                v-if="updordstart == '待发货'"
+                                v-if="updordstart == '待发货' || updordstart == 1"
                                 @click="fahuo()"
                         >立即发货</el-button>
 
                         <el-button
                                 class="close_left flot_left"
-                                v-if="updordstart == '已发货'"
+                                v-if="updordstart == '已发货' || updordstart == 3"
                         >已发货</el-button>
 
                         <el-button
                                 class="close_left flot_left"
-                                v-if="updordstart == '未支付'"
+                                v-if="updordstart == '待付款' || updordstart == 0"
                         >未支付</el-button>
 
                         <el-button
                                 class="close_left flot_left"
-                                v-if="updordstart == '已完成'"
+                                v-if="updordstart == '已完成' || updordstart == 4"
                         >已完成</el-button>
+                        <el-button
+                                class="close_left flot_left"
+                                v-if="updordstart == '申请退款' || updordstart == 5"
+                                @click="tuikuan()"
+                        >同意退款</el-button>
+                        <el-button
+                                class="close_left flot_left"
+                                v-if="updordstart == '已退款' || updordstart == 7"
+                        >已退款</el-button>
 
 
                     </div>
@@ -193,14 +217,14 @@
                 //TODO：线上分页
                 tableData: null,
                 tableData1:null,
-                Form: {
+                upForm: {
                     orderId: '',
                     startTime: null,
                     endTime: null,
                     orderStat: -1,
                     storeId: 0,
                     vipPhone: '',
-                    orderScene: 0, //交易场景 0-线上
+                    orderScene: 2, //交易场景 0-线上
                     pageNo: 1,
                     pageSize: 10,
                 },
@@ -225,9 +249,15 @@
                 }, {
                     value: 4,
                     label: '已完成'
+                },{
+                    value: 5,
+                    label: '申请退款'
                 }, {
                     value: 6,
                     label: '挂单中'
+                }, {
+                    value: 7,
+                    label: '已退款'
                 }],
 
                 updordstart:null ,//订单详情 -- 订单状态 -- 修改
@@ -237,27 +267,59 @@
 
         }, methods: {
             chaxun1(){
-                if (this.Form.startTime != null) {
-                    this.Form.startTime = (this.Form.startTime).format("yyyy-MM-dd");
-                }
-                if (this.Form.endTime != null) {
-                    this.Form.endTime = (this.Form.endTime).format("yyyy-MM-dd");
-                }
-                window.console.log(this.Form.startTime+","+this.Form.endTime);
                 this.onOrderPage();
             },
-            selOrder(row, event, column){
-                alert("订单编号："+row.orderId);
+            upSelOrder(row, event, column){
                 this.dialogVisible = true;
-                this.updordstart = row.orderState
-                this.updOrderId = row.updOrderId
-                this.ordAddress = row.orderAddress
+                this.updordstart = row.orderStat
+                this.updOrderId = row.orderid
                 row,event, column
+                alert(row.orderStat)
+                //根据地址id获取地址
+                this.axios.post("/selAddressById", {
+                    "data": row.addressId,
+                })
+                    .then((response) => {
+                        this.ordAddress = response.data.data.address;
+                    })
+                    .catch((error) => {
+                        this.$message.error("Error:" + error);
+                    })
+
+
+                this.axios.post("/selOrderShopById", {
+                    "data": row.orderid,
+                })
+                    .then((response) => {
+                        if (response.data.code == 0) {
+                            // 动态赋值
+                            let data = response.data.data;
+                            let comList = data["comList"];
+                            let ordList = data["ordList"];
+                            for (let i = 0; i < ordList.length; i++) {
+                                for (let j = 0; j < comList.length; j++) {
+                                    if (ordList[i].comdityId == comList[j].comdityId) {
+                                        ordList[i].comditydw = comList[j].comditydw;
+                                        ordList[i].comdityname = comList[j].comdityname;
+                                    }
+                                }
+                            }
+                            this.tableData1 = ordList;
+
+                        } else {
+                            this.$message.error(response.data.msg);
+                        }
+                    })
+                    .catch((error) => {
+                        this.$message.error("Error:" + error);
+                    })
             },
 
             fahuo(){
-              alert("点击待发货，订单状态改为已发货");
-              //重新调用查询方法 ，刷新数据
+                this.updOrderStart(this.updOrderId , 3);
+            },
+            tuikuan(){
+                this.updOrderStart(this.updOrderId , 7);
             },
 
             //一页多少条改变
@@ -268,8 +330,9 @@
                 index
             },
             onOrderPage(){
+                alert(this.upForm.orderScene)
                 this.axios.post("/selOrderPage", {
-                    "data": this.Form,
+                    "data": this.upForm,
                 })
                     .then((response) => {
                         if (response.data.code == 0) {
@@ -281,36 +344,33 @@
                     .catch((error) => {
                         this.$message.error("Error:" + error);
                     })
+            },
+            updOrderStart(orderId , orderStart){
+                this.axios.post("/updOrderStartById", {
+                    "data": {
+                        "ordStart": orderStart,
+                        "orderId": orderId
+                    },
+                })
+                    .then((response) => {
+                        if (response.data.code == 0) {
+                            window.location.reload();
+                        } else {
+                            this.$message.error(response.data.msg);
+                        }
+                    })
+                    .catch((error) => {
+                        this.$message.error("Error:" + error);
+                    })
+
             }
 
         },created() {
-            this.Form.storeId = this.$route.params.md;
+            this.upForm.storeId = this.$route.params.md;
             this.onOrderPage();
         }
     }
 
-    Date.prototype.format = function (format) {
-        var o = {
-            "M+": this.getMonth() + 1, //month
-            "d+": this.getDate(), //day
-            "H+": this.getHours(), //hour
-            "m+": this.getMinutes(), //minute
-            "s+": this.getSeconds(), //second
-            "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
-            "S": this.getMilliseconds() //millisecond
-        }
-
-        if (/(y+)/.test(format)) {
-            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-        }
-
-        for (var k in o) {
-            if (new RegExp("(" + k + ")").test(format)) {
-                format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
-            }
-        }
-        return format;
-    }
 </script>
 
 <style scoped>
