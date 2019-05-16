@@ -306,22 +306,12 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        /**
-                         *
-                         *  name: '',//商品名称
-                         type: [],//商品分类
-                         dw: '',//商品单位
-                         jj: '',//商品简介
-                         jhj: '',//进货价
-                         lsj: '',//零售价
-                         pfj: '0',//批发价
-                         psj: '0',//配送价
-                         zdj: '0',//最低价
-                         isnodiscount: 0,//是否为打折商品
-                         corresponding: 0,//对应积分
-                         storeids: [],//对应店铺
-                         vipishige: 0,//会员是否可享折扣
-                         * */
+                        const $loadinged = this.$loading({
+                            lock: true,
+                            text: 'Loading',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         var data = {
                             "data": {
                                 "comditydescribe": this.ruleForm.jj,//商品简介
@@ -338,14 +328,18 @@
                                 "vipishige": 0
                             }
                         }
-                        this.axios.post('/addShop',data).then((response)=>{
-                            if (response.data.msg == "处理成功!"){
+                        this.axios.post('/addShop', data).then((response) => {
+                            $loadinged.close()
+                            if (response.data.msg == "处理成功") {
                                 this.$message.success("添加成功!")
-                            } else{
+                                this.dialogVisible = false;
+                                this.Query;
+                            } else {
                                 this.$message.warning("添加失败!")
                             }
-                        }).catch((error)=>{
-                            this.$message.error("Error:"+error)
+                        }).catch((error) => {
+                            $loadinged.close()
+                            this.$message.error("Error:" + error)
                         })
                         alert('submit!');
                     } else {
@@ -372,7 +366,6 @@
                 })
             },
             update: function (rows) {
-                this.$alert(rows)
                 const $loadinged = this.$loading({
                     lock: true,
                     text: 'Loading',
@@ -398,6 +391,7 @@
                     $loadinged.close();
                     if (response.data.msg == "处理成功") {
                         this.$message.success("修改成功!");
+                        this.Query;
                     } else {
                         this.$message.warning("修改失败!");
                     }

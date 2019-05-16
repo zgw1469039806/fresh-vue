@@ -130,20 +130,20 @@
         data() {
             return {
                 tableData: [
-                    {
-                        replenishId: '1',//进货ID
-                        receiptNo: 'SWA544884',//进货单号
-                        storeid: '1',//所属店铺ID
-                        storename: '涧西店',//所属店铺名称
-                        supplierBM: 'DDAWS554',//供应商编号
-                        supplierName: '双汇肉类批发',//供应商
-                        username: '1',//制单人员
-                        replenishTime: '2019-10-10',//制单时间
-                        remarks: '双汇王中王，火腿肠中的战斗肠',//备注
-                        isnostorage: '1',//收获状态
-                        money: '44885',//单据金额
-                        commodity: '暂无数据'//商品详细
-                    }
+                    // {
+                    //     replenishId: '1',//进货ID
+                    //     receiptNo: 'SWA544884',//进货单号
+                    //     storeid: '1',//所属店铺ID
+                    //     storename: '涧西店',//所属店铺名称
+                    //     supplierBM: 'DDAWS554',//供应商编号
+                    //     supplierName: '双汇肉类批发',//供应商
+                    //     username: '1',//制单人员
+                    //     replenishTime: '2019-10-10',//制单时间
+                    //     remarks: '双汇王中王，火腿肠中的战斗肠',//备注
+                    //     isnostorage: '1',//收获状态
+                    //     money: '44885',//单据金额
+                    //     commodity: '暂无数据'//商品详细
+                    // }
                 ],
                 Form: {
                     replenishId: '',//单号
@@ -186,6 +186,12 @@
                 // console.log("index:"+index)
             },
             Query: function () {
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 var stime = this.Form.statictime[0]
                 var etime = this.Form.statictime[1]
                 var date = new Date();
@@ -208,6 +214,7 @@
                     var data = response.data.data;
                     this.tableData = data;
                     if (response.data.msg == "处理成功") {
+                        $loadinged.close();
                         for (let i = 0; i < data.length; i++) {
                             this.tableData[i].commodity = '' 
                             this.tableData[i].money = ''

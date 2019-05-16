@@ -8,6 +8,7 @@
                     </el-form-item>
                     <el-form-item label="状态:">
                         <el-select v-model="Form.zt" placeholder="请选择">
+                            <el-option label="全部" value=""></el-option>
                             <el-option
                                     v-for="item in options"
                                     :key="item.value"
@@ -19,16 +20,17 @@
 
                     <el-form-item label="店铺:">
                         <el-select v-model="Form.shopping" placeholder="请选择">
+                            <el-option label="全部" value=""></el-option>
                             <el-option
                                     v-for="item in options1"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    :key="item.storeid"
+                                    :label="item.storename"
+                                    :value="item.storeid">
                             </el-option>
                         </el-select>
                     </el-form-item>
 
-                    <el-button style="margin-left: 5px" type="success">查询</el-button>
+                    <el-button style="margin-left: 5px" type="success" @click="Query">查询</el-button>
 
                 </el-form>
             </div>
@@ -39,37 +41,37 @@
 
                     <el-table-column
                             label="商品编号"
-                            prop="goodsId">
+                            prop="comdityId">
                     </el-table-column>
                     <el-table-column
                             label="商品名称"
-                            prop="goodsName">
+                            prop="comdityname">
                     </el-table-column>
                     <el-table-column
                             label="商品规格"
-                            prop="goodsGuiGe">
+                            prop="comditydw">
                     </el-table-column>
 
                     <el-table-column
                             label="商品售价"
-                            prop="goodsPrice">
+                            prop="comdityprice">
                     </el-table-column>
 
                     <el-table-column
                             label="商品库存"
-                            prop="goodsStock">
+                            prop="stock">
                     </el-table-column>
 
                     <el-table-column
                             label="所属店铺"
-                            prop="goodsShopping">
+                            prop="ssmdName">
                     </el-table-column>
 
                     <el-table-column
                             label="商品状态">
                         <template slot-scope="scope">
-                            <span v-if="scope.row.goodsState == '1'">上架中</span>
-                            <span v-if="scope.row.goodsState == '2'">下架中</span>
+                            <span v-if="scope.row.comstate == '1'">上架中</span>
+                            <span v-if="scope.row.comstate == '0'">下架中</span>
                         </template>
 
                     </el-table-column>
@@ -78,10 +80,10 @@
                             label="操作">
                         <template slot-scope="scope">
                             <el-button
-                                    v-if="scope.row.goodsState == '1'"
+                                    v-if="scope.row.comstate == '1'"
                                     @click="upGoods(scope.row)">下架
                             </el-button>
-                            <el-button v-if="scope.row.goodsState == '2'" @click="downGoods(scope.row)">上架</el-button>
+                            <el-button v-if="scope.row.comstate == '0'" @click="downGoods(scope.row)">上架</el-button>
                         </template>
 
                     </el-table-column>
@@ -109,28 +111,23 @@
             return {
                 tableData: [
                     {
-                        goodsId: '12345678',//进货单号
-                        goodsName: '苹果',//商品名称
-                        goodsGuiGe: '箱',//商品规格
-                        goodsPrice: '23',//售价
-                        goodsStock: '99',//库存
-                        goodsState: '1',//商品状态
-                        goodsShopping:'九都路分店'
-                    },
-                    {
-                        goodsId: '8765432',//进货单号
-                        goodsName: '鱼',//商品名称
-                        goodsGuiGe: 'kg',//商品规格
-                        goodsPrice: '45',//售价
-                        goodsStock: '99',//库存
-                        goodsState: '2',//商品状态
-                        goodsShopping:'天津路分店'
+                        comdityId: '1',//商品ID
+                        isnodiscount: '0',//是否打折
+                        stock: '13',//库存数量
+                        corresponding: '63',
+                        ssmdName: '25',//所属店铺
+                        comditytypeId: '1',
+                        typename: "干果",//分类名称
+                        comdityname: "核桃",//商品名称
+                        comditydw: '斤',//单位
+                        comditydescribe: '格调干果，吃了以后，比刘翔快，比姚明高',//商品描述
+                        comdityprice: '1500'//商品单价
                     }
                 ],
                 Form: {
                     goodsName: '',//单号
                     zt: '1',//状态
-                    shopping:'1'
+                    shopping: '1'
                 },
                 page: {
                     total: 20,
@@ -142,11 +139,11 @@
                         label: '上架中'
                     },
                     {
-                        value: '2',
+                        value: '0',
                         label: '下架中'
                     }
                 ],
-                options1:[
+                options1: [
                     {
                         value: '1',
                         label: '门店1'
@@ -158,12 +155,57 @@
                 ]
             }
         }, methods: {
-
-            upGoods(row){
-                alert(row.goodsId)
+            upGoods(row) {
+                var data = {
+                    "data": {
+                        "comdityId": row.comdityId,
+                        "comstateId": 0,
+                        "storeId": row.storeid
+                    }
+                }
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                this.axios.post('/StartAndDwon', data).then((response) => {
+                    $loadinged.close();
+                    if (response.data.msg == "修改状态成功") {
+                        this.$message.success("处理成功!")
+                    } else {
+                        this.$message.warning("处理失败!")
+                    }
+                }).catch((error)=>{
+                    $loadinged.close();
+                    this.$message.error("Error:"+error)
+                })
             },
-            downGoods(row){
-                alert(row.goodsId)
+            downGoods(row) {
+                var data = {
+                    "data": {
+                        "comdityId": row.comdityId,
+                        "comstateId": 1,
+                        "storeId": row.storeid
+                    }
+                }
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                this.axios.post('/StartAndDwon', data).then((response) => {
+                    $loadinged.close();
+                    if (response.data.msg == "修改状态成功") {
+                        this.$message.success("处理成功!")
+                    } else {
+                        this.$message.warning("处理失败!")
+                    }
+                }).catch((error)=>{
+                    $loadinged.close();
+                    this.$message.error("Error:"+error)
+                })
             },
 
             //单机编辑
@@ -178,9 +220,35 @@
             },
             handleCurrentChange(index) {
                 index + 0
-            }
-        }, created: function () {
+            },
+            Query: function () {
+                var data = {
+                    "data": {
+                        "comdityname": this.Form.goodsName,
+                        "storeid": this.Form.shopping,
+                        "comstate": this.Form.zt
 
+                    },
+                }
+                this.axios.post('/QueryShopByWh', data).then((response) => {
+                    if (response.data.msg == "处理成功") {
+                        var data = response.data.data;
+                        this.tableData = data;
+                    }
+                }).catch((error) => {
+                    if (error != null) {
+                        this.$message.error("Error:" + error)
+                    }
+                })
+            },
+        }, created: function () {
+            this.Query();
+            this.axios.post('/GdStoreQueryAll', {}).then((response) => {
+                var data = response.data.data;
+                if (response.data.msg == "处理成功") {
+                    this.options1 = data;
+                }
+            })
         }
     }
 </script>
