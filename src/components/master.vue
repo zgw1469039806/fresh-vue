@@ -80,9 +80,9 @@
                                 <!--<el-menu-item index="4-2-1" @click="$router.push({path:'/orderrepost'})">订单</el-menu-item>-->
                                 <el-submenu index="4-2-1">
                                     <template slot="title">订单</template>
-                                    <el-menu-item index="4-2-1-1" @click="$router.push({path:'/orderrepost'})">线上订单
+                                    <el-menu-item index="4-2-1-1" @click="$router.push({name:'orderrepost',params:{md : mendian.id}})">线上订单
                                     </el-menu-item>
-                                    <el-menu-item index="4-2-1-2" @click="$router.push({path:'/orderoffline'})">线下订单
+                                    <el-menu-item index="4-2-1-2" @click="$router.push({name:'orderoffline',params:{md : mendian.id}})">线下订单
                                     </el-menu-item>
                                 </el-submenu>
                             </el-submenu>

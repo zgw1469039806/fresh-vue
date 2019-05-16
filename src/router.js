@@ -113,6 +113,8 @@ const routes = [
             },
             {
                 path: '/orderrepost',
+                name:'orderrepost',
+                prop:true,
                 component: () => import("./view/order/orderrepost.vue"),
                 meta: {
                     title: "线上订单"
@@ -120,6 +122,8 @@ const routes = [
             },
             {
                 path: '/orderoffline',
+                name: 'orderoffline',
+                prop: true,
                 component: () => import("./view/order/orderoffline.vue"),
                 meta: {
                     title: "线下订单"

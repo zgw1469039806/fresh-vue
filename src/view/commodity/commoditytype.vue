@@ -241,55 +241,57 @@
             this.data = new Array();
             this.axios.get("http://localhost:8777/unification/selTypeAll", {}).then((response) => {
                 var res = response.data.data;
-                var opt = {
-                    value: '',
-                    label: ''
-                }
-                var content = {
-                    id: 1,
-                    label: '一级 1',
-                    children: []
-                }
-                for (let i = 0; i < res.length; i++) {
-                    if (res[i].parent == 0) {
-                        content = {
-                            id: res[i].comditytypeId,
-                            label: res[i].typename,
-                            children: []
-                        }
-                        opt = {
-                            value: res[i].comditytypeId,
-                            label: res[i].typename
-                        }
-                        this.options[1].options.push(opt)
-                        this.data.push(content);
-                    } else {
-                        for (let j = 0; j < this.data.length; j++) {
-                            if (res[i].parent == this.data[j].id) {
-                                content = {
-                                    id: res[i].comditytypeId,
-                                    label: res[i].typename,
-                                    children: []
-                                }
-                                opt = {
-                                    value: res[i].comditytypeId,
-                                    label: res[i].typename
-                                }
-                                this.options[2].options.push(opt)
-                                this.data[j].children.push(content);
-                            } else {
-                                for (let k = 0; k < this.data[j].children.length; k++) {
-                                    if (this.data[j].children[k].id == res[i].parent) {
-                                        content = {
-                                            id: res[i].comditytypeId,
-                                            label: res[i].typename,
-                                            children: []
+                if (res != null) {
+                    var opt = {
+                        value: '',
+                        label: ''
+                    }
+                    var content = {
+                        id: 1,
+                        label: '一级 1',
+                        children: []
+                    }
+                    for (let i = 0; i < res.length; i++) {
+                        if (res[i].parent == 0) {
+                            content = {
+                                id: res[i].comditytypeId,
+                                label: res[i].typename,
+                                children: []
+                            }
+                            opt = {
+                                value: res[i].comditytypeId,
+                                label: res[i].typename
+                            }
+                            this.options[1].options.push(opt)
+                            this.data.push(content);
+                        } else {
+                            for (let j = 0; j < this.data.length; j++) {
+                                if (res[i].parent == this.data[j].id) {
+                                    content = {
+                                        id: res[i].comditytypeId,
+                                        label: res[i].typename,
+                                        children: []
+                                    }
+                                    opt = {
+                                        value: res[i].comditytypeId,
+                                        label: res[i].typename
+                                    }
+                                    this.options[2].options.push(opt)
+                                    this.data[j].children.push(content);
+                                } else {
+                                    for (let k = 0; k < this.data[j].children.length; k++) {
+                                        if (this.data[j].children[k].id == res[i].parent) {
+                                            content = {
+                                                id: res[i].comditytypeId,
+                                                label: res[i].typename,
+                                                children: []
+                                            }
+                                            opt = {
+                                                value: res[i].comditytypeId,
+                                                label: res[i].typename
+                                            }
+                                            this.data[j].children[k].children.push(content);
                                         }
-                                        opt = {
-                                            value: res[i].comditytypeId,
-                                            label: res[i].typename
-                                        }
-                                        this.data[j].children[k].children.push(content);
                                     }
                                 }
                             }
