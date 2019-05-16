@@ -1,6 +1,9 @@
 <template>
-
+<div id="gjh">
         <div id="myChart"></div>
+        <div id="zlyg"></div>
+</div>
+
 
 </template>
 
@@ -9,6 +12,7 @@
         name: "water",
         mounted() {
             this.drawLine();
+
         },
         methods:
             {
@@ -16,13 +20,13 @@
                     // 基于准备好的dom，初始化echarts实例
                     let myChart = this.$echarts.init(document.getElementById('myChart'));
                     myChart.setOption({
-                        title: {text: '员工流水数据(周数据)'},
+                        title: {text: '店铺营业额一览'},
                         tooltip: {
                             trigger: 'axis',
                             axisPointer: {
                                 type: 'cross',
                                 label: {
-                                    backgroundColor: '#6a7985'
+                                    backgroundColor: 'red'
                                 }
                             }
                         },
@@ -40,7 +44,7 @@
                         xAxis: {
                             type: 'category',
                             boundaryGap: false,
-                            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月','八月','九月','十月','十一月','十二月']
 
                         },
                         yAxis: {
@@ -48,48 +52,55 @@
                         },
                         series: [
                             {
-                                name: '邮件营销',
+                                name: '国伟店铺',
                                 type: 'line',
                                 stack: '总量',
-                                data: [120, 132, 101, 134, 90, 230, 210]
+                                data: [820, 932, 901, 934, 1290, 1330, 1320,123,1233,2313,432,432]
                             },
                             {
-                                name: '联盟广告',
+                                name: '家恒店铺',
                                 type: 'line',
                                 stack: '总量',
-                                data: [220, 182, 191, 234, 290, 330, 310]
+                                data: [820, 932, 901, 934, 1290, 1330, 1320,123,1233,2313,432,432]
                             },
                             {
-                                name: '视频广告',
+                                name: '铁飞店铺',
                                 type: 'line',
                                 stack: '总量',
-                                data: [150, 232, 201, 154, 190, 330, 410]
+                               data: [820, 932, 901, 934, 1290, 1330, 1320,123,1233,2313,432,432]
                             },
                             {
-                                name: '直接访问',
+                                name: '乾航店铺',
                                 type: 'line',
                                 stack: '总量',
-                                data: [320, 332, 301, 334, 390, 330, 320]
+                                 data: [820, 932, 901, 934, 1290, 1330, 1320,123,1233,2313,432,432]
                             },
                             {
-                                name: '搜索引擎',
+                                name: '多劳店铺',
                                 type: 'line',
                                 stack: '总量',
-                                data: [820, 932, 901, 934, 1290, 1330, 1320]
+                                data: [820, 932, 901, 934, 1290, 1330, 1320,123,1233,2313,432,432]
                             }
                         ]
-
                     });
                 }
+
             }
     }
 </script>
 
 <style scoped>
 
+
+   #gjh{
+           width: 100%;
+           height: 100%;
+   }
+
     #myChart {
-        width: 50%;
-        height: 50%;
+        width: 80%;
+        height: 80%;
     }
+
 
 </style>

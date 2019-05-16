@@ -107,7 +107,8 @@
                     <template>
                         <el-table
                                 :data="tableData1"
-                                style="width: 100%;margin-top: -80px;">
+                                style="width: 100%;margin-top: -80px;"
+                        >
                             <el-table-column
                                     label="序号"
                                     type="index">
@@ -227,13 +228,7 @@
 
         }, methods: {
             chaxun() {
-                /*if (this.Form.startTime != null) {
-                    this.Form.startTime = (this.Form.startTime).format("yyyy-MM-dd");
-                }
-                if (this.Form.endTime != null) {
-                    this.Form.endTime = (this.Form.endTime).format("yyyy-MM-dd");
-                }
-                window.console.log(this.Form.startTime+","+this.Form.endTime);*/
+
                 this.orderPage();
 
             },
@@ -301,6 +296,7 @@
                 index
             },
             orderPage() {
+                alert(this.Form.orderScene)
                 this.axios.post("/selOrderPage", {
                     "data": this.Form,
                 })
@@ -323,28 +319,6 @@
         }
     }
 
-    Date.prototype.format = function (format) {
-        var o = {
-            "M+": this.getMonth() + 1, //month
-            "d+": this.getDate(), //day
-            "H+": this.getHours(), //hour
-            "m+": this.getMinutes(), //minute
-            "s+": this.getSeconds(), //second
-            "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
-            "S": this.getMilliseconds() //millisecond
-        }
-
-        if (/(y+)/.test(format)) {
-            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-        }
-
-        for (var k in o) {
-            if (new RegExp("(" + k + ")").test(format)) {
-                format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
-            }
-        }
-        return format;
-    }
 </script>
 
 <style scoped>
