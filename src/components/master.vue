@@ -74,7 +74,7 @@
                                 <i class="el-icon-goods"></i>
                                 销售
                             </template>
-                            <el-menu-item index="4-1" @click="$router.push({name:'orderinsert',params:{md : mendian}})">新增订单</el-menu-item>
+                            <el-menu-item index="4-1" @click="$router.push({name:'orderinsert',params:{md : mendian.id}})">新增订单</el-menu-item>
                             <el-submenu index="4-2">
                                 <template slot="title">订单管控</template>
                                 <!--<el-menu-item index="4-2-1" @click="$router.push({path:'/orderrepost'})">订单</el-menu-item>-->
