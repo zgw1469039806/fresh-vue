@@ -2,7 +2,8 @@
     <div class="box">
         <div class="forms">
 
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm" v-loading="loading">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm"
+                     v-loading="loading">
                 <el-form-item>
                     <h3>销售单</h3>
                 </el-form-item>
@@ -26,59 +27,88 @@
 
                     <template>
                         <el-table
-                                :data="ruleForm.tableData"
-                                border
-                                style="width: 100%;">
+                            :data="ruleForm.tableData"
+                            border
+                            style="width: 100%;">
 
                             <el-table-column
-                                    prop="comdityname"
-                                    label="品名"
-                                    width="120">
+                                prop="comdityname"
+                                label="品名"
+                                width="120">
                             </el-table-column>
 
                             <el-table-column
-                                    prop="comdityprice"
-                                    label="单价"
-                                    width="80">
+                                prop="comdityprice"
+                                label="单价(元)"
+                                width="80">
                             </el-table-column>
 
                             <el-table-column
                                 prop="discount"
-                                label="活动价"
+                                label="活动价(元)"
+                                width="90">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.discount == '' || scope.row.discount == null">无</span>
+                                    <span v-else>{{scope.row.discount}}</span>
+                                </template>
+                            </el-table-column>
+
+                            <el-table-column
+                                prop="comditydw"
+                                label="单位"
                                 width="80">
+                            </el-table-column>
+
+                            <el-table-column
+                                label="数量"
+                                width="160">
                                 <template slot-scope="scope">
-                                    <span v-if="scope.row.discount != '' && scope.row.discount != null">无</span>
+                                    <el-input-number v-model="scope.row.comdnum" :precision="2" :step="0.01" :min="0.00"
+                                                     style="width: 140px;"></el-input-number>
                                 </template>
                             </el-table-column>
 
                             <el-table-column
-                                    prop="comditydw"
-                                    label="单位"
-                                    width="80">
-                            </el-table-column>
-
-                            <el-table-column
-                                    label="数量"
-                                    width="160">
+                                prop="comdtotal"
+                                label="总价(元)"
+                                width="120">
                                 <template slot-scope="scope">
-                                    <el-input-number v-model="scope.row.comdnum" :precision="2" :step="0.01" :min="0.00" style="width: 140px;"></el-input-number>
-                                </template>
-                            </el-table-column>
-
-                            <el-table-column
-                                    prop="comdtotal"
-                                    label="总价"
-                                    width="120">
-                                <template slot-scope="scope">
-                                    <span v-if="scope.row.discount != '' && scope.row.discount != null">{{parseFloat(scope.row.comdnum * scope.row.discount).toFixed(2) }}</span>
+                                    <span v-if="ifshow == true"> <!--是否会员-->
+                                        <span v-if="scope.row.discount == '' || scope.row.discount == null">
+                                            {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.comdnum * scope.row.comdityprice).toFixed(2)).toFixed(2)}}
+                                        </span>
+                                        <span v-else-if="(ruleForm.zheKou*parseFloat(scope.row.comdnum * scope.row.comdityprice).toFixed(2))<parseFloat(scope.row.comdnum * scope.row.discount).toFixed(2)">
+                                            {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.comdnum * scope.row.comdityprice).toFixed(2)).toFixed(2)}}
+                                        </span>
+                                        <span v-else>
+                                            {{parseFloat(scope.row.comdnum * scope.row.discount).toFixed(2)}}
+                                        </span>
+                                    </span>
+                                    <span v-else-if="scope.row.discount != '' && scope.row.discount != null">
+                                        <!--{{}}-->
+                                        {{parseFloat(scope.row.comdnum * scope.row.discount).toFixed(2) }}
+                                    </span>
                                     <span v-else>{{parseFloat(scope.row.comdnum * scope.row.comdityprice).toFixed(2) }}</span>
                                 </template>
                             </el-table-column>
 
                             <el-table-column
-                                    fixed="right"
-                                    label="操作"
-                                    width="80">
+                                prop="discounttype"
+                                label="优惠方式"
+                                width="80">
+
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.discounttype == 0">无</span>
+                                    <span v-if="scope.row.discounttype == 1">会员价</span>
+                                    <span v-if="scope.row.discounttype == 2">活动价</span>
+                                </template>
+
+                            </el-table-column>
+
+                            <el-table-column
+                                fixed="right"
+                                label="操作"
+                                width="80">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini"
                                                @click.native.prevent="deleteRow(scope.$index, ruleForm.tableData)">删除
@@ -94,7 +124,7 @@
                         <el-radio :label="1" v-show="ifshow">会员余额</el-radio>
                         <el-radio :label="2">支付宝</el-radio>
                         <el-radio :label="3">微信</el-radio>
-                        <el-radio :label="4" >现金</el-radio>
+                        <el-radio :label="4">现金</el-radio>
                     </el-radio-group>
                     <p>总价：<span style="color: red;">{{sumMoney.toFixed(2)}}</span> 元</p>
                     <p v-show="ifshow">打折后总价：<span style="color: red;">{{(sumMoney.toFixed(2) * ruleForm.zheKou).toFixed(2)}}</span>
@@ -124,15 +154,15 @@
                 loading: false,
                 ifshow: false,
                 ruleForm: {
-                    vipId : "",
+                    vipId: "",
                     vipMsg: '',
                     tableData: [],
-                    ordermeans : 4, // 交易手段 ,
-                    zheKou: 0.1,
-                    storeid:1, //TODO:店铺编号 获取当前店铺编号
-                    ordertype:0,//交易类型 (0-消费 1-退款)
-                    orderscene:1,//交易场景
-                    ordermoney:0.00, //总价
+                    ordermeans: 4, // 交易手段 ,
+                    zheKou: 1,
+                    storeid: 1, //店铺编号
+                    ordertype: 0,//交易类型 (0-消费 1-退款)
+                    orderscene: 1,//交易场景
+                    ordermoney: 0.00, //总价
                     //orderStat: 挂单中  已完成
                 },
                 dialogFormVisible: false,//控制dialog是否打开
@@ -140,7 +170,7 @@
                     tableData: [
                         {required: true, message: '请选择商品', trigger: 'blur'}
                     ],
-                    ordermeans : [
+                    ordermeans: [
                         {required: true, message: '请选择付款方式', trigger: 'blur'}
                     ]
 
@@ -158,11 +188,11 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if(this.ruleForm.tableData == null || this.ruleForm.tableData == ''){
+                        if (this.ruleForm.tableData == null || this.ruleForm.tableData == '') {
                             this.$message.error('商品不能为空!');
                             return false;
                         }
-                        alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname+",单位："+this.ruleForm.tableData[0].comditydw+",价格："+this.ruleForm.tableData[0].comdityprice+",货号："+this.ruleForm.tableData[0].comdityId+",数量："+this.ruleForm.tableData[0].comdityId)
+                        alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname + ",单位：" + this.ruleForm.tableData[0].comditydw + ",价格：" + this.ruleForm.tableData[0].comdityprice + ",货号：" + this.ruleForm.tableData[0].comdityId + ",数量：" + this.ruleForm.tableData[0].comdityId)
 
                         if (this.ifshow) { //如果ifshow为true 表示拥有会员 传入打折后价格
                             //18376645457
@@ -176,7 +206,7 @@
                                 .then((response) => {
                                     if (response.data.code == 0) {
                                         this.loading = false;
-                                        this.$alert(response.data.msg ,'提示', {
+                                        this.$alert(response.data.msg, '提示', {
                                             confirmButtonText: '确定',
                                             callback: action => {
                                                 action
@@ -205,7 +235,7 @@
                                 .then((response) => {
                                     if (response.data.code == 0) {
                                         this.loading = false;
-                                        this.$alert(response.data.msg ,'提示', {
+                                        this.$alert(response.data.msg, '提示', {
                                             confirmButtonText: '确定',
                                             callback: action => {
                                                 action
@@ -232,18 +262,18 @@
                 formName
             },
             selVip() { //查询会员方法
-                if (this.ruleForm.vipId  == null || this.ruleForm.vipId  == "" || this.ruleForm.vipId .trim() == "") {
+                if (this.ruleForm.vipId == null || this.ruleForm.vipId == "" || this.ruleForm.vipId.trim() == "") {
                     this.ifshow = false;
                     return false;
                 }
                 //1、先根据手机号查询会员信息
                 this.axios.post("/selOneVipByPhone", {
-                    "data": this.ruleForm.vipId ,
+                    "data": this.ruleForm.vipId,
                 })
                     .then((response) => {
                         if (response.data.data == null || response.data.code != 0) {
                             this.$message.error('此会员不存在或已挂失!');
-                            this.ruleForm.vipId  = "";
+                            this.ruleForm.vipId = "";
                             this.ruleForm.vipDiscount = "100%";
                             this.ifshow = false;
                         } else {
@@ -286,10 +316,26 @@
                             comdityId: rows[j].comdityId,
                             comdityname: rows[j].comdityname,
                             comditydw: rows[j].comditydw,
-                            comdityprice: rows[j].comdityprice,
+                            comdityprice: rows[j].comdityprice, //实付
                             //discount: rows[j].discount, //活动价格
-                            discount: null, //活动价格
-                            comdnum: 1
+                            discount: 1, //活动价格
+                            discounttype:0,//优惠类型 0-无 1-会员价 2-活动价
+                            payable:rows[j].comdityprice, //应付
+                            comdnum: 1,
+                            isnodiscount:rows[j].isnodiscount,
+                        }
+                        if(this.ifshow){
+                            if(gobj.isnodiscount == 1){
+                                if(parseFloat(this.ruleForm.zheKou*gobj.comdityprice).toFixed(2)<gobj.discount){
+                                    gobj.discounttype = 1;
+                                }else{
+                                    gobj.discounttype = 2;
+                                }
+                            }else{
+                                gobj.discounttype = 1;
+                            }
+                        }else if(gobj.isnodiscount==1){
+                            gobj.discounttype = 2;
                         }
                         map.set(gobj.comdityId, gobj);
                     }
@@ -312,7 +358,7 @@
             isClose: function () { //关闭模态框
                 this.dialogFormVisible = false;
             }
-        },created() {
+        }, created() {
             this.ruleForm.storeid = this.$route.params.md;
             alert(this.ruleForm.storeid)
         }
