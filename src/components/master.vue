@@ -74,15 +74,21 @@
                                 <i class="el-icon-goods"></i>
                                 销售
                             </template>
-                            <el-menu-item index="4-1" @click="$router.push({name:'orderinsert',params:{md : mendian}})">新增订单</el-menu-item>
+                            <el-menu-item index="4-1" @click="$router.push({name:'orderinsert',params:{md : mendian}})">
+                                新增订单
+                            </el-menu-item>
                             <el-submenu index="4-2">
                                 <template slot="title">订单管控</template>
                                 <!--<el-menu-item index="4-2-1" @click="$router.push({path:'/orderrepost'})">订单</el-menu-item>-->
                                 <el-submenu index="4-2-1">
                                     <template slot="title">订单</template>
-                                    <el-menu-item index="4-2-1-1" @click="$router.push({name:'orderrepost',params:{md : mendian.id}})">线上订单
+                                    <el-menu-item index="4-2-1-1"
+                                                  @click="$router.push({name:'orderrepost',params:{md : mendian.id}})">
+                                        线上订单
                                     </el-menu-item>
-                                    <el-menu-item index="4-2-1-2" @click="$router.push({name:'orderoffline',params:{md : mendian.id}})">线下订单
+                                    <el-menu-item index="4-2-1-2"
+                                                  @click="$router.push({name:'orderoffline',params:{md : mendian.id}})">
+                                        线下订单
                                     </el-menu-item>
                                 </el-submenu>
                             </el-submenu>
@@ -146,7 +152,8 @@
                     name: '牛逼门店',
                     id: '1'
                 },
-                mendianlist: new Array()
+                mendianlist: new Array(),
+                quanxian:[]
             }
         }, methods: {
             clickMd: function (name, id) {
@@ -155,18 +162,30 @@
             }
         }, created() {
             this.axios.get("/getPrinciple").then((response) => {
-                this.username = response.data;
-            })
-            this.axios.post('/GdStoreQueryAll',{
-
-            }).then((response) => {
+                let data = response.data;
+                let oauth = data['OAuth2'];
+                this.$alert(oauth);
+                oauth=oauth.replace("[","");
+                oauth=oauth.replace("]","");
+                oauth = oauth.split('-');
+                for (let i = 0; i < oauth.length; i++) {
+                    if (i == 0){
+                        this.username = oauth[i];
+                    } else{
+                        this.quanxian.push(oauth[i])
+                    }
+                }
+                this.$alert(oauth)
+            });
+            this.axios.post('/GdStoreQueryAll', {}).then((response) => {
                 if (response.data.msg == "处理成功") {
                     var data = response.data.data;
                     this.mendianlist = data;
                     this.mendian.name = data[0].storename;
                     this.mendian.id = data[0].storeid;
                 }
-            })
+            });
+
         }
     }
 </script>

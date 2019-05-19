@@ -10,8 +10,8 @@
                         <div class="input">
                             <div class="forms">
                                 <span class="shpoinname">商品条形码:</span>
-                                <el-input style="width: 300px;padding-right: 15px"></el-input>
-                                <el-button type="success">搜索</el-button>
+                                <el-input v-model="From.name" style="width: 300px;padding-right: 15px"></el-input>
+                                <el-button type="success" @click='Query'>搜索</el-button>
                             </div>
                         </div>
                         <el-table
@@ -117,22 +117,40 @@
                         ]
                     }
                 ],
-                query: ''
+                query: '',
+                From: {
+                    name: '',
+                    storeid: ''
+                }
             }
         },
         methods: {
-            //单击树状菜单的回调函数
-            handleNodeClick(data) {
-                this.axios.post('http://localhost:8777/unification/QueryByType', {
-                    "data": data.id
-                }).then((response) => {
+            Query: function (id) {
+                let data = {
+                    "data": {
+                        "comdityname": '',
+                        "comditytypeId": id,
+                        "storeid": ''
+                    },
+                };
+                if (this.From.name != '' || this.From.name != null) {
+                    data["data"].comdityname = '%' + this.From.name + '%';
+                } else if (this.From.storeid == '' || this.From.storeid == null) {
+                    data["data"].comdityname = this.From.storeid;
+                }
+
+                this.axios.post('/QueryShopByWh', data).then((response) => {
                     var com = response.data.data;
-                    if (response.data.msg == "处理成功"){
+                    if (response.data.msg == "处理成功") {
                         this.tableData1 = com;
                     }
                 }).catch((error) => {
                     this.$message.error(error)
                 })
+            },
+            //单击树状菜单的回调函数
+            handleNodeClick(data) {
+                this.Query(data.id);
             },
             //确认添加
             addtable: function () {
@@ -154,7 +172,9 @@
                 this.$emit('isClose', false);
             }
         }, created: function () {
-            this.axios.get('http://localhost:8777/unification/selTypeAll', {}).then((response) => {
+            this.From.storeid = this.$route.params.storeid;
+
+            this.axios.get('/selTypeAll', {}).then((response) => {
                 var tree = response.data.data;
                 if (response.data.msg == "处理成功") {
                     this.trees = [];
@@ -162,14 +182,14 @@
                         id: 1,
                         label: '一级 1',
                         children: []
-                    }
+                    };
                     for (let i = 0; i < tree.length; i++) {
                         if (tree[i].parent == 0) {
                             content = {
                                 id: tree[i].comditytypeId,
                                 label: tree[i].typename,
                                 children: []
-                            }
+                            };
                             this.trees.push(content);
                         } else {
                             for (let j = 0; j < this.trees.length; j++) {
@@ -178,7 +198,7 @@
                                         id: tree[i].comditytypeId,
                                         label: tree[i].typename,
                                         children: []
-                                    }
+                                    };
                                     this.trees[j].children.push(content);
                                 } else {
                                     for (let k = 0; k < this.trees[j].children.length; k++) {
@@ -187,7 +207,7 @@
                                                 id: tree[i].comditytypeId,
                                                 label: tree[i].typename,
                                                 children: []
-                                            }
+                                            };
                                             this.trees[j].children[k].children.push(content);
                                         }
                                     }

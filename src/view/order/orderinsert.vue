@@ -279,7 +279,7 @@
                             comditydw: rows[j].comditydw,
                             comdityprice: rows[j].comdityprice,
                             comdnum: 1
-                        }
+                        };
                         map.set(gobj.comdityId, gobj);
                     }
                     for (let i = 0; i < this.ruleForm.tableData.length; i++) {
