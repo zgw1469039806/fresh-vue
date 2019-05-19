@@ -39,37 +39,46 @@
                             <el-table-column
                                     prop="comdityprice"
                                     label="单价"
-                                    width="100">
+                                    width="80">
+                            </el-table-column>
+
+                            <el-table-column
+                                prop="discount"
+                                label="活动价"
+                                width="80">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.discount != '' && scope.row.discount != null">无</span>
+                                </template>
                             </el-table-column>
 
                             <el-table-column
                                     prop="comditydw"
                                     label="单位"
-                                    width="100">
+                                    width="80">
                             </el-table-column>
 
                             <el-table-column
                                     label="数量"
                                     width="160">
                                 <template slot-scope="scope">
-                                    <el-input-number v-model="scope.row.comdnum" :precision="2" :step="0.01" :min="0.00"
-                                                     style="width: 140px;"></el-input-number>
+                                    <el-input-number v-model="scope.row.comdnum" :precision="2" :step="0.01" :min="0.00" style="width: 140px;"></el-input-number>
                                 </template>
                             </el-table-column>
 
                             <el-table-column
                                     prop="comdtotal"
                                     label="总价"
-                                    width="160">
+                                    width="120">
                                 <template slot-scope="scope">
-                                    <span>{{ parseFloat(scope.row.comdnum * scope.row.comdityprice).toFixed(2) }}</span>
+                                    <span v-if="scope.row.discount != '' && scope.row.discount != null">{{parseFloat(scope.row.comdnum * scope.row.discount).toFixed(2) }}</span>
+                                    <span v-else>{{parseFloat(scope.row.comdnum * scope.row.comdityprice).toFixed(2) }}</span>
                                 </template>
                             </el-table-column>
 
                             <el-table-column
                                     fixed="right"
                                     label="操作"
-                                    width="100">
+                                    width="80">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini"
                                                @click.native.prevent="deleteRow(scope.$index, ruleForm.tableData)">删除
@@ -278,6 +287,8 @@
                             comdityname: rows[j].comdityname,
                             comditydw: rows[j].comditydw,
                             comdityprice: rows[j].comdityprice,
+                            //discount: rows[j].discount, //活动价格
+                            discount: null, //活动价格
                             comdnum: 1
                         };
                         map.set(gobj.comdityId, gobj);
@@ -302,7 +313,7 @@
                 this.dialogFormVisible = false;
             }
         },created() {
-            this.ruleForm.storeid = this.$route.params.md.id;
+            this.ruleForm.storeid = this.$route.params.md;
             alert(this.ruleForm.storeid)
         }
     }
