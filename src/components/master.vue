@@ -145,6 +145,7 @@
                 </div>
             </el-container>
         </div>
+        <el-button @click="clearCookie">清除cookie</el-button>
     </div>
 </template>
 
@@ -165,6 +166,13 @@
             clickMd: function (name, id) {
                 this.mendian.name = name;
                 this.mendian.id = id;
+            },
+            clearCookie:function () {
+                this.axios.get("http://localhost:8111//exitUser").then(()=>{
+
+                    window.location.href = "http://localhost:8111/reUrl";
+
+                });
             }
         }, created() {
             this.axios.get("/getPrinciple").then((response) => {
