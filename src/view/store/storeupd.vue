@@ -108,6 +108,7 @@
                             background: 'rgba(0, 0, 0, 0.7)'
                         });
                         this.axios.post("/updMana", {data}).then((response) => {
+
                             if (response.data.msg == "处理成功") {
                                 this.$message.success("添加成功!")
                             } else if (response.data.msg == '门店名称不能重复') {
@@ -118,7 +119,7 @@
                             $loadinged.close();
                         }).catch((error) => {
                             $loadinged.close();
-                            this.$message.error(""+error)
+                            this.$message.error("" + error)
                         })
                     } else {
                         return false;

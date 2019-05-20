@@ -315,7 +315,7 @@
                         var data = {
                             "data": {
                                 "comditydescribe": this.ruleForm.jj,//商品简介
-                                "comditydw": this.ruleForm.dw,//商品单位
+                                "comitydw": this.ruleForm.dw,//商品单位
                                 "comdityname": this.ruleForm.name,//商品名称
                                 "comdityprice": this.ruleForm.lsj,//零售价
                                 "comditytypeId": this.ruleForm.type[0],//商品分类
@@ -386,7 +386,7 @@
                         "vipishige": rows.vipishige,//会员是否可享折扣
                         // "comditytypeId": 0,//商品分类id
                     },
-                }
+                };
                 this.axios.post('/updShop', data).then((response) => {
                     $loadinged.close();
                     if (response.data.msg == "处理成功") {

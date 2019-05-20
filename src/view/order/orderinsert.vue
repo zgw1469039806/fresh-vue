@@ -360,7 +360,7 @@
             }
         }, created() {
             this.ruleForm.storeid = this.$route.params.md;
-            alert(this.ruleForm.storeid)
+            this.$alert("当前门店："+this.ruleForm.storeid)
         }
     }
 </script>

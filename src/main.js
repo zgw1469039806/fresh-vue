@@ -4,9 +4,12 @@ import axios from "axios"
 import {router} from './router';
 import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
-import echarts from 'echarts'
+import echarts from 'echarts';
+import VueCookies from 'vue-cookies'
 
 Vue.prototype.$echarts=echarts;
+Vue.use(VueCookies);
+
 
 const inter = axios.create({ // 创建服务
     baseURL: 'http://localhost:8777/unification', // 基础路径
