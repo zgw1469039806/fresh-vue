@@ -213,11 +213,11 @@
                 }).then((response) => {
                     var data = response.data.data;
                     this.tableData = data;
+                    $loadinged.close();
                     if (response.data.msg == "处理成功") {
-                        $loadinged.close();
                         for (let i = 0; i < data.length; i++) {
-                            this.tableData[i].commodity = '' 
-                            this.tableData[i].money = ''
+                            this.tableData[i].commodity = '';
+                            this.tableData[i].money = '';
                             for (let j = 0; j < data[i].list.length; j++) {
                                 this.tableData[i].money += data[i].list[j].subtotal
                                 this.tableData[i].commodity += '商品名：' + data[i].list[j].comdityname + "数量：" + data[i].list[j].shopNumber + "小结：" + data[i].list[j].subtotal + "\t"
@@ -225,6 +225,7 @@
                         }
                     }
                 }).catch((error) => {
+                    $loadinged.close();
                     this.$message.error(error)
                 })
             },
