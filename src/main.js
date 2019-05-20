@@ -23,26 +23,27 @@ const inter = axios.create({ // 创建服务
 inter.defaults.withCredentials=true;
 //axios拦截器
 // inter.interceptors.response.use(function (response) {
-//    alert(response.data.code)
-//     if (response.data.code == undefined) {
-//         window.location.href = "http://localhost:8777/";
+//
+//     if (response.status==302)
+//     {
+//         window.location.href = "http://localhost:8111/clearLogin";
 //     }
 //     if (response.data && response.data.code) {
 //         if (response.data.code != 0) {
 //             return response;
 //         }
 //     }
-//     return resp  onse;
+//     return response;
 // }, function (error) {
 //     alert(error);
 //     if (!error.response) {
-//         window.location.href = "http://localhost:8777/";
+//         window.location.href = "http://localhost:8111/clearLogin";
 //     } else {
 //         if (error.response.status == 400) {
 //             alert("提交的参数有误!");
 //         }
 //     }
-// });
+//  });
 
 
 Vue.config.productionTip = false;
