@@ -63,7 +63,8 @@
         props: {
             dialogFormVisible: Boolean,//控制dialog是否打开
             isOkclick: Function,
-            isClose: Function
+            isClose: Function,
+            stoicid : String
         },
         data() {
             return {
@@ -130,7 +131,7 @@
                     "data": {
                         "comdityname": '',
                         "comditytypeId": id,
-                        "storeid": ''
+                        "storeid": this.stoicid
                     },
                 };
                 if (this.From.name != '' || this.From.name != null) {
@@ -143,6 +144,9 @@
                     var com = response.data.data;
                     if (response.data.msg == "处理成功") {
                         this.tableData1 = com;
+                        for (let i = 0; i < this.tableData1.length; i++) {
+                            this.tableData1[i].comdnum = 1;
+                        }
                     }
                 }).catch((error) => {
                     this.$message.error(error)

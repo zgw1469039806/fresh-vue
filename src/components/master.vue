@@ -79,7 +79,7 @@
                                     销售
                                 </template>
                                 <el-menu-item index="4-1"
-                                              @click="$router.push({name:'orderinsert',params:{md : mendian}})">
+                                              @click="$router.push({name:'orderinsert',params:{md : mendian.id}})">
                                     新增订单
                                 </el-menu-item>
                                 <el-submenu index="4-2">
