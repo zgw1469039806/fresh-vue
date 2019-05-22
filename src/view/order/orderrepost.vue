@@ -56,22 +56,35 @@
                     <el-table-column
                             label="会员手机号"
                             prop="vipId">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.vipId == null || scope.row.vipId == ''">无</span>
+                        </template>
                     </el-table-column>
 
                     <el-table-column
                             label="交易方式"
                             prop="ordermeans"> <!--现金、支付宝、微信-->
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.ordermeans == 1">会员余额</span>
+                            <span v-if="scope.row.ordermeans == 2">支付宝</span>
+                            <span v-if="scope.row.ordermeans == 3">微信</span>
+                            <span v-if="scope.row.ordermeans == 4">现金</span>
+                        </template>
                     </el-table-column>
 
                     <el-table-column
                             label="交易类型"
                             prop="ordertype"> <!--消费、退款-->
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.ordertype == 0">消费</span>
+                            <span v-if="scope.row.ordertype == 1">退款</span>
+                        </template>
                     </el-table-column>
 
 
                     <el-table-column
                             sortable
-                            label="交易金额"
+                            label="总价"
                             prop="ordermoney">
                     </el-table-column>
 
@@ -83,13 +96,20 @@
 
                     <el-table-column
                             label="订单状态"
-                            prop="orderStat"> <!--消费、退款-->
+                            prop="orderStat">
+                        <template slot-scope="scope">
+                            <!--  0:待付款   1:已付款/待发货   2:已取消  3:已发货/待确认  4:已完成 ，5：申请退款,6:挂单中 7：已退款-->
+                            <span v-if="scope.row.orderStat == 0">待付款</span>
+                            <span v-if="scope.row.orderStat == 1">已付款</span>
+                            <span v-if="scope.row.orderStat == 2">已取消</span>
+                            <span v-if="scope.row.orderStat == 3">已发货</span>
+                            <span v-if="scope.row.orderStat == 4">已完成</span>
+                            <span v-if="scope.row.orderStat == 5">申请退款</span>
+                            <span v-if="scope.row.orderStat == 6">挂单中</span>
+                            <span v-if="scope.row.orderStat == 7">已退款</span>
+                        </template>
                     </el-table-column>
 
-                    <!--<el-table-column
-                            label="描述"
-                            prop="desc">
-                    </el-table-column>-->
                 </el-table>
                 <div class="block">
                     <el-pagination
@@ -98,7 +118,7 @@
                             :current-page="upForm.pageNo"
                             :page-size="upForm.pageSize"
                             layout="total, prev, pager, next, jumper"
-                            :total="tableData.totalCount"><!--  -->
+                            :total="tableData.totalCount">
                     </el-pagination>
                 </div>
             </template>
@@ -147,15 +167,6 @@
                                     prop="preferentialway">
                             </el-table-column>
 
-                            <el-table-column
-                                    label="应付(元)"
-                                    prop="comdityprice">
-                            </el-table-column>
-
-                            <el-table-column
-                                    label="实付(元)"
-                                    prop="comditytrueprice">
-                            </el-table-column>
 
                         </el-table>
                     </template>
