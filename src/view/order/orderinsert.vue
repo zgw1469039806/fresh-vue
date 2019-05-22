@@ -26,26 +26,26 @@
 
                     <template>
                         <el-table
-                            :data="ruleForm.tableData"
-                            border
-                            style="width: 100%;">
+                                :data="ruleForm.tableData"
+                                border
+                                style="width: 100%;">
 
                             <el-table-column
-                                prop="comdityname"
-                                label="品名"
-                                width="120">
+                                    prop="comdityname"
+                                    label="品名"
+                                    width="120">
                             </el-table-column>
 
                             <el-table-column
-                                prop="comdityprice"
-                                label="单价(元)"
-                                width="80">
+                                    prop="comdityprice"
+                                    label="单价(元)"
+                                    width="80">
                             </el-table-column>
 
                             <el-table-column
-                                prop="discount"
-                                label="活动价(元)"
-                                width="90">
+                                    prop="discount"
+                                    label="活动价(元)"
+                                    width="90">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.discount == '' || scope.row.discount == null">无</span>
                                     <span v-else>{{scope.row.discount}}</span>
@@ -53,14 +53,14 @@
                             </el-table-column>
 
                             <el-table-column
-                                prop="comditydw"
-                                label="单位"
-                                width="80">
+                                    prop="comditydw"
+                                    label="单位"
+                                    width="80">
                             </el-table-column>
 
                             <el-table-column
-                                label="数量"
-                                width="160">
+                                    label="数量"
+                                    width="160">
                                 <template slot-scope="scope">
                                     <el-input-number @change="numchang" v-model="scope.row.num" :precision="2"
                                                      :step="0.01" :min="0.00"
@@ -69,16 +69,16 @@
                             </el-table-column>
 
                             <el-table-column
-                                prop="comdtotal"
-                                label="总价(元)"
-                                width="120">
+                                    prop="comdtotal"
+                                    label="总价(元)"
+                                    width="120">
                                 <template slot-scope="scope">
                                     <span v-if="ifshow == true"> <!--是否会员-->
                                         <span v-if="scope.row.discount == '' || scope.row.discount == null">
                                             {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2)).toFixed(2)}}
                                         </span>
                                         <span
-                                            v-else-if="(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2))<parseFloat(scope.row.num * scope.row.discount).toFixed(2)">
+                                                v-else-if="(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2))<parseFloat(scope.row.num * scope.row.discount).toFixed(2)">
                                             {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2)).toFixed(2)}}
                                         </span>
                                         <span v-else>
@@ -90,14 +90,14 @@
                                         {{parseFloat(scope.row.num * scope.row.discount).toFixed(2) }}
                                     </span>
                                     <span
-                                        v-else>{{parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2) }}</span>
+                                            v-else>{{parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2) }}</span>
                                 </template>
                             </el-table-column>
 
                             <el-table-column
-                                prop="preferentialway"
-                                label="优惠方式"
-                                width="80">
+                                    prop="preferentialway"
+                                    label="优惠方式"
+                                    width="80">
 
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.preferentialway == 0">无</span>
@@ -108,9 +108,9 @@
                             </el-table-column>
 
                             <el-table-column
-                                fixed="right"
-                                label="操作"
-                                width="80">
+                                    fixed="right"
+                                    label="操作"
+                                    width="80">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini"
                                                @click.native.prevent="deleteRow(scope.$index, ruleForm.tableData)">删除
@@ -177,6 +177,7 @@
                     //orderStat: 挂单中  已完成
                 },
                 dialogFormVisible: false,//控制dialog是否打开
+                mlprice: 0,//抹零价格
                 rules:
                     {
                         tableData: [
@@ -303,10 +304,9 @@
                             this.jisuan();
                         })
                     }
+                }).catch((error) => {
+                    this.$message.error("Error:" + error);
                 })
-                    .catch((error) => {
-                        this.$message.error("Error:" + error);
-                    })
             },
             numchang: function () {
                 this.jisuan();
@@ -328,7 +328,7 @@
                             num: rows[j].comdnum,
                             comdityprice: rows[j].comdityprice,
                             isnodiscount: rows[j].isnodiscount,
-                        }
+                        };
                         if (gobj.num == 0 || gobj.num == '' || gobj.num == undefined) {
                             gobj.num = rows[j].num;
                         }
@@ -352,6 +352,9 @@
                         } else { //若是普通商品
                             this.ruleForm.comdityprice += parseFloat(gobj["comdityprice"] * gobj["num"]);
                         }
+                        if (this.ruleForm.ispriceml){
+                            this.mlchang();
+                        }
                         map.set(gobj.comdityId, gobj);
                     }
                     for (let i = 0; i < this.ruleForm.tableData.length; i++) {
@@ -365,7 +368,7 @@
                     }
                 }
                 this.dialogFormVisible = false;
-                if (this.ruleForm.ispriceml){
+                if (this.ruleForm.ispriceml) {
                     this.mlchang();
                 }
             },
@@ -385,12 +388,17 @@
             },
             mlchang: function () {
                 //TODO:抹零未写完
-                alert('开始')
+                //如果抹零的按钮为勾选
                 if (this.ruleForm.ispriceml) {
+                    //拿到莫零前的值
                     var mlq = this.ruleForm.comdityprice;
+                    //抹零操作
                     this.ruleForm.comdityprice = parseInt(this.ruleForm.comdityprice);
+                    //计算抹零抹了多少
                     this.ruleForm.priceml = mlq - this.ruleForm.comdityprice;
-                    alert(this.ruleForm.comdityprice)
+                } else {//如果没有勾选
+                    //吧抹掉的值重新加上
+                    this.ruleForm.comdityprice += this.ruleForm.priceml;
                 }
             }
         }, created() {

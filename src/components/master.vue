@@ -174,7 +174,7 @@
                 this.mendian.id = id;
             },
             clearCookie: function () {
-                this.axios.get("http://localhost:8111//exitUser").then(() => {
+                this.axios.get("http://localhost:8111/exitUser").then(() => {
                     window.location.href = "http://localhost:8111/reUrl";
                 });
             }
