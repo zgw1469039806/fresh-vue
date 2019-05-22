@@ -95,8 +95,8 @@
 
                     <el-table-column
                         sortable
-                        label="是否抹零"
-                        prop="ordermoney">
+                        label="抹零金额"
+                        prop="gchange">
                     </el-table-column>
 
                     <el-table-column

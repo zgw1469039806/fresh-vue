@@ -165,6 +165,11 @@
                             <el-table-column
                                     label="优惠方式"
                                     prop="preferentialway">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.preferentialway == 0">原价</span>
+                                    <span v-if="scope.row.preferentialway == 1">会员价</span>
+                                    <span v-if="scope.row.preferentialway == 2">活动价</span>
+                                </template>
                             </el-table-column>
 
 
@@ -174,6 +179,8 @@
                     <div >
                         <h5 class="flot_left">收货地址：</h5>
                         <p class="close_left flot_left ">{{ordAddress}}</p>
+                        <h5 class="close_left flot_left"><br/>联系人：</h5>
+                        <p class="close_left flot_left ">{{ordPhone}}</p>
                         <h5 class="close_left flot_left">修改订单状态：</h5>
                         <el-button
                                 class="close_left flot_left"
@@ -209,8 +216,8 @@
                     </div>
 
                     <div style="clear: left;">
-                        <el-button @click.native="dialogVisible = false">取消</el-button>
-                        <el-button type="primary" >确定</el-button>
+                        <!--<el-button @click.native="dialogVisible = false">取消</el-button>
+                        <el-button type="primary" >确定</el-button>-->
                     </div>
 
                 </div>
@@ -273,7 +280,8 @@
 
                 updordstart:null ,//订单详情 -- 订单状态 -- 修改
                 ordAddress:null ,//订单详情 -- 订单地址
-                updOrderId: null
+                updOrderId: null,
+                ordPhone:null
             }
 
         }, methods: {
@@ -282,22 +290,12 @@
             },
             upSelOrder(row, event, column){
                 this.dialogVisible = true;
-                this.updordstart = row.orderStat
-                this.updOrderId = row.orderid
+                this.updordstart = row.orderStat;
+                this.updOrderId = row.orderid;
+                this.ordAddress = row.address;
+                this.ordPhone = row.phone;
                 row,event, column
                 alert(row.orderStat)
-                //根据地址id获取地址
-                this.axios.post("/selAddressById", {
-                    "data": row.addressId,
-                })
-                    .then((response) => {
-                        this.ordAddress = response.data.data.address;
-                    })
-                    .catch((error) => {
-                        this.$message.error("Error:" + error);
-                    })
-
-
                 this.axios.post("/selOrderShopById", {
                     "data": row.orderid,
                 })
@@ -341,7 +339,7 @@
                 index
             },
             onOrderPage(){
-                alert(this.upForm.orderScene)
+                alert(this.upForm.orderStat)
                 this.axios.post("/selOrderPage", {
                     "data": this.upForm,
                 })
@@ -404,8 +402,14 @@
     .flot_left{
         float: left;
     }
+    .flot_right{
+        float:right;
+    }
     .close_left{
         clear: left;
+    }
+    .close_none{
+        clear:none;
     }
 
 </style>
