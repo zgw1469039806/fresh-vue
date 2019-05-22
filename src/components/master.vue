@@ -137,15 +137,21 @@
                     <!--右侧内容开始-->
                 </el-aside>
                 <div class="rightdiv">
-                    <span id="head"><span id="huanying">欢迎您，<span
-                            id="name">{{username}}</span>  当前所在店铺:{{mendian.name}}</span></span>
+                    <span id="head">
+                        <span id="huanying">欢迎您，
+                        <span id="name">{{username}}</span>
+                        当前所在店铺:{{mendian.name}}
+                            <span style="margin-left: 30px">
+                            <el-button @click="clearCookie">注销</el-button>
+                                </span>
+                        </span>
+                    </span>
                     <transition name="move" mode="out-in">
                         <router-view></router-view>
                     </transition>
                 </div>
             </el-container>
         </div>
-        <el-button @click="clearCookie">清除cookie</el-button>
     </div>
 </template>
 
@@ -167,17 +173,16 @@
                 this.mendian.name = name;
                 this.mendian.id = id;
             },
-            clearCookie:function () {
-                this.axios.get("http://localhost:8111//exitUser").then(()=>{
-
+            clearCookie: function () {
+                this.axios.get("http://localhost:8111//exitUser").then(() => {
                     window.location.href = "http://localhost:8111/reUrl";
-
                 });
             }
         }, created() {
             this.axios.get("/getPrinciple").then((response) => {
                 let data = response.data;
-                let oauth = data['OAuth2']['authority'];
+                let oauth = data['OAuth2'];
+                this.$alert(oauth);
                 oauth = oauth.replace("[", "");
                 oauth = oauth.replace("]", "");
                 let q = oauth.split('-');

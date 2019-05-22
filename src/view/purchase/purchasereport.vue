@@ -219,7 +219,7 @@
                             this.tableData[i].commodity = '';
                             this.tableData[i].money = '';
                             for (let j = 0; j < data[i].list.length; j++) {
-                                this.tableData[i].money += data[i].list[j].subtotal
+                                this.tableData[i].money += data[i].list[j].subtotal;
                                 this.tableData[i].commodity += '商品名：' + data[i].list[j].comdityname + "数量：" + data[i].list[j].shopNumber + "小结：" + data[i].list[j].subtotal + "\t"
                             }
                         }

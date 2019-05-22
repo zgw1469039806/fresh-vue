@@ -3,17 +3,17 @@
         <div class="forms">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <h1 style="font-size: 20px" v-text="Local.title">添加员工</h1>
-                <el-form-item  label="员工姓名:" prop="useraccount">
+                <el-form-item label="员工姓名:" prop="useraccount">
                     <el-input style="width: 500px" v-model="ruleForm.useraccount"></el-input>
                 </el-form-item>
                 <el-form-item label="联系方式:" prop="phone">
-                    <el-input  v-model="ruleForm.phone"></el-input>
+                    <el-input v-model="ruleForm.phone"></el-input>
                 </el-form-item>
                 <el-form-item label="职位" prop="username">
                     <el-select v-model="ruleForm.username" placeholder="请选择员工职位">
-                        <el-option label="采购员" value="shanghai"></el-option>
-                        <el-option label="收银员" value="beijing"></el-option>
-                        <el-option label="会计" value="kuaiji"></el-option>
+                        <el-option label="采购员" value="ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_HUOWU"></el-option>
+                        <el-option label="收银员" value="ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP"></el-option>
+                        <el-option label="会计" value="ROLE_ACCOUNTING"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -36,49 +36,55 @@
             return {
                 ruleForm: {
                     useraccount: '',
-                    phone:'',
-                    username:'',
-                },   rules: {
+                    phone: '',
+                    username: '',
+                },
+                rules: {
                     useraccount: [
-                        { required: true, message: '请输入员工姓名', trigger: 'blur' },
-                        { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+                        {required: true, message: '请输入员工姓名', trigger: 'blur'},
+                        {min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur'}
                     ],
-                    phone:[
-                        { required: true, message: '请输入联系方式', trigger: 'blur' },
-                        { min: 11, message: '至少 11 位', trigger: 'blur' }
+                    phone: [
+                        {required: true, message: '请输入联系方式', trigger: 'blur'},
+                        {min: 11, message: '至少 11 位', trigger: 'blur'}
                     ],
                     username: [
-                        { required: true, message: '请选择员工职位', trigger: 'change' },
+                        {required: true, message: '请选择员工职位', trigger: 'change'},
 
                     ]
                 },
                 Local: {
                     title: '添加员工',
-                }
+                },
+                postion: [
+                    {
+                        lable: "采购员",
+                        value: "ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_HUOWU"
+                    },
+                    {
+                        lable: "收银员",
+                        value: "ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP"
+                    },
+                    {
+                        lable: "会计",
+                        value: "ROLE_ACCOUNTING"
+                    },
+                ]
             }
         },
         methods: {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-
-                          var data={
-                              "phone": this.ruleForm.phone,
-                              "useraccount": this.ruleForm.useraccount,
-                              "username": this.ruleForm.username
-                          };
-
-                          this.axios.post("/savaRoot",{data}).then((response)=>{
-                             alert(response.data);
-                          });
-
-                        // var multipartFile = new FormData();//将文件转成二进制形式
-                        // multipartFile.append("file", this.ruleForm.logomodel);
-                        // this.$axios.post('', multipartFile).then((response) => {
-                        //     if (response.code==200){
-                        //         this.$message.success("添加成功!")
-                        //     }
-                        // })
+                        var data = {
+                            "phone": this.ruleForm.phone,
+                            "useraccount": this.ruleForm.useraccount,
+                            "username": this.ruleForm.username,
+                            "isnoYg": 1,//当前门店
+                        };
+                        this.axios.post("/savaRoot", {data}).then((response) => {
+                            alert(response.data);
+                        });
                     } else {
                         return false;
                     }
@@ -89,7 +95,7 @@
                 if (this.type == 'insert') {
                     this.Local.title = "添加员工"
                 } else if (this.type == 'update') {
-                    this.Local.title = "编辑员工"
+                    this.Local.title = "编辑员工";
                     this.sid = this.$route.params.sid;
                 }
             },
@@ -100,8 +106,8 @@
                 this.ruleForm.logo = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {
-                this.ruleForm.logomodel = file
-                alert(this.ruleForm.logomodel)
+                this.ruleForm.logomodel = file;
+                alert(this.ruleForm.logomodel);
                 const isJPG = file.type === 'image/jpeg';
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -127,6 +133,7 @@
         display: flex;
         justify-content: center;
     }
+
     .box {
         width: border-box;
         display: flex;

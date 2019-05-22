@@ -1,8 +1,6 @@
 <template>
     <div class="box">
         <div class="forms">
-            Type:{{type}}
-            Sid:{{sid}}
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <h1 style="font-size: 20px" v-text="Local.title">添加店铺</h1>
                 <el-form-item label="店铺名称" prop="name">
@@ -18,7 +16,7 @@
                 <el-form-item label="店铺logo">
                     <el-upload
                             :model="ruleForm.logomodel"
-                            action="http://localhost:8777/unification/imageAdd"
+                            action="/imageAdd"
                             :show-file-list="false"
                             :with-credentials=true
                             :on-success="handleAvatarSuccess"
@@ -33,7 +31,7 @@
                 <el-form-item label="门店照片">
                     <el-upload
                             class="upload-demo"
-                            action="http://localhost:8777/unification/imageAdd"
+                            action="/imageAdd"
                             :on-preview="handlePreview"
                             :with-credentials=true
                             :on-remove="handleRemove"
@@ -107,7 +105,7 @@
                             "storeaLogo": this.ruleForm.logourl,
                             "storeaddress": this.ruleForm.storeaddress,
                             "storename": this.ruleForm.storename
-                        }
+                        };
                         const loading = this.$loading({
                             lock: true,
                             text: 'Loading',

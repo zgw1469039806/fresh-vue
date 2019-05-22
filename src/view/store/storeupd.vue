@@ -94,13 +94,14 @@
                                 "storeid": this.ruleForm.storeid
                             })
                         }
+                        ;
                         let data = {
                             "manageStoreDTOList": list,
                             "storeid": this.ruleForm.storeid,
                             "storeaLogo": this.ruleForm.logourl,
                             "storeaddress": this.ruleForm.storeaddress,
                             "storename": this.ruleForm.storename
-                        }
+                        };
                         const $loadinged = this.$loading({
                             lock: true,
                             text: 'Loading',
@@ -108,7 +109,6 @@
                             background: 'rgba(0, 0, 0, 0.7)'
                         });
                         this.axios.post("/updMana", {data}).then((response) => {
-
                             if (response.data.msg == "处理成功") {
                                 this.$message.success("添加成功!")
                             } else if (response.data.msg == '门店名称不能重复') {
