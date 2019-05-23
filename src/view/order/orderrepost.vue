@@ -34,7 +34,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-button style="margin-left: 5px" type="primary" @click="chaxun1()">查询</el-button>
+                <el-button style="margin-left: 5px" type="success" @click="chaxun1()">查询</el-button>
             </el-form>
             <template >
                 <el-table
@@ -295,7 +295,6 @@
                 this.ordAddress = row.address;
                 this.ordPhone = row.phone;
                 row,event, column
-                alert(row.orderStat)
                 this.axios.post("/selOrderShopById", {
                     "data": row.orderid,
                 })
@@ -339,7 +338,6 @@
                 index
             },
             onOrderPage(){
-                alert(this.upForm.orderStat)
                 this.axios.post("/selOrderPage", {
                     "data": this.upForm,
                 })

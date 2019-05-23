@@ -154,9 +154,7 @@
 </template>
 
 <script>
-
     import PuchaseChoice from "../../components/puchaseChoice";
-
     export default {
         name: "orderinsert",
         components: {PuchaseChoice},
@@ -191,7 +189,6 @@
                         [
                             {required: true, message: '请选择付款方式', trigger: 'blur'}
                         ]
-
                 },
             }
         },
@@ -224,7 +221,6 @@
                                     this.loading = false;
                                     this.$message.error(response.data.msg);
                                 }
-
                             }).catch((error) => {
                                 this.loading = false;
                                 this.$message.error("Error:" + error);
@@ -232,7 +228,6 @@
                         } else {      //为false 表示没有会员 传入真实价格
                             this.ruleForm.vipId = "";
                             this.loading = true;
-
                             this.axios.post("/insertOrder", {
                                 "data": this.ruleForm,
                             }).then((response) => {
@@ -249,7 +244,6 @@
                                     this.loading = false;
                                     this.$message.error(response.data.msg);
                                 }
-
                             }).catch((error) => {
                                 this.loading = false;
                                 this.$message.error("Error:" + error);
@@ -365,7 +359,6 @@
                     for (let i = 0; i < this.ruleForm.tableData.length; i++) {
                         map.set(this.ruleForm.tableData[i].comdityId, this.ruleForm.tableData[i]);
                     }
-
                     this.ruleForm.tableData = new Array();
                     for (var [key, value] of map) {
                         key + "1";
@@ -399,7 +392,6 @@
                     //计算抹零抹了多少
                     this.ruleForm.priceml = this.pricels - this.ruleForm.ordermoney;
                     this.ruleForm.priceml = parseFloat(this.ruleForm.priceml).toFixed(2);
-
                 } else {//如果没有勾选
                     //吧抹掉的值重新加上
                     this.ruleForm.ordermoney += this.ruleForm.priceml;
@@ -422,15 +414,12 @@
         display: flex;
         margin-top: 5vw;
     }
-
     .bor {
         border: 1px solid red;
     }
-
     .subform {
         width: 200px;
     }
-
     .forms {
         width: 50vw;
         display: flex;

@@ -110,7 +110,10 @@
             }
         },
         created() {
-            this.axios.post("/GdStoreQueryAll")
+            this.axios.post("/GdStoreQueryAll",{
+                    "data":null
+                }
+            )
                 .then((response) => {
                     this.storeid = response.data.data
                 })
