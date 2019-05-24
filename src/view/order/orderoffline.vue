@@ -34,7 +34,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-button style="margin-left: 5px" type="primary" @click="chaxun()">查询</el-button>
+                <el-button style="margin-left: 5px" type="success" @click="chaxun()">查询</el-button>
             </el-form>
             <template>
                 <el-table
@@ -95,8 +95,8 @@
 
                     <el-table-column
                         sortable
-                        label="是否抹零"
-                        prop="ordermoney">
+                        label="抹零金额"
+                        prop="gchange">
                     </el-table-column>
 
                     <el-table-column
@@ -170,24 +170,14 @@
                                     prop="num">
                             </el-table-column>
 
-                            <!--<el-table-column
-                                    label="商品单价"
-                                    prop="comPrice">
-                            </el-table-column>-->
-
                             <el-table-column
                                     label="优惠方式"
                                     prop="preferentialway">
-                            </el-table-column>
-
-                            <el-table-column
-                                    label="应付(元)"
-                                    prop="comdityprice">
-                            </el-table-column>
-
-                            <el-table-column
-                                    label="实付(元)"
-                                    prop="comditytrueprice">
+                                <template slot-scope="scope">
+                                    <span v-if="scope.row.preferentialway == 0">原价</span>
+                                    <span v-if="scope.row.preferentialway == 1">会员价</span>
+                                    <span v-if="scope.row.preferentialway == 2">活动价</span>
+                                </template>
                             </el-table-column>
 
                         </el-table>
@@ -303,8 +293,6 @@
             },
 
             goPay() {
-                alert("去付款:" + this.updOrderId);
-
                 //根据订单编号修改订单状态 已完成
                 this.axios.post("/updOrderStartById", {
                     "data": {
@@ -332,7 +320,6 @@
                 index
             },
             orderPage() {
-                alert(this.Form.orderScene)
                 this.axios.post("/selOrderPage", {
                     "data": this.Form,
                 })

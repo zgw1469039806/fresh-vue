@@ -64,7 +64,7 @@
             dialogFormVisible: Boolean,//控制dialog是否打开
             isOkclick: Function,
             isClose: Function,
-            stoicid : String
+            stoicid : Number
         },
         data() {
             return {

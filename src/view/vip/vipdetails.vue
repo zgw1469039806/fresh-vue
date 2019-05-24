@@ -59,6 +59,10 @@
                             label="是否挂失"
                             prop="vipreport"
                             width="90px">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.vipreport == 0">否</span>
+                            <span v-if="scope.row.vipreport == 1">是</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             sortable
@@ -108,7 +112,7 @@
                 },
                 page: {
                     current: 1, //当前页
-                    pageSize: 1 ,//每页显示多少条
+                    pageSize: 10 ,//每页显示多少条
                 },
                 options: [
                     {

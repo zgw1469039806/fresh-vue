@@ -26,26 +26,26 @@
 
                     <template>
                         <el-table
-                                :data="ruleForm.tableData"
-                                border
-                                style="width: 100%;">
+                            :data="ruleForm.tableData"
+                            border
+                            style="width: 100%;">
 
                             <el-table-column
-                                    prop="comdityname"
-                                    label="品名"
-                                    width="120">
+                                prop="comdityname"
+                                label="品名"
+                                width="120">
                             </el-table-column>
 
                             <el-table-column
-                                    prop="comdityprice"
-                                    label="单价(元)"
-                                    width="80">
+                                prop="ordermoney"
+                                label="单价(元)"
+                                width="80">
                             </el-table-column>
 
                             <el-table-column
-                                    prop="discount"
-                                    label="活动价(元)"
-                                    width="90">
+                                prop="discount"
+                                label="活动价(元)"
+                                width="90">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.discount == '' || scope.row.discount == null">无</span>
                                     <span v-else>{{scope.row.discount}}</span>
@@ -53,14 +53,14 @@
                             </el-table-column>
 
                             <el-table-column
-                                    prop="comditydw"
-                                    label="单位"
-                                    width="80">
+                                prop="comditydw"
+                                label="单位"
+                                width="80">
                             </el-table-column>
 
                             <el-table-column
-                                    label="数量"
-                                    width="160">
+                                label="数量"
+                                width="160">
                                 <template slot-scope="scope">
                                     <el-input-number @change="numchang" v-model="scope.row.num" :precision="2"
                                                      :step="0.01" :min="0.00"
@@ -69,17 +69,17 @@
                             </el-table-column>
 
                             <el-table-column
-                                    prop="comdtotal"
-                                    label="总价(元)"
-                                    width="120">
+                                prop="comdtotal"
+                                label="总价(元)"
+                                width="120">
                                 <template slot-scope="scope">
                                     <span v-if="ifshow == true"> <!--是否会员-->
                                         <span v-if="scope.row.discount == '' || scope.row.discount == null">
-                                            {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2)).toFixed(2)}}
+                                            {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2)).toFixed(2)}}
                                         </span>
                                         <span
-                                                v-else-if="(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2))<parseFloat(scope.row.num * scope.row.discount).toFixed(2)">
-                                            {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2)).toFixed(2)}}
+                                            v-else-if="(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2))<parseFloat(scope.row.num * scope.row.discount).toFixed(2)">
+                                            {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2)).toFixed(2)}}
                                         </span>
                                         <span v-else>
                                             {{parseFloat(scope.row.num * scope.row.discount).toFixed(2)}}
@@ -90,14 +90,14 @@
                                         {{parseFloat(scope.row.num * scope.row.discount).toFixed(2) }}
                                     </span>
                                     <span
-                                            v-else>{{parseFloat(scope.row.num * scope.row.comdityprice).toFixed(2) }}</span>
+                                        v-else>{{parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2) }}</span>
                                 </template>
                             </el-table-column>
 
                             <el-table-column
-                                    prop="preferentialway"
-                                    label="优惠方式"
-                                    width="80">
+                                prop="preferentialway"
+                                label="优惠方式"
+                                width="80">
 
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.preferentialway == 0">无</span>
@@ -108,9 +108,9 @@
                             </el-table-column>
 
                             <el-table-column
-                                    fixed="right"
-                                    label="操作"
-                                    width="80">
+                                fixed="right"
+                                label="操作"
+                                width="80">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini"
                                                @click.native.prevent="deleteRow(scope.$index, ruleForm.tableData)">删除
@@ -128,16 +128,19 @@
                         <el-radio :label="3">微信</el-radio>
                         <el-radio :label="4">现金</el-radio>
                     </el-radio-group>
-                    <p>总价：<span style="color: red;">{{ruleForm.comdityprice}}</span> 元</p>
+                    <p>总价：<span style="color: red;">{{ruleForm.ordermoney}}</span> 元</p>
                 </el-form-item>
                 <el-form-item label="应付金额:">
-                    <el-input v-model="ruleForm.comdityprice" disabled></el-input>
+                    <el-input v-model="ruleForm.ordermoney" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="实付金额:">
-                    <el-input v-model="ruleForm.comditytrueprice"></el-input>
+                    <el-input @change="changprice" v-model="ruleForm.comditytrueprice"></el-input>
                 </el-form-item>
                 <el-form-item label="抹零:">
                     <el-checkbox @change="mlchang" v-model="ruleForm.ispriceml"></el-checkbox>
+                </el-form-item>
+                <el-form-item label="找零:">
+                    <el-input disabled v-model="ruleForm.gchange"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="success" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -151,9 +154,7 @@
 </template>
 
 <script>
-
     import PuchaseChoice from "../../components/puchaseChoice";
-
     export default {
         name: "orderinsert",
         components: {PuchaseChoice},
@@ -170,47 +171,39 @@
                     storeid: "1", //店铺编号
                     ordertype: 0,//交易类型 (0-消费 1-退款)
                     orderscene: 1,//交易场景
-                    comdityprice: 0, //总价(应付金额)
+                    ordermoney: 0, //总价(应付金额)
                     comditytrueprice: 0,//实付金额
                     ispriceml: false,//是否抹零
-                    priceml: 0//抹零
+                    priceml: 0,//抹零
+                    gchange: 0,//找零
                     //orderStat: 挂单中  已完成
                 },
+                pricels: 0,//临时应付金额
                 dialogFormVisible: false,//控制dialog是否打开
                 mlprice: 0,//抹零价格
-                rules:
-                    {
-                        tableData: [
-                            {required: true, message: '请选择商品', trigger: 'blur'}
-                        ],
-                        ordermeans:
-                            [
-                                {required: true, message: '请选择付款方式', trigger: 'blur'}
-                            ]
-
-                    }
-                ,
-            }
-        },
-
-        computed: {
-            sumMoney() {
-                return this.ruleForm.tableData.map(row => row.num * row.comdityprice).reduce(
-                    (acc, cur) => (parseFloat(cur) + acc), 0)
+                rules: {
+                    tableData: [
+                        {required: true, message: '请选择商品', trigger: 'blur'}
+                    ],
+                    ordermeans:
+                        [
+                            {required: true, message: '请选择付款方式', trigger: 'blur'}
+                        ]
+                },
             }
         },
         methods: {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.ruleForm.ordermoney = this.pricels;
                         if (this.ruleForm.tableData == null || this.ruleForm.tableData == '') {
                             this.$message.error('商品不能为空!');
                             return false;
                         }
-                        alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname + ",单位：" + this.ruleForm.tableData[0].comditydw + ",价格：" + this.ruleForm.tableData[0].comdityprice + ",货号：" + this.ruleForm.tableData[0].comdityId + ",数量：" + this.ruleForm.tableData[0].comdityId)
+                        alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname + ",单位：" + this.ruleForm.tableData[0].comditydw + ",价格：" + this.ruleForm.tableData[0].ordermoney + ",货号：" + this.ruleForm.tableData[0].comdityId + ",数量：" + this.ruleForm.tableData[0].comdityId)
                         if (this.ifshow) { //如果ifshow为true 表示拥有会员 传入打折后价格
                             //18376645457
-                            this.ruleForm.comdityprice = (this.sumMoney.toFixed(2) * this.ruleForm.zheKou).toFixed(2);
                             this.loading = true;
                             this.axios.post("/insertOrder", {
                                 "data": this.ruleForm,
@@ -228,17 +221,13 @@
                                     this.loading = false;
                                     this.$message.error(response.data.msg);
                                 }
-
                             }).catch((error) => {
                                 this.loading = false;
                                 this.$message.error("Error:" + error);
                             })
                         } else {      //为false 表示没有会员 传入真实价格
                             this.ruleForm.vipId = "";
-                            alert("不是会员,价格为：" + this.sumMoney.toFixed(2))
-                            this.ruleForm.comdityprice = this.sumMoney.toFixed(2);
                             this.loading = true;
-
                             this.axios.post("/insertOrder", {
                                 "data": this.ruleForm,
                             }).then((response) => {
@@ -255,7 +244,6 @@
                                     this.loading = false;
                                     this.$message.error(response.data.msg);
                                 }
-
                             }).catch((error) => {
                                 this.loading = false;
                                 this.$message.error("Error:" + error);
@@ -316,6 +304,7 @@
             },
             addtable: function (multipleSelection) {
                 var rows = multipleSelection;
+                //todo: belongStoreNam从父级拿到
                 if (rows.length != 0) {
                     var map = new Map();
                     for (let j = 0; j < rows.length; j++) {
@@ -326,41 +315,50 @@
                             discount: rows[j].discount, //活动价格
                             preferentialway: 0,//优惠类型 0-无 1-会员价 2-活动价 动态拼接
                             num: rows[j].comdnum,
-                            comdityprice: rows[j].comdityprice,
+                            belongStoreNam: '123',
+                            ordermoney: rows[j].comdityprice,
                             isnodiscount: rows[j].isnodiscount,
                         };
                         if (gobj.num == 0 || gobj.num == '' || gobj.num == undefined) {
                             gobj.num = rows[j].num;
                         }
+                        if (gobj.ordermoney == 0 || gobj.ordermoney == '' || gobj.ordermoney == undefined) {
+                            gobj.ordermoney = rows[j].ordermoney;
+                        }
                         if (this.ifshow) { //如果是会员
                             if (gobj.isnodiscount == 1) {
-                                if (parseFloat(this.ruleForm.zheKou * gobj.comdityprice) < gobj.discount) {
+                                if (parseFloat(this.ruleForm.zheKou * gobj.ordermoney) < gobj.discount) {
                                     gobj.preferentialway = 1;
-                                    this.ruleForm.comdityprice += parseFloat((this.ruleForm.zheKou * gobj.comdityprice) * gobj["num"]);
+                                    this.ruleForm.ordermoney += parseFloat((this.ruleForm.zheKou * gobj.ordermoney) * gobj["num"]);
                                 } else {
                                     gobj.preferentialway = 2;
-                                    this.ruleForm.comdityprice += parseFloat(gobj["discount"] * gobj["num"]);
+                                    this.ruleForm.ordermoney += parseFloat(gobj["discount"] * gobj["num"]);
                                 }
                             } else {
-                                this.ruleForm.comdityprice = parseFloat(this.ruleForm.comdityprice * gobj["num"]);
-                                this.ruleForm.comdityprice += parseFloat((this.ruleForm.zheKou * gobj.comdityprice));
+                                this.ruleForm.ordermoney = parseFloat(this.ruleForm.ordermoney * gobj["num"]);
+                                this.ruleForm.ordermoney += parseFloat((this.ruleForm.zheKou * gobj.ordermoney));
                                 gobj.preferentialway = 1;
                             }
                         } else if (gobj.isnodiscount == 1) { //若是活动商品
-                            this.ruleForm.comdityprice += parseFloat(gobj["discount"] * gobj["num"]);
+                            this.ruleForm.ordermoney += parseFloat(gobj["discount"] * gobj["num"]);
                             gobj.preferentialway = 2;
                         } else { //若是普通商品
-                            this.ruleForm.comdityprice += parseFloat(gobj["comdityprice"] * gobj["num"]);
+                            let money = parseFloat(gobj["comdityprice"]);
+                            if (money == '' || money == null || money == undefined || money != Number) {
+                                money = parseFloat(gobj["ordermoney"]);
+                            }
+                            this.ruleForm.ordermoney += money * gobj["num"];
                         }
+                        this.pricels = this.ruleForm.ordermoney;
                         if (this.ruleForm.ispriceml) {
                             this.mlchang();
                         }
+                        this.changprice();
                         map.set(gobj.comdityId, gobj);
                     }
                     for (let i = 0; i < this.ruleForm.tableData.length; i++) {
                         map.set(this.ruleForm.tableData[i].comdityId, this.ruleForm.tableData[i]);
                     }
-
                     this.ruleForm.tableData = new Array();
                     for (var [key, value] of map) {
                         key + "1";
@@ -380,26 +378,28 @@
             jisuan: function () {
                 let copayshuzu = [];
                 copayshuzu = this.ruleForm.tableData;
-                this.ruleForm.comdityprice = 0;
+                this.ruleForm.ordermoney = 0;
                 this.addtable(copayshuzu);
             },
             isClose: function () { //关闭模态框
                 this.dialogFormVisible = false;
             },
             mlchang: function () {
-                //TODO:抹零未写完
                 //如果抹零的按钮为勾选
                 if (this.ruleForm.ispriceml) {
-                    //拿到莫零前的值
-                    var mlq = this.ruleForm.comdityprice;
                     //抹零操作
-                    this.ruleForm.comdityprice = parseInt(this.ruleForm.comdityprice);
+                    this.ruleForm.ordermoney = parseInt(this.ruleForm.ordermoney);
                     //计算抹零抹了多少
-                    this.ruleForm.priceml = mlq - this.ruleForm.comdityprice;
+                    this.ruleForm.priceml = this.pricels - this.ruleForm.ordermoney;
+                    this.ruleForm.priceml = parseFloat(this.ruleForm.priceml).toFixed(2);
                 } else {//如果没有勾选
                     //吧抹掉的值重新加上
-                    this.ruleForm.comdityprice += this.ruleForm.priceml;
+                    this.ruleForm.ordermoney += this.ruleForm.priceml;
                 }
+                this.changprice();
+            },
+            changprice: function () {//实付金额值改变事件
+                this.ruleForm.gchange = this.ruleForm.comditytrueprice - this.ruleForm.ordermoney;
             }
         }, created() {
             this.ruleForm.storeid = this.$route.params.md;
@@ -414,15 +414,12 @@
         display: flex;
         margin-top: 5vw;
     }
-
     .bor {
         border: 1px solid red;
     }
-
     .subform {
         width: 200px;
     }
-
     .forms {
         width: 50vw;
         display: flex;
