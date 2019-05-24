@@ -16,7 +16,7 @@
                 <el-form-item label="店铺logo">
                     <el-upload
                             :model="ruleForm.logomodel"
-                            action="/imageAdd"
+                            action="http://localhost:8777/unification/imageAdd/imageAdd"
                             :show-file-list="false"
                             :with-credentials=true
                             :on-success="handleAvatarSuccess"
@@ -31,7 +31,7 @@
                 <el-form-item label="门店照片">
                     <el-upload
                             class="upload-demo"
-                            action="/imageAdd"
+                            action="http://localhost:8777/unification/imageAdd/imageAdd"
                             :on-preview="handlePreview"
                             :with-credentials=true
                             :on-remove="handleRemove"

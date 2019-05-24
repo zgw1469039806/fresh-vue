@@ -352,7 +352,7 @@
                         } else { //若是普通商品
                             this.ruleForm.comdityprice += parseFloat(gobj["comdityprice"] * gobj["num"]);
                         }
-                        if (this.ruleForm.ispriceml){
+                        if (this.ruleForm.ispriceml) {
                             this.mlchang();
                         }
                         map.set(gobj.comdityId, gobj);

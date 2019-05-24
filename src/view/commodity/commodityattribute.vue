@@ -156,6 +156,32 @@
                                 </el-option>
                             </el-select>
                         </el-form-item>
+                        <el-form-item label="商品图片" style="width: 300px">
+                            <el-upload
+                                    :model="logomodel"
+                                    action="http://localhost:8777/unification/imageAdd"
+                                    :show-file-list="false"
+                                    :with-credentials=true
+                                    :on-success="handleAvatarSuccess"
+                                    :before-upload="beforeAvatarUpload">
+                                <img v-if="ruleForm.GdImagesDTO.imagesurl" :src="ruleForm.GdImagesDTO.imagesurl" class="avatar" style="width: 150px">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+                        </el-form-item>
+                        <el-form-item label="商品图片详细">
+                            <el-upload
+                                    class="upload-demo"
+                                    action="http://localhost:8777/unification/imageAdd"
+                                    :on-preview="handlePreview"
+                                    :with-credentials=true
+                                    :on-remove="handleRemove"
+                                    :on-success="handlePreview"
+                                    :file-list="shoplist"
+                                    list-type="picture">
+                                <el-button size="small" type="success">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            </el-upload>
+                        </el-form-item>
                     </div>
                     <div style="float: right;">
                         <el-button>取消</el-button>
@@ -173,6 +199,8 @@
         name: "commodityattribute",
         data() {
             return {
+                logomodel: '',//商品图片
+                shoplist:[],//商品图片列表
                 tableData: [
                     {
                         comdityId: '1',//商品ID
@@ -215,6 +243,18 @@
                     corresponding: 0,//对应积分
                     storeids: [],//对应店铺
                     vipishige: 0,//会员是否可享折扣
+                    GdImagesDTO: {
+                        imagesurl: '',//商品图片Url
+                        comdityId: '',//商品ID
+                        imageslv: '0',//图片等级
+                        imagesDTOS: [
+                            // {
+                            //     imagesurl: '',//商品图片Url
+                            //     comdityId: '',//商品ID
+                            //     imageslv: ''//图片等级
+                            // }
+                        ]
+                    }
                 },
                 rules: {
                     name: [
@@ -259,25 +299,52 @@
                 mendians: [
                     {}
                 ],
-                options: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }]
+                options: [
+                    {
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶'
+                    }, {
+                        value: '选项3',
+                        label: '蚵仔煎'
+                    }, {
+                        value: '选项4',
+                        label: '龙须面'
+                    }]
             }
         }, methods: {
             //单机编辑
             updateRow(index, rows) {
                 index, rows
                 this.$router.push({name: 'staffinsert', params: {type: "update", sid: "12"}})
+            },
+            handleRemove(file, fileList) {//删除文件的沟子
+                file
+                fileList
+            },
+            handlePreview(file) {//文件列表上传成功的沟子
+                this.ruleForm.GdImagesDTO.imagesDTOS.push({
+                    "imagesurl":file.data
+                })
+            },
+            handleAvatarSuccess(res, file) {
+                this.logomodel = URL.createObjectURL(file.raw);
+                this.ruleForm.GdImagesDTO.imagesurl = file.response.data;
+            },
+            beforeAvatarUpload(file) {
+                this.logomodel = file;
+                const isJPG = file.type === 'image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isJPG) {
+                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                }
+                this.logomodel = file;
+                return isJPG && isLt2M;
             },
             //一页多少条改变
             handleSizeChange(index) {
@@ -315,7 +382,7 @@
                         var data = {
                             "data": {
                                 "comditydescribe": this.ruleForm.jj,//商品简介
-                                "comitydw": this.ruleForm.dw,//商品单位
+                                "comditydw": this.ruleForm.dw,//商品单位
                                 "comdityname": this.ruleForm.name,//商品名称
                                 "comdityprice": this.ruleForm.lsj,//零售价
                                 "comditytypeId": this.ruleForm.type[0],//商品分类
@@ -325,11 +392,12 @@
                                 "isnodiscount": 0,//是否为打折商品
                                 "puprice": this.ruleForm.jhj,//进货价
                                 "storeidlist": this.ruleForm.storeids,
-                                "vipishige": 0
+                                "vipishige": 0,
+                                "gdImagesDTO":this.ruleForm.GdImagesDTO
                             }
-                        }
+                        };
                         this.axios.post('/addShop', data).then((response) => {
-                            $loadinged.close()
+                            $loadinged.close();
                             if (response.data.msg == "处理成功") {
                                 this.$message.success("添加成功!")
                                 this.dialogVisible = false;
@@ -340,7 +408,7 @@
                         }).catch((error) => {
                             $loadinged.close()
                             this.$message.error("Error:" + error)
-                        })
+                        });
                         alert('submit!');
                     } else {
                         return false;
@@ -353,7 +421,7 @@
                         "comdityname": this.Form.name,
                         "storeid": this.Form.md
                     },
-                }
+                };
                 this.axios.post('/QueryShopByWh', data).then((response) => {
                     if (response.data.msg == "处理成功") {
                         var data = response.data.data;
@@ -407,7 +475,7 @@
                 if (response.data.msg == "处理成功") {
                     this.mendians = data;
                 }
-            })
+            });
             //查询所有分类
             this.axios.get('/selTypeAll', {}).then((response) => {
                 if (response.data.msg == "处理成功") {
@@ -417,7 +485,7 @@
                         let opt = {
                             value: data[i].comditytypeId,
                             label: data[i].typename
-                        }
+                        };
                         this.options.push(opt)
                     }
                 }
