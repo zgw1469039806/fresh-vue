@@ -111,14 +111,22 @@
                 this.$router.push({name: 'storeinsert', params: {type: "update", sid: "12"}})
             },
             Query: function () {
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 this.axios.post('/GdStoreQueryAll', {
                     "data": this.Form.name
                 }).then((response) => {
+                    $loadinged.close();
                     if (response.data.msg == "处理成功") {
                         let data = response.data.data;
                         this.tableData = data;
                     }
                 }).catch((error) => {
+                    $loadinged.close();
                     this.$message.error(error);
                 })
             }
