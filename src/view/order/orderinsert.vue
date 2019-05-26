@@ -26,26 +26,26 @@
 
                     <template>
                         <el-table
-                            :data="ruleForm.tableData"
-                            border
-                            style="width: 100%;">
+                                :data="ruleForm.tableData"
+                                border
+                                style="width: 100%;">
 
                             <el-table-column
-                                prop="comdityname"
-                                label="品名"
-                                width="120">
+                                    prop="comdityname"
+                                    label="品名"
+                                    width="120">
                             </el-table-column>
 
                             <el-table-column
-                                prop="ordermoney"
-                                label="单价(元)"
-                                width="80">
+                                    prop="ordermoney"
+                                    label="单价(元)"
+                                    width="80">
                             </el-table-column>
 
                             <el-table-column
-                                prop="discount"
-                                label="活动价(元)"
-                                width="90">
+                                    prop="discount"
+                                    label="活动价(元)"
+                                    width="90">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.discount == '' || scope.row.discount == null">无</span>
                                     <span v-else>{{scope.row.discount}}</span>
@@ -53,14 +53,14 @@
                             </el-table-column>
 
                             <el-table-column
-                                prop="comditydw"
-                                label="单位"
-                                width="80">
+                                    prop="comditydw"
+                                    label="单位"
+                                    width="80">
                             </el-table-column>
 
                             <el-table-column
-                                label="数量"
-                                width="160">
+                                    label="数量"
+                                    width="160">
                                 <template slot-scope="scope">
                                     <el-input-number @change="numchang" v-model="scope.row.num" :precision="2"
                                                      :step="0.01" :min="0.00"
@@ -69,16 +69,16 @@
                             </el-table-column>
 
                             <el-table-column
-                                prop="comdtotal"
-                                label="总价(元)"
-                                width="120">
+                                    prop="comdtotal"
+                                    label="总价(元)"
+                                    width="120">
                                 <template slot-scope="scope">
                                     <span v-if="ifshow == true"> <!--是否会员-->
                                         <span v-if="scope.row.discount == '' || scope.row.discount == null">
                                             {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2)).toFixed(2)}}
                                         </span>
                                         <span
-                                            v-else-if="(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2))<parseFloat(scope.row.num * scope.row.discount).toFixed(2)">
+                                                v-else-if="(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2))<parseFloat(scope.row.num * scope.row.discount).toFixed(2)">
                                             {{parseFloat(ruleForm.zheKou*parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2)).toFixed(2)}}
                                         </span>
                                         <span v-else>
@@ -90,14 +90,14 @@
                                         {{parseFloat(scope.row.num * scope.row.discount).toFixed(2) }}
                                     </span>
                                     <span
-                                        v-else>{{parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2) }}</span>
+                                            v-else>{{parseFloat(scope.row.num * scope.row.ordermoney).toFixed(2) }}</span>
                                 </template>
                             </el-table-column>
 
                             <el-table-column
-                                prop="preferentialway"
-                                label="优惠方式"
-                                width="80">
+                                    prop="preferentialway"
+                                    label="优惠方式"
+                                    width="80">
 
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.preferentialway == 0">无</span>
@@ -108,9 +108,9 @@
                             </el-table-column>
 
                             <el-table-column
-                                fixed="right"
-                                label="操作"
-                                width="80">
+                                    fixed="right"
+                                    label="操作"
+                                    width="80">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini"
                                                @click.native.prevent="deleteRow(scope.$index, ruleForm.tableData)">删除
@@ -155,6 +155,7 @@
 
 <script>
     import PuchaseChoice from "../../components/puchaseChoice";
+
     export default {
         name: "orderinsert",
         components: {PuchaseChoice},
@@ -349,7 +350,7 @@
                             }
                             this.ruleForm.ordermoney += money * gobj["num"];
                         }
-                        this.pricels = this.ruleForm.ordermoney;
+                        this.pricels = parseFloat(this.ruleForm.ordermoney);
                         if (this.ruleForm.ispriceml) {
                             this.mlchang();
                         }
@@ -394,7 +395,7 @@
                     this.ruleForm.priceml = parseFloat(this.ruleForm.priceml).toFixed(2);
                 } else {//如果没有勾选
                     //吧抹掉的值重新加上
-                    this.ruleForm.ordermoney += this.ruleForm.priceml;
+                    this.ruleForm.ordermoney += parseFloat(this.ruleForm.priceml);
                 }
                 this.changprice();
             },
@@ -414,12 +415,15 @@
         display: flex;
         margin-top: 5vw;
     }
+
     .bor {
         border: 1px solid red;
     }
+
     .subform {
         width: 200px;
     }
+
     .forms {
         width: 50vw;
         display: flex;
