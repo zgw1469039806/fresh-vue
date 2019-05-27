@@ -143,6 +143,7 @@
                     <template>
                         <el-table
                                 :data="tableData1"
+                                v-loading = "addLoading"
                                 style="width: 100%;margin-top: -80px;"
                         >
                             <el-table-column
@@ -235,7 +236,7 @@
                     current: 1,
                 },*/
                 dialogVisible: false,     //模态框是否显示
-                //addLoading: false,      //是否显示loading
+                addLoading: false,      //是否显示loading
                 orderState: [
                     {
                         value: -1,
@@ -264,10 +265,13 @@
                 this.updordstart = row.orderStat
                 this.updOrderId = row.orderid
 
+                this.addLoading = true;
+
                 this.axios.post("/selOrderShopById", {
                     "data": row.orderid,
                 })
                     .then((response) => {
+                        this.addLoading = false;
                         if (response.data.code == 0) {
                             // 动态赋值
                             let data = response.data.data;
@@ -288,12 +292,19 @@
                         }
                     })
                     .catch((error) => {
+                        this.addLoading = false;
                         this.$message.error("Error:" + error);
                     })
             },
 
             goPay() {
                 //根据订单编号修改订单状态 已完成
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 this.axios.post("/updOrderStartById", {
                     "data": {
                         "ordStart": 4,
@@ -301,6 +312,7 @@
                     },
                 })
                     .then((response) => {
+                        $loadinged.close();
                         if (response.data.code == 0) {
                             window.location.reload();
                         } else {
@@ -308,6 +320,7 @@
                         }
                     })
                     .catch((error) => {
+                        $loadinged.close();
                         this.$message.error("Error:" + error);
                     })
 
@@ -320,10 +333,17 @@
                 index
             },
             orderPage() {
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 this.axios.post("/selOrderPage", {
                     "data": this.Form,
                 })
                     .then((response) => {
+                        $loadinged.close();
                         if (response.data.code == 0) {
                             this.tableData = response.data.data;
 
@@ -332,6 +352,7 @@
                         }
                     })
                     .catch((error) => {
+                        $loadinged.close();
                         this.$message.error("Error:" + error);
                     })
             }

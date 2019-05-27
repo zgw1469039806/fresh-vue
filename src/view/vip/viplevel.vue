@@ -90,11 +90,19 @@
                     })
             }
         }, created() {
+            const $loadinged = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             this.axios.get("/selAllVipLv")
                 .then((response) => {
+                    $loadinged.close();
                     this.tableData = response.data.data
                 })
                 .catch((error) => {
+                    $loadinged.close();
                     this.$message.error("Error:" + error);
                 })
         }

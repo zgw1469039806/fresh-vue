@@ -469,7 +469,14 @@
             }
         }, created() {
             this.Query();
+            const $loadinged = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             this.axios.post('/GdStoreQueryAll', {}).then((response) => {
+                $loadinged.close();
                 var data = response.data.data;
                 if (response.data.msg == "处理成功") {
                     this.mendians = data;

@@ -180,6 +180,13 @@
                     })
             },
             vipPage(){
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+
                 this.axios.post("/selPageListVip", {
                     "data": {
                         "pageNo": this.page.current,
@@ -189,6 +196,7 @@
                     },
                 })
                     .then((response) => {
+                        $loadinged.close();
                         if (response.data.code == 0) {
                             this.tableData = response.data.data;
                         } else {
@@ -197,6 +205,7 @@
 
                     })
                     .catch((error) => {
+                        $loadinged.close();
                         this.$message.error("Error:" + error);
                     })
             },

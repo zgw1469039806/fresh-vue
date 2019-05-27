@@ -203,7 +203,7 @@
                             this.$message.error('商品不能为空!');
                             return false;
                         }
-                        // alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname + ",单位：" + this.ruleForm.tableData[0].comditydw + ",价格：" + this.ruleForm.tableData[0].ordermoney + ",货号：" + this.ruleForm.tableData[0].comdityId + ",数量：" + this.ruleForm.tableData[0].comdityId)
+
                         if (this.ifshow) { //如果ifshow为true 表示拥有会员 传入打折后价格
                             //18376645457
                             this.loading = true;

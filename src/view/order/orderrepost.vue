@@ -131,6 +131,7 @@
                     <template>
                         <el-table
                                 :data="tableData1"
+                                v-loading = addLoading
                                 style="width: 100%;margin-top: -80px;">
                             <el-table-column
                                     label="序号"
@@ -247,7 +248,7 @@
                     pageSize: 10,
                 },
                 dialogVisible:false,     //模态框是否显示
-                //addLoading: false,      //是否显示loading
+                addLoading: false,      //是否显示loading
                 orderStart: [
                 {
                     value: -1,
@@ -295,10 +296,12 @@
                 this.ordAddress = row.address;
                 this.ordPhone = row.phone;
                 row,event, column
+                this.addLoading = true;
                 this.axios.post("/selOrderShopById", {
                     "data": row.orderid,
                 })
                     .then((response) => {
+                        this.addLoading = false;
                         if (response.data.code == 0) {
                             // 动态赋值
                             let data = response.data.data;
@@ -319,6 +322,7 @@
                         }
                     })
                     .catch((error) => {
+                        this.addLoading = false;
                         this.$message.error("Error:" + error);
                     })
             },
@@ -338,10 +342,17 @@
                 index
             },
             onOrderPage(){
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 this.axios.post("/selOrderPage", {
                     "data": this.upForm,
                 })
                     .then((response) => {
+                        $loadinged.close();
                         if (response.data.code == 0) {
                             this.tableData = response.data.data;
                         } else {
@@ -349,10 +360,17 @@
                         }
                     })
                     .catch((error) => {
+                        $loadinged.close();
                         this.$message.error("Error:" + error);
                     })
             },
             updOrderStart(orderId , orderStart){
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 this.axios.post("/updOrderStartById", {
                     "data": {
                         "ordStart": orderStart,
@@ -360,6 +378,7 @@
                     },
                 })
                     .then((response) => {
+                        $loadinged.close();
                         if (response.data.code == 0) {
                             window.location.reload();
                         } else {
@@ -367,6 +386,7 @@
                         }
                     })
                     .catch((error) => {
+                        $loadinged.close();
                         this.$message.error("Error:" + error);
                     })
 
