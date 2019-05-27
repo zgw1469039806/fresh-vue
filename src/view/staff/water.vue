@@ -118,6 +118,7 @@
                 });
             },
             Query: function () {
+                this.lirun=[];
                 for (let i = 0; i < this.mendian.length; i++) {
                     var data = {
                         "selyear": this.Form.selyear,//要查询的年份
