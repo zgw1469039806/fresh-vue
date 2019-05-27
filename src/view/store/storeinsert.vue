@@ -6,17 +6,17 @@
                 <el-form-item label="店铺名称" prop="name">
                     <el-form :inline="true" class="demo-form-inline">
                         <el-form-item>
-                            <el-input v-model="ruleForm.storename" placeholder="审批人"></el-input>
+                            <el-input v-model="ruleForm.storename" placeholder="店铺名称"></el-input>
                         </el-form-item>
                         <el-form-item label="手机号">
-                            <el-input v-model="ruleForm.phone" placeholder="审批人"></el-input>
+                            <el-input v-model="ruleForm.phone" placeholder="手机号"></el-input>
                         </el-form-item>
                     </el-form>
                 </el-form-item>
                 <el-form-item label="店铺logo">
                     <el-upload
                             :model="ruleForm.logomodel"
-                            action="http://localhost:8777/unification/imageAdd/imageAdd"
+                            action="http://localhost:8777/unification/imageAdd"
                             :show-file-list="false"
                             :with-credentials=true
                             :on-success="handleAvatarSuccess"
@@ -31,7 +31,7 @@
                 <el-form-item label="门店照片">
                     <el-upload
                             class="upload-demo"
-                            action="http://localhost:8777/unification/imageAdd/imageAdd"
+                            action="http://localhost:8777/unification/imageAdd"
                             :on-preview="handlePreview"
                             :with-credentials=true
                             :on-remove="handleRemove"

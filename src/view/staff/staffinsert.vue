@@ -76,6 +76,12 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        const loading = this.$loading({
+                            lock: true,
+                            text: 'Loading',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         var data = {
                             "phone": this.ruleForm.phone,
                             "useraccount": this.ruleForm.useraccount,
@@ -83,7 +89,13 @@
                             "isnoYg": 1,//当前门店
                         };
                         this.axios.post("/savaRoot", {data}).then((response) => {
-                            alert(response.data);
+                            loading.close();
+                            if (response.data.data.msg == '处理成功'){
+                                this.$message.success("添加成功!")
+                            }
+                        }).catch((error)=>{
+                            loading.close();
+                            this.$message.error(error)
                         });
                     } else {
                         return false;
@@ -107,7 +119,6 @@
             },
             beforeAvatarUpload(file) {
                 this.ruleForm.logomodel = file;
-                alert(this.ruleForm.logomodel);
                 const isJPG = file.type === 'image/jpeg';
                 const isLt2M = file.size / 1024 / 1024 < 2;
 

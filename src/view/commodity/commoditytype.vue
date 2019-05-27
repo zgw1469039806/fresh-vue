@@ -207,7 +207,6 @@
                                 "typename": this.ruleForm.name
                             }
                         }
-                        // alert("name：" + this.ruleForm.name + "父级Id" + this.ruleForm.fatherid)
                         this.axios.post("http://localhost:8777/unification/sevaType", requestData).then((response) => {
                             if (response.data.msg == "处理成功") {
                                 this.$message.success("添加成功")
@@ -216,7 +215,7 @@
                                 this.$message.error("添加失败，请检查网络或与管理员联系")
                             }
                         }).catch((error) => {
-                            alert(error)
+                            this.$message.error(error)
                         })
                     } else {
                         return false;

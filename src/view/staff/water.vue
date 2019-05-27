@@ -68,7 +68,6 @@
             this.axios.post("/GdStoreQueryAll", {}).then((response) => {
                 let data = response.data;
                 if (data.msg == '处理成功') {
-                    alert(1)
                     this.mendian = data.data;
                     this.Query();
                 }
@@ -118,13 +117,23 @@
                 });
             },
             Query: function () {
+                const loading = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                this.lirun = []
                 for (let i = 0; i < this.mendian.length; i++) {
                     var data = {
                         "selyear": this.Form.selyear,//要查询的年份
                         "storeid": this.mendian[i].storeid//门店id
+                        // "storeid": 3//门店id
+
                     }
                     this.axios.post('QueryDeportForm', data).then((response) => {
                         var data = response.data;
+                        loading.close();
                         if (data.msg == "处理成功") {
                             var lirun = {
                                 name: this.mendian[i].storename,
@@ -136,6 +145,7 @@
                         this.lirun.push(lirun);
                         this.drawLine();
                     }).catch((error) => {
+                        loading.close();
                         this.$message.error("Error:" + error)
                     })
                 }

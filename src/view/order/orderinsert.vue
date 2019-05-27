@@ -177,6 +177,7 @@
                     ispriceml: false,//是否抹零
                     priceml: 0,//抹零
                     gchange: 0,//找零
+                    rfmoney: 0//成本
                     //orderStat: 挂单中  已完成
                 },
                 pricels: 0,//临时应付金额
@@ -202,7 +203,7 @@
                             this.$message.error('商品不能为空!');
                             return false;
                         }
-                        alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname + ",单位：" + this.ruleForm.tableData[0].comditydw + ",价格：" + this.ruleForm.tableData[0].ordermoney + ",货号：" + this.ruleForm.tableData[0].comdityId + ",数量：" + this.ruleForm.tableData[0].comdityId)
+                        // alert("商品为-名称：" + this.ruleForm.tableData[0].comdityname + ",单位：" + this.ruleForm.tableData[0].comditydw + ",价格：" + this.ruleForm.tableData[0].ordermoney + ",货号：" + this.ruleForm.tableData[0].comdityId + ",数量：" + this.ruleForm.tableData[0].comdityId)
                         if (this.ifshow) { //如果ifshow为true 表示拥有会员 传入打折后价格
                             //18376645457
                             this.loading = true;
@@ -211,13 +212,6 @@
                             }).then((response) => {
                                 if (response.data.code == 0) {
                                     this.loading = false;
-                                    this.$alert(response.data.msg, '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => {
-                                            action
-                                            window.location.reload();
-                                        }
-                                    });
                                 } else {
                                     this.loading = false;
                                     this.$message.error(response.data.msg);
@@ -319,6 +313,7 @@
                             belongStoreNam: '123',
                             ordermoney: rows[j].comdityprice,
                             isnodiscount: rows[j].isnodiscount,
+                            puprice:rows[j].puprice
                         };
                         if (gobj.num == 0 || gobj.num == '' || gobj.num == undefined) {
                             gobj.num = rows[j].num;
@@ -354,6 +349,7 @@
                         if (this.ruleForm.ispriceml) {
                             this.mlchang();
                         }
+                        this.ruleForm.rfmoney += parseFloat(gobj.puprice * gobj["num"]);
                         this.changprice();
                         map.set(gobj.comdityId, gobj);
                     }
@@ -404,7 +400,6 @@
             }
         }, created() {
             this.ruleForm.storeid = this.$route.params.md;
-            this.$alert("当前门店：" + this.ruleForm.storeid)
         }
     }
 </script>

@@ -409,7 +409,6 @@
                             $loadinged.close()
                             this.$message.error("Error:" + error)
                         });
-                        alert('submit!');
                     } else {
                         return false;
                     }
