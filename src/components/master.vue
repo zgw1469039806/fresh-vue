@@ -27,12 +27,12 @@
                                   <el-menu-item index='index' @click="clickMd(list.storename,list.storeid)">{{list.storename}}</el-menu-item>
                                 </span>
                                 </el-submenu>
-                                <el-submenu index="1-3">
-                                    <template slot="title">小程序管理</template>
-                                    <el-menu-item index="1-3-1">Banner设置</el-menu-item>
-                                    <el-menu-item index="1-3-2">Banner设置</el-menu-item>
-                                    <el-menu-item index="1-3-3">Banner设置</el-menu-item>
-                                </el-submenu>
+<!--                                <el-submenu index="1-3">-->
+<!--                                    <template slot="title">小程序管理</template>-->
+<!--                                    <el-menu-item index="1-3-1">Banner设置</el-menu-item>-->
+<!--                                    <el-menu-item index="1-3-2">Banner设置</el-menu-item>-->
+<!--                                    <el-menu-item index="1-3-3">Banner设置</el-menu-item>-->
+<!--                                </el-submenu>-->
                             </el-submenu>
                             <el-submenu v-if="qx=='ROLE_YUANGONG'" index="2">
                                 <template slot="title">
@@ -66,12 +66,12 @@
                                     <el-menu-item index="3-1-1" @click="$router.push({path:'/purchasereport'})">进货流水
                                     </el-menu-item>
                                 </el-submenu>
-                                <el-submenu index="3-2">
-                                    <template slot="title">入库管控</template>
-                                    <!--<el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>-->
-                                    <el-menu-item index="3-2-1" @click="$router.push({path:'/depositrepost'})">入库流水
-                                    </el-menu-item>
-                                </el-submenu>
+<!--                                <el-submenu index="3-2">-->
+<!--                                    <template slot="title">入库管控</template>-->
+<!--                                    &lt;!&ndash;<el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>&ndash;&gt;-->
+<!--                                    <el-menu-item index="3-2-1" @click="$router.push({path:'/depositrepost'})">入库流水-->
+<!--                                    </el-menu-item>-->
+<!--                                </el-submenu>-->
                             </el-submenu>
                             <el-submenu v-if="qx == 'ROLE_XIAOSHOU'" index="4">
                                 <template slot="title">
@@ -108,9 +108,11 @@
                                     <template slot="title">会员管控</template>
                                     <el-menu-item index="5-2-1" @click="$router.push({path:'/vipdetails'})">会员详细
                                     </el-menu-item>
-                                    <el-menu-item index="5-2-2" @click="$router.push({path:'/vipintegral'})">积分设置
+                                    <el-menu-item v-if="qx!='ROLE_VIPGK'" index="5-2-2"
+                                                  @click="$router.push({path:'/vipintegral'})">积分设置
                                     </el-menu-item>
-                                    <el-menu-item index="5-2-3" @click="$router.push({path:'/viplevel'})">会员等级设定
+                                    <el-menu-item v-if="qx!='ROLE_VIPGK'" index="5-2-3"
+                                                  @click="$router.push({path:'/viplevel'})">会员等级设定
                                     </el-menu-item>
                                 </el-submenu>
                             </el-submenu>
@@ -162,7 +164,7 @@
             return {
                 username: '',
                 mendian: {
-                    name: '牛逼门店',
+                    name: '测试门店',
                     id: '1'
                 },
                 mendianlist: new Array(),
@@ -182,7 +184,6 @@
             this.axios.get("/getPrinciple").then((response) => {
                 let data = response.data;
                 let oauth = data['OAuth2'];
-                this.$alert(oauth);
                 oauth = oauth.replace("[", "");
                 oauth = oauth.replace("]", "");
                 let q = oauth.split('-');
@@ -199,7 +200,6 @@
                     this.mendian.id = data[0].storeid;
                 }
             });
-
         }
     }
 </script>

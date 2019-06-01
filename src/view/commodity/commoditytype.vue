@@ -142,30 +142,30 @@
                     {
                         label: '一级分类',
                         options: [
-                            // {
-                            //     value: 'Shanghai',
-                            //     label: '上海'
-                            // }, {
-                            //     value: 'Beijing',
-                            //     label: '北京'
-                            // }
+                            {
+                                value: 'Shanghai',
+                                label: '上海'
+                            }, {
+                                value: 'Beijing',
+                                label: '北京'
+                            }
                         ]
                     }, {
                         label: '二级分类',
                         options: [
-                            // {
-                            //     value: 'Chengdu',
-                            //     label: '成都'
-                            // }, {
-                            //     value: 'Shenzhen',
-                            //     label: '深圳'
-                            // }, {
-                            //     value: 'Guangzhou',
-                            //     label: '广州'
-                            // }, {
-                            //     value: 'Dalian',
-                            //     label: '大连'
-                            // }
+                            {
+                                value: 'Chengdu',
+                                label: '成都'
+                            }, {
+                                value: 'Shenzhen',
+                                label: '深圳'
+                            }, {
+                                value: 'Guangzhou',
+                                label: '广州'
+                            }, {
+                                value: 'Dalian',
+                                label: '大连'
+                            }
                         ]
                     }
                 ]
@@ -207,7 +207,6 @@
                                 "typename": this.ruleForm.name
                             }
                         }
-                        // alert("name：" + this.ruleForm.name + "父级Id" + this.ruleForm.fatherid)
                         this.axios.post("http://localhost:8777/unification/sevaType", requestData).then((response) => {
                             if (response.data.msg == "处理成功") {
                                 this.$message.success("添加成功")
@@ -216,7 +215,7 @@
                                 this.$message.error("添加失败，请检查网络或与管理员联系")
                             }
                         }).catch((error) => {
-                            alert(error)
+                            this.$message.error(error)
                         })
                     } else {
                         return false;

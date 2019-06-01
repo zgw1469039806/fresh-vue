@@ -388,6 +388,7 @@
                                 "comditytypeId": this.ruleForm.type[0],//商品分类
                                 "comstate": 1,
                                 "corresponding": this.ruleForm.corresponding,
+                                "stock":50,
                                 "discount": this.ruleForm.psj,//折扣价
                                 "isnodiscount": 0,//是否为打折商品
                                 "puprice": this.ruleForm.jhj,//进货价
@@ -409,7 +410,6 @@
                             $loadinged.close()
                             this.$message.error("Error:" + error)
                         });
-                        alert('submit!');
                     } else {
                         return false;
                     }
