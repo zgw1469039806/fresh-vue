@@ -25,38 +25,7 @@
         name: "water",
         data() {
             return {
-                lirun: [
-                    // {
-                    //     name: '国伟店铺',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [820, 932, 901, 934, 1290, 1330, 1320, 123, 1233, 2313, 432, 432]
-                    // },
-                    // {
-                    //     name: '家恒店铺',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [820, 932, 901, 934, 1290, 1330, 1320, 123, 1233, 2313, 432, 432]
-                    // },
-                    // {
-                    //     name: '铁飞店铺',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [820, 932, 901, 934, 1290, 1330, 1320, 123, 1233, 2313, 432, 432]
-                    // },
-                    // {
-                    //     name: '乾航店铺',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [820, 932, 901, 934, 1290, 1330, 1320, 123, 1233, 2313, 432, 432]
-                    // },
-                    // {
-                    //     name: '多劳店铺',
-                    //     type: 'line',
-                    //     stack: '总量',
-                    //     data: [820, 932, 901, 934, 1290, 1330, 1320, 123, 1233, 2313, 432, 432]
-                    // }
-                ],
+                lirun: [],
                 Form: {
                     selyear: new Date(),
                     storeid: 0
@@ -68,7 +37,6 @@
             this.axios.post("/GdStoreQueryAll", {}).then((response) => {
                 let data = response.data;
                 if (data.msg == '处理成功') {
-                    alert(1)
                     this.mendian = data.data;
                     this.Query();
                 }
@@ -105,7 +73,7 @@
                             saveAsImage: {}
                         }
                     },
-                    xAxis: {
+                    xAxis:{
                         type: 'category',
                         boundaryGap: false,
                         data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
@@ -118,7 +86,8 @@
                 });
             },
             Query: function () {
-                this.lirun=[];
+                this.lirun = [];
+                origin / master
                 for (let i = 0; i < this.mendian.length; i++) {
                     var data = {
                         "selyear": this.Form.selyear,//要查询的年份

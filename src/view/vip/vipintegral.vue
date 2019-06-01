@@ -96,28 +96,44 @@
                 });
             },
             changeSelect() {
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: 'Loading',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
                 //查询积分规则
                 this.axios.post("/selVipInSetById", {
                     "data": this.ruleForm.storeid
                 })
                     .then((response) => {
+                        $loadinged.close();
                         this.ruleForm.vipinsetmoney = response.data.data.vipinsetmoney;
                         this.ruleForm.vipinsetgetin = response.data.data.vipinsetgetin;
                     })
                     .catch((error) => {
+                        $loadinged.close();
                         this.$message.error("Error:" + error);
                     })
             }
         },
         created() {
+            const $loadinged = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             this.axios.post("/GdStoreQueryAll",{
                     "data":null
                 }
             )
                 .then((response) => {
+                    $loadinged.close();
                     this.storeid = response.data.data
                 })
                 .catch((error) => {
+                    $loadinged.close();
                     this.$message.error("Error:" + error);
                 })
         }

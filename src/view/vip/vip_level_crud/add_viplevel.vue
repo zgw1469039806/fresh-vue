@@ -57,6 +57,12 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        const $loadinged = this.$loading({
+                            lock: true,
+                            text: 'Loading',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         this.axios.post("/addVipLv", {
                             "data": {
                                 "viplv": this.ruleForm.vip_leave,
@@ -65,6 +71,7 @@
                             },
                         })
                             .then((response) => {
+                                $loadinged.close();
                                 if (response.data.code == 0) {
                                     this.$message({
                                         message: response.data.msg,
@@ -78,6 +85,7 @@
 
                             })
                             .catch((error) => {
+                                $loadinged.close();
                                 this.$message.error("Error:" + error);
                             })
                     } else {

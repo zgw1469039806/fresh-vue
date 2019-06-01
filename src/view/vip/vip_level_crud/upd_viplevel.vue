@@ -54,10 +54,17 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        const $loadinged = this.$loading({
+                            lock: true,
+                            text: 'Loading',
+                            spinner: 'el-icon-loading',
+                            background: 'rgba(0, 0, 0, 0.7)'
+                        });
                         this.axios.post("/updVipLv", {
                             "data": this.ruleForm,
                         })
                             .then((response) => {
+                                $loadinged.close();
                                 if (response.data.code == 0) {
                                     this.$alert(response.data.msg ,'提示', {
                                         confirmButtonText: '确定',
@@ -72,6 +79,7 @@
 
                             })
                             .catch((error) => {
+                                $loadinged.close();
                                 this.$message.error("Error:" + error);
                             })
 
@@ -82,13 +90,21 @@
             },
         },
         created() {
+            const $loadinged = this.$loading({
+                lock: true,
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
+            });
             this.axios.post("/selVipLvById", {
                 "data": this.vipid,
             })
                 .then((response) => {
+                    $loadinged.close();
                     this.ruleForm = response.data.data;
                 })
                 .catch((error) => {
+                    $loadinged.close();
                     this.$message.error("Error:" + error);
                 })
         }
