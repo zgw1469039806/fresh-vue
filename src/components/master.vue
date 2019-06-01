@@ -66,12 +66,12 @@
                                     <el-menu-item index="3-1-1" @click="$router.push({path:'/purchasereport'})">进货流水
                                     </el-menu-item>
                                 </el-submenu>
-                                <el-submenu index="3-2">
-                                    <template slot="title">入库管控</template>
-                                    <!--<el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>-->
-                                    <el-menu-item index="3-2-1" @click="$router.push({path:'/depositrepost'})">入库流水
-                                    </el-menu-item>
-                                </el-submenu>
+<!--                                <el-submenu index="3-2">-->
+<!--                                    <template slot="title">入库管控</template>-->
+<!--                                    &lt;!&ndash;<el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>&ndash;&gt;-->
+<!--                                    <el-menu-item index="3-2-1" @click="$router.push({path:'/depositrepost'})">入库流水-->
+<!--                                    </el-menu-item>-->
+<!--                                </el-submenu>-->
                             </el-submenu>
                             <el-submenu v-if="qx == 'ROLE_XIAOSHOU'" index="4">
                                 <template slot="title">
@@ -164,7 +164,7 @@
             return {
                 username: '',
                 mendian: {
-                    name: '牛逼门店',
+                    name: '测试门店',
                     id: '1'
                 },
                 mendianlist: new Array(),
