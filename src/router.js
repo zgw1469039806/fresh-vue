@@ -7,6 +7,14 @@ vue.use(Router);
 
 const routes = [
     {
+        path: '/ceshi',
+        component: () => import("./view/store/ceshi.vue"),
+        meta: {
+            title: "地图"
+        },
+        props: true
+    },
+    {
         path: '/master',
         component: () => import("./components/master.vue"),
         meta: {
@@ -211,7 +219,6 @@ const routes = [
         ]
     },
     {path: '/*', component: () => import("./components/master.vue")}
-
 ];
 
 routes.forEach(route => {

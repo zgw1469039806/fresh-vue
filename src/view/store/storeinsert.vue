@@ -43,6 +43,14 @@
                     </el-upload>
                 </el-form-item>
                 <el-form-item>
+                    <div class="map">
+                        <baidu-map class="map" center="北京">
+                            <bm-geolocation anchor="BMAP_ANCHOR_BOTTOM_RIGHT" v-on:locationSuccess="dingweisuccess" :showAddressBar="true"
+                                             :autoLocation="true"></bm-geolocation>
+                        </baidu-map>
+                    </div>
+                </el-form-item>
+                <el-form-item>
                     <el-button type="success" @click="submitForm('ruleForm')">立即创建</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
@@ -62,6 +70,7 @@
             return {
                 ruleForm: {
                     logomodel: '',
+                    lal:'',
                     storename: '',
                     phone: '',
                     logo: '',
@@ -104,7 +113,8 @@
                             "storeImagesUri": "string",
                             "storeaLogo": this.ruleForm.logourl,
                             "storeaddress": this.ruleForm.storeaddress,
-                            "storename": this.ruleForm.storename
+                            "storename": this.ruleForm.storename,
+                            "lal":this.ruleForm.lal
                         };
                         const loading = this.$loading({
                             lock: true,
@@ -165,7 +175,18 @@
                 }
                 this.ruleForm.logo = file;
                 return isJPG && isLt2M;
+            },
+            dingweisuccess:function (point, AddressComponent, marker) {
+                window.console.log(point);
+                // window.console.log(AddressComponent);
+                // window.console.log(marker);
+                window.console.log(point.point);
+                this.ruleForm.lal = point.point.lat + "," + point.point.lng;
+                window.console.log(this.ruleForm.lal);
             }
+        },
+        created: function () {
+
         },
         beforeRouteEnter: function (to, from, next) {
             next(vm => {
@@ -192,6 +213,11 @@
         margin: 0px auto;
         height: 500px;
         background: #fff;
+    }
+
+    .map {
+        height: 150px;
+        width: 500px;
     }
 
 </style>

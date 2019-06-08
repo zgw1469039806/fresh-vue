@@ -125,6 +125,9 @@
                         <el-form-item label="简介" prop="jj">
                             <el-input v-model="ruleForm.jj"></el-input>
                         </el-form-item>
+                        <el-form-item label="商品编码">
+                            <el-input v-model="ruleForm.bm"></el-input>
+                        </el-form-item>
                     </div>
                     <div class="jgxx">
                         <div class="b1title"><span>商品价格信息</span></div>
@@ -164,7 +167,8 @@
                                     :with-credentials=true
                                     :on-success="handleAvatarSuccess"
                                     :before-upload="beforeAvatarUpload">
-                                <img v-if="ruleForm.GdImagesDTO.imagesurl" :src="ruleForm.GdImagesDTO.imagesurl" class="avatar" style="width: 150px">
+                                <img v-if="ruleForm.GdImagesDTO.imagesurl" :src="ruleForm.GdImagesDTO.imagesurl"
+                                     class="avatar" style="width: 150px">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
                         </el-form-item>
@@ -200,7 +204,7 @@
         data() {
             return {
                 logomodel: '',//商品图片
-                shoplist:[],//商品图片列表
+                shoplist: [],//商品图片列表
                 tableData: [
                     {
                         comdityId: '1',//商品ID
@@ -239,6 +243,7 @@
                     pfj: '0',//批发价
                     psj: '0',//折扣价
                     zdj: '0',//最低价
+                    bm: '0',//最低价
                     isnodiscount: 0,//是否为打折商品
                     corresponding: 0,//对应积分
                     storeids: [],//对应店铺
@@ -326,7 +331,7 @@
             },
             handlePreview(file) {//文件列表上传成功的沟子
                 this.ruleForm.GdImagesDTO.imagesDTOS.push({
-                    "imagesurl":file.data
+                    "imagesurl": file.data
                 })
             },
             handleAvatarSuccess(res, file) {
@@ -388,13 +393,14 @@
                                 "comditytypeId": this.ruleForm.type[0],//商品分类
                                 "comstate": 1,
                                 "corresponding": this.ruleForm.corresponding,
-                                "stock":50,
+                                "stock": 50,
                                 "discount": this.ruleForm.psj,//折扣价
                                 "isnodiscount": 0,//是否为打折商品
                                 "puprice": this.ruleForm.jhj,//进货价
                                 "storeidlist": this.ruleForm.storeids,
                                 "vipishige": 0,
-                                "gdImagesDTO":this.ruleForm.GdImagesDTO
+                                "gdImagesDTO": this.ruleForm.GdImagesDTO,
+                                "comdityBM": this.ruleForm.bm
                             }
                         };
                         this.axios.post('/addShop', data).then((response) => {
@@ -482,6 +488,9 @@
                 if (response.data.msg == "处理成功") {
                     this.mendians = data;
                 }
+            }).catch((error) => {
+                this.$message.error("Error:" + error)
+                $loadinged.close();
             });
             //查询所有分类
             this.axios.get('/selTypeAll', {}).then((response) => {

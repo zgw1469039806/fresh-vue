@@ -6,14 +6,18 @@ import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
 import echarts from 'echarts';
 import VueCookies from 'vue-cookies'
+import BaiduMap from 'vue-baidu-map'
 
 Vue.prototype.$echarts=echarts;
 Vue.use(VueCookies);
-
+Vue.use(BaiduMap, {
+    // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+    ak: '2jYHdcdXWSIBUNjASk5iakcs34xmtSo9'
+})
 
 const inter = axios.create({ // 创建服务
     baseURL: 'http://localhost:8777/unification', // 基础路径
-    timeout: 10000, // 请求延时
+    timeout: 500000, // 请求延时
     headers: {"Content-Type": "application/json"},
     withCredentials: true
 });

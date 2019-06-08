@@ -23,7 +23,8 @@
 
                 <el-form-item label="选择商品:" prop="goods">
                     <el-button type="success" @click="showDialog()">选择商品</el-button>
-
+                    <el-input property="请录入商品编码" style="width: 300px;margin-left: 20px" v-model="ruleForm.comdityBM"
+                              @keydown.enter.native="inoutshop"></el-input>
                     <template>
                         <el-table
                                 :data="ruleForm.tableData"
@@ -85,7 +86,7 @@
                                             {{parseFloat(scope.row.num * scope.row.discount).toFixed(2)}}
                                         </span>
                                     </span>
-                                    <span v-else-if="scope.row.discount != '' && scope.row.discount != null">
+                                    <span v-else-if="scope.row.discount != '' && scope.row.discount != null  && scope.row.isnodiscount != 0">
                                         <!--{{}}-->
                                         {{parseFloat(scope.row.num * scope.row.discount).toFixed(2) }}
                                     </span>
@@ -122,12 +123,14 @@
                 </el-form-item>
 
                 <el-form-item label="选择付款方式:" prop="payWay">
-                    <el-radio-group v-model="ruleForm.ordermeans ">
+                    <el-radio-group @change="zhifuchang" v-model="ruleForm.ordermeans ">
                         <el-radio :label="1" v-show="ifshow">会员余额</el-radio>
                         <el-radio :label="2">支付宝</el-radio>
                         <el-radio :label="3">微信</el-radio>
                         <el-radio :label="4">现金</el-radio>
                     </el-radio-group>
+                    <el-input v-if="ruleForm.ordermeans == 2" id="inputsfouces" v-model="ruleForm.fukuanma"
+                              @keydown.enter.native="zhifu"/>
                     <p>总价：<span style="color: red;">{{ruleForm.ordermoney}}</span> 元</p>
                 </el-form-item>
                 <el-form-item label="应付金额:">
@@ -165,6 +168,8 @@
                 ifshow: false,
                 ruleForm: {
                     vipId: "",
+                    fukuanma: '',
+                    comdityBM: '',
                     vipMsg: '',
                     tableData: [],
                     ordermeans: 4, // 交易手段 ,
@@ -192,62 +197,79 @@
                             {required: true, message: '请选择付款方式', trigger: 'blur'}
                         ]
                 },
+                zhifuloading: '',
             }
         },
         methods: {
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.ruleForm.ordermoney = this.pricels;
-                        if (this.ruleForm.tableData == null || this.ruleForm.tableData == '') {
-                            this.$message.error('商品不能为空!');
-                            return false;
-                        }
-
-                        if (this.ifshow) { //如果ifshow为true 表示拥有会员 传入打折后价格
-                            //18376645457
-                            this.loading = true;
-                            this.axios.post("/insertOrder", {
-                                "data": this.ruleForm,
-                            }).then((response) => {
-                                if (response.data.code == 0) {
-                                    this.loading = false;
-                                } else {
-                                    this.loading = false;
-                                    this.$message.error(response.data.msg);
-                                }
-                            }).catch((error) => {
-                                this.loading = false;
-                                this.$message.error("Error:" + error);
-                            })
-                        } else {      //为false 表示没有会员 传入真实价格
-                            this.ruleForm.vipId = "";
-                            this.loading = true;
-                            this.axios.post("/insertOrder", {
-                                "data": this.ruleForm,
-                            }).then((response) => {
-                                if (response.data.code == 0) {
-                                    this.loading = false;
-                                    this.$alert(response.data.msg, '提示', {
-                                        confirmButtonText: '确定',
-                                        callback: action => {
-                                            action
-                                            window.location.reload();
-                                        }
-                                    });
-                                } else {
-                                    this.loading = false;
-                                    this.$message.error(response.data.msg);
-                                }
-                            }).catch((error) => {
-                                this.loading = false;
-                                this.$message.error("Error:" + error);
-                            })
+                        if (this.ruleForm.ordermeans == 2) {
+                            const $loadinged = this.$loading({
+                                lock: true,
+                                text: '请扫描用户付款码',
+                                spinner: 'el-icon-loading',
+                                background: 'rgba(0, 0, 0, 0.7)'
+                            });
+                            this.zhifuloading = $loadinged;
+                            document.getElementById("inputsfouces").focus();
+                        } else {
+                            this.zhifu();
                         }
                     } else {
                         return false;
                     }
                 });
+            },
+            zhifu: function () {
+                this.zhifuloading.close();
+                // alert(this.ruleForm.fukuanma);
+                this.ruleForm.ordermoney = this.pricels;
+                if (this.ruleForm.tableData == null || this.ruleForm.tableData == '') {
+                    this.$message.error('商品不能为空!');
+                    return false;
+                }
+                if (this.ifshow) { //如果ifshow为true 表示拥有会员 传入打折后价格
+                    //18376645457
+                    this.loading = true;
+                    this.axios.post("/insertOrder", {
+                        "data": this.ruleForm,
+                    }).then((response) => {
+                        if (response.data.code == 0) {
+                            this.loading = false;
+                        } else {
+                            this.loading = false;
+                            this.$message.error(response.data.msg);
+                        }
+                    }).catch((error) => {
+                        this.loading = false;
+                        this.$message.error("Error:" + error);
+                    })
+                } else {      //为false 表示没有会员 传入真实价格
+                    this.ruleForm.vipId = "";
+                    this.loading = true;
+                    this.axios.post("/insertOrder", {
+                        "data": this.ruleForm,
+                    }).then((response) => {
+                        if (response.data.code == 0) {
+                            this.loading = false;
+                            this.$alert(response.data.msg, '提示', {
+                                confirmButtonText: '确定',
+                                callback: action => {
+                                    action
+                                    window.location.reload();
+                                }
+                            });
+                        } else {
+                            this.loading = false;
+                            this.zhifuloading.close();
+                            this.$message.error(response.data.msg);
+                        }
+                    }).catch((error) => {
+                        this.loading = false;
+                        this.$message.error("Error:" + error);
+                    })
+                }
             },
             guaForm(formName) { //挂单方法
                 formName
@@ -299,6 +321,8 @@
             },
             addtable: function (multipleSelection) {
                 var rows = multipleSelection;
+                window.console.log("ROWS:--------------------")
+                window.console.log(rows)
                 //todo: belongStoreNam从父级拿到
                 if (rows.length != 0) {
                     var map = new Map();
@@ -313,14 +337,17 @@
                             belongStoreNam: '123',
                             ordermoney: rows[j].comdityprice,
                             isnodiscount: rows[j].isnodiscount,
-                            puprice:rows[j].puprice
+                            puprice: rows[j].puprice
                         };
+                        window.console.log(rows[j].comdnum);
                         if (gobj.num == 0 || gobj.num == '' || gobj.num == undefined) {
                             gobj.num = rows[j].num;
                         }
                         if (gobj.ordermoney == 0 || gobj.ordermoney == '' || gobj.ordermoney == undefined) {
                             gobj.ordermoney = rows[j].ordermoney;
                         }
+                        window.console.log("GOBJ:------------------------------");
+                        window.console.log(gobj);
                         if (this.ifshow) { //如果是会员
                             if (gobj.isnodiscount == 1) {
                                 if (parseFloat(this.ruleForm.zheKou * gobj.ordermoney) < gobj.discount) {
@@ -340,10 +367,14 @@
                             gobj.preferentialway = 2;
                         } else { //若是普通商品
                             let money = parseFloat(gobj["comdityprice"]);
+                            window.console.log("comdityprice" + gobj["comdityprice"])
                             if (money == '' || money == null || money == undefined || money != Number) {
                                 money = parseFloat(gobj["ordermoney"]);
+                                window.console.log("ordermoney" + gobj["ordermoney"])
                             }
-                            this.ruleForm.ordermoney += money * gobj["num"];
+                            window.console.log("money" + money + "num" + gobj["num"]);
+                            this.ruleForm.ordermoney += parseFloat(money * gobj["num"]);
+                            window.console.log(this.ruleForm.ordermoney);
                         }
                         this.pricels = parseFloat(this.ruleForm.ordermoney);
                         if (this.ruleForm.ispriceml) {
@@ -397,9 +428,33 @@
             },
             changprice: function () {//实付金额值改变事件
                 this.ruleForm.gchange = this.ruleForm.comditytrueprice - this.ruleForm.ordermoney;
+            },
+            inoutshop: function () {
+                // alert(this.ruleForm.comdityBM)
+                let data = {
+                    "data": {
+                        "comditybm": this.ruleForm.comdityBM,
+                        "storeid": 1
+                    },
+                };
+                this.axios.post('/QueryShopByWh', data).then((response) => {
+                    let com = response.data.data;
+                    if (response.data.msg == "处理成功") {
+                        com[0].comdnum = 1;
+                        this.addtable(com);
+                    }
+                }).catch((error) => {
+                    this.$message.error(error)
+                })
+            },
+            zhifuchang: function () {
+                if (this.ruleForm.ordermeans == 2) {
+                    this.ruleForm.comditytrueprice = this.ruleForm.ordermoney;
+                    this.changprice();
+                }
             }
         }, created() {
-            this.ruleForm.storeid = this.$route.params.md;
+            // this.ruleForm.storeid = this.$route.params.md;
         }
     }
 </script>
