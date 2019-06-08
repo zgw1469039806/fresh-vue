@@ -242,27 +242,13 @@
                 })
             },
         }, created: function () {
-            const $loadinged = this.$loading({
-                lock: true,
-                text: 'Loading',
-                spinner: 'el-icon-loading',
-                background: 'rgba(0, 0, 0, 0.7)'
-            });
             this.Query();
-            this.axios.post('/GdStoreQueryAll', {})
-                .then((response) => {
-                    $loadinged.close();
-                    var data = response.data.data;
-                    if (response.data.msg == "处理成功") {
-                        this.options1 = data;
-                    }
-                })
-                .catch((error) => {
-                    $loadinged.close();
-                    if (error != null) {
-                        this.$message.error("Error:" + error)
-                    }
-                })
+            this.axios.post('/GdStoreQueryAll', {}).then((response) => {
+                var data = response.data.data;
+                if (response.data.msg == "处理成功") {
+                    this.options1 = data;
+                }
+            })
         }
     }
 </script>

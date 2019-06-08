@@ -25,9 +25,7 @@
         name: "water",
         data() {
             return {
-                lirun: [
-
-                ],
+                lirun: [],
                 Form: {
                     selyear: new Date(),
                     storeid: 0

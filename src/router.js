@@ -232,7 +232,7 @@ router.beforeEach((to, from, next) => {
         document.title = title;
     }
     next();
-})
+});
 
 export {
     router
