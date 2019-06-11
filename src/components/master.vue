@@ -220,7 +220,7 @@
         background: #fff;
         border: 1px solid #67c23a;
         border-bottom: 0px;
-        height: 700px;
+        height: 50vw;
         border-radius: 3px;
     }
 
@@ -238,7 +238,7 @@
         display: block;
         height: 50px;
         border-radius: 2px;
-        width: 79vw;
+        width: 78vw;
         background: #67c23a;
         margin-bottom: 15px;
     }

@@ -22,37 +22,31 @@
                     <el-table-column
                             prop="useraccount"
                             label="姓名"
-                            sortable
-                            width="120">
+                            sortable>
                     </el-table-column>
                     <el-table-column
                             prop="gdStoreName"
                             label="所属店铺"
-                            sortable
-                            width="120">
+                            sortable>
                     </el-table-column>
                     <el-table-column
                             prop="phone"
                             label="联系方式"
-                            sortable
-                            width="120">
+                            sortable>
                     </el-table-column>
-                    <el-table-column
-                            sortable
-                            prop="storeaddress"
-                            label="店铺地址"
-                            width="300">
-                    </el-table-column>
+<!--                    <el-table-column-->
+<!--                            sortable-->
+<!--                            prop="storeaddress"-->
+<!--                            label="店铺地址"-->
+<!--                            width="300">-->
+<!--                    </el-table-column>-->
                     <el-table-column
                             prop="username"
                             sortable
-                            label="当前职务"
-                            width="120">
+                            label="当前职务">
                     </el-table-column>
                     <el-table-column
-                            fixed="right"
-                            label="操作"
-                            width="120">
+                            label="操作">
                         <template slot-scope="scope">
                             <el-button
                                     @click.native.prevent="updateRow(scope.$index, tableData)"

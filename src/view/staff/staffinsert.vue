@@ -90,8 +90,11 @@
                         };
                         this.axios.post("/savaRoot", {data}).then((response) => {
                             loading.close();
-                            if (response.data.data.msg == '处理成功'){
+                            if (response.data.msg == '处理成功'){
                                 this.$message.success("添加成功!")
+                                this.resetForm('ruleForm');
+                            }else{
+                                this.$message.warning("添加失败!")
                             }
                         }).catch((error)=>{
                             loading.close();

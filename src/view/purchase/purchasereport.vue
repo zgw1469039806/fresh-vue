@@ -266,6 +266,7 @@
                                     type: 'success',
                                     message: '删除成功!'
                                 });
+                                this.Query();
                             } else{
                                 this.$message.warning("删除失败!n")
                             }
