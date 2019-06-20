@@ -4,7 +4,7 @@
             <div class="froms">
                 <el-form :inline="true" class="danhao" ref="Form" label-width="80px">
                     <el-form-item label="单号:">
-                        <el-input v-model="Form.replenishId"></el-input>
+                        <el-input id="dh" @keydown.enter.native="smruku" v-model="Form.replenishId"></el-input>
                     </el-form-item>
                     <el-form-item label="状态:">
                         <el-select v-model="Form.zt" placeholder="请选择">
@@ -27,6 +27,7 @@
                     </el-date-picker>
                     <el-button style="margin-left: 5px" type="success" @click="Query">查询</el-button>
                     <el-button type="success" @click="$router.push({path:'/purchaseinsert'})">新增</el-button>
+                    <el-button type="success" @click="saoma">扫码入库</el-button>
                 </el-form>
             </div>
             <template>
@@ -167,7 +168,8 @@
                         value: '1',
                         label: '已入库'
                     }
-                ]
+                ],
+                loading:''
             }
         }, methods: {
             //单机编辑
@@ -233,7 +235,8 @@
                 var data = {
                     "receiptNo": receiptNo,
                     "replenishId": replenishId,
-                    "storageuserid": 28
+                    "storageuserid": 28,
+                    "": this.Form.replenishId,
                 }
                 this.axios.post('http://localhost:8777/unification/saveStora', {
                     data
@@ -241,7 +244,7 @@
                     if (response.data.msg == '处理成功') {
                         this.$message.success("入库成功!")
                         setTimeout(() => {
-                            window.location.reload( );
+                            window.location.reload();
                         }, 2000);
                     } else {
                         this.$message.error("入库失败!")
@@ -250,6 +253,37 @@
                     this.$message.error("Error:" + error)
                 })
             },
+            smruku: function () {
+                var data = {
+                    "storageuserid": 28,
+                    "purcode": this.Form.replenishId,
+                }
+                this.loading.close();
+                this.axios.post('http://localhost:8777/unification/saveStora', {
+                    data
+                }).then((response) => {
+                    if (response.data.msg == '处理成功') {
+                        this.$message.success("入库成功!")
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        this.$message.error("入库失败!")
+                    }
+                }).catch((error) => {
+                    this.$message.error("Error:" + error)
+                })
+            },
+            saoma: function () {
+                const $loadinged = this.$loading({
+                    lock: true,
+                    text: '请扫描用户付款码',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+                this.loading = $loadinged;
+                document.getElementById("dh").focus();
+            },
             delPur: function (rid, isnostorage) {//根据入库ID删除入库信息
                 if (isnostorage == 0) {
                     this.$confirm('此条进货记录尚未入库, 该操作将永久删除这一记录。是否继续?', '不可逆操作警告', {
@@ -257,17 +291,17 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        this.axios.post('/delGdReplen',{
+                        this.axios.post('/delGdReplen', {
                             "data": rid
-                        }).then((response)=>{
+                        }).then((response) => {
                             let data = response.data;
-                            if (data.msg=="处理成功"){
+                            if (data.msg == "处理成功") {
                                 this.$message({
                                     type: 'success',
                                     message: '删除成功!'
                                 });
                                 this.Query();
-                            } else{
+                            } else {
                                 this.$message.warning("删除失败!n")
                             }
                         })
@@ -284,16 +318,16 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        this.axios.post('/delGdReplen',{
+                        this.axios.post('/delGdReplen', {
                             "data": rid
-                        }).then((response)=>{
+                        }).then((response) => {
                             let data = response.data;
-                            if (data.msg=="处理成功"){
+                            if (data.msg == "处理成功") {
                                 this.$message({
                                     type: 'success',
                                     message: '删除成功!'
                                 });
-                            } else{
+                            } else {
                                 this.$message.warning("删除失败!n")
                             }
                         })

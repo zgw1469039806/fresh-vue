@@ -23,7 +23,7 @@
 
                 <el-form-item label="选择商品:" prop="goods">
                     <el-button type="success" @click="showDialog()">选择商品</el-button>
-                    <el-input property="请录入商品编码" style="width: 300px;margin-left: 20px" v-model="ruleForm.comdityBM"
+                    <el-input placeholder="请录入商品编码" style="width: 300px;margin-left: 20px" v-model="ruleForm.comdityBM"
                               @keydown.enter.native="inoutshop"></el-input>
                     <template>
                         <el-table

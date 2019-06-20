@@ -24,10 +24,18 @@
                     <el-form-item>
                         <el-button type="success" @click="showDialog()">选择商品</el-button>
                     </el-form-item>
+                    <el-form-item>
+                        <el-input @keydown.enter.native="tiaoma" id="tiaoxing" v-model="Form.txm" placeholder="请录入商品条码"></el-input>
+                    </el-form-item>
                 </el-form>
                 <el-form>
                     <el-form-item label="备注">
                         <el-input style="width: 40vw" v-model="Form.bz"></el-input>
+                    </el-form-item>
+                </el-form>
+                <el-form>
+                    <el-form-item label="进货单号(不录入将自动生成)">
+                        <el-input style="width: 40vw" v-model="Form.code"></el-input>
                     </el-form-item>
                 </el-form>
             </div>
@@ -39,56 +47,46 @@
                             style="width: 100%">
                         <el-table-column
                                 type="index"
-                                width="120"
                                 :index="indexMethod">
                         </el-table-column>
                         <el-table-column
                                 prop="comdityname"
-                                label="品名"
-                                width="120">
+                                label="品名">
                         </el-table-column>
                         <el-table-column
                                 prop="comditydw"
-                                label="规格"
-                                width="120">
+                                label="规格">
                         </el-table-column>
                         <el-table-column
                                 prop="comdityprice"
-                                label="零售价"
-                                width="120">
+                                label="零售价">
                         </el-table-column>
                         <el-table-column
-                                label="采购数量"
-                                width="120">
+                                label="采购数量">
                             <template slot-scope="scope">
                                 <el-input v-model="scope.row.num"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                label="赠送数量"
-                                width="120">
+                                label="赠送数量">
                             <template slot-scope="scope">
                                 <el-input v-model="scope.row.song"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                label="采购价"
-                                width="120">
+                                label="采购价">
                             <template slot-scope="scope">
                                 <el-input v-model="scope.row.caigprice"></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                label="小计金额"
-                                width="120">
+                                label="小计金额">
                             <template slot-scope="scope">
                                 <span>{{scope.row.caigprice * scope.row.num }}</span>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                fixed="right"
-                                label="操作"
-                                width="120">
+                                label="操作">
                             <template slot-scope="scope">
                                 <el-button type="text" size="mini"
                                            @click.native.prevent="deleteRow(scope.$index, tableData)">删除
@@ -116,7 +114,9 @@
                 Form: {
                     gongying: '',
                     mendian: '',
-                    bz: ''
+                    bz: '',
+                    code:'',
+                    txm:''
                 },
                 gongyingopt: [
                     {
@@ -180,6 +180,7 @@
                                 }
                             )
                         }
+                        this.$alert(this.Form.code);
                         var data = {
                             "data": {
                                 "isnostorage": 0,//是否入库
@@ -190,7 +191,8 @@
                                 "replenishTime": "string",//进货时间
                                 "storeid": this.Form.mendian,//店铺ID
                                 "supplierID": this.Form.gongying,//提供商ID
-                                "username": "28"//采购人员ID
+                                "username": "28",//采购人员ID
+                                "purcode":this.Form.code//进货单号
                             },
                         }
                         this.axios.post('http://localhost:8777/unification/savegdReplen', data).then((response) => {
@@ -256,6 +258,25 @@
             },
             isClose: function () {
                 this.dialogFormVisible = false;
+            },
+            tiaoma:function () {
+                let data = {
+                    "data": {
+                        "comditybm": this.Form.txm,
+                        "storeid": 1
+                    },
+                };
+                this.axios.post('/QueryShopByWh', data).then((response) => {
+                    let com = response.data.data;
+                    if (response.data.msg == "处理成功") {
+                        com[0].comdnum = 1;
+                        this.addtable(com);
+                        this.Form.txm = '';
+                        document.getElementById("tiaoxing").focus();
+                    }
+                }).catch((error) => {
+                    this.$message.error(error)
+                })
             }
         },
         created: function () {
@@ -287,7 +308,7 @@
         width: 75vw;
         border: 1px solid #67c23a;
         margin: 0px auto;
-        height: 500px;
+        height: 50vw;
         border-radius: 5px;
     }
 
