@@ -7,7 +7,7 @@
                     v-model="filterText">
             </el-input>
             <div style="margin-top: 15px;margin-left: 10px">
-                <el-button type="success" @click="dialogVisible=true">新增分类</el-button>
+                <el-button type="info" @click="dialogVisible=true">新增分类</el-button>
             </div>
         </div>
         <el-tree
@@ -315,9 +315,9 @@
     }
 
     #app {
-        width: 75vw;
+        width: 80vw;
         margin: 0px auto;
-        border: 1px solid #67c23a;
+        border: 1px solid #5f6b73;
         border-radius: 5px;
         justify-content: center;
     }
@@ -327,9 +327,9 @@
     }
 
     .input {
-        width: 75vw;
+        width: 80vw;
         height: 80px;
-        border-bottom: 1px solid #67c23a;
+        border-bottom: 1px solid #5f6b73;
         display: flex;
         justify-content: center;
     }

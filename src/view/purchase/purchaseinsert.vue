@@ -2,8 +2,8 @@
     <div id="app">
         <div class="anniu">
             <div class="anniubox">
-                <el-button type="success" @click="submitForm('ruleFrom')">保存</el-button>
-                <el-button type="success" @click="$router.push({path:'/purchasereport'})">返回</el-button>
+                <el-button type="info" @click="submitForm('ruleFrom')">保存</el-button>
+                <el-button type="info" @click="$router.push({path:'/purchasereport'})">返回</el-button>
             </div>
         </div>
         <div class="xiahua">
@@ -22,7 +22,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="success" @click="showDialog()">选择商品</el-button>
+                        <el-button type="info" @click="showDialog()">选择商品</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-input @keydown.enter.native="tiaoma" id="tiaoxing" v-model="Form.txm" placeholder="请录入商品条码"></el-input>
@@ -305,18 +305,18 @@
 
 <style scoped>
     #app {
-        width: 75vw;
-        border: 1px solid #67c23a;
+        width: 80vw;
+        border: 1px solid #5f6b73;
         margin: 0px auto;
         height: 50vw;
         border-radius: 5px;
     }
 
     .anniu {
-        width: 75vw;
+        width: 80vw;
         margin: 0px auto;
         height: 77px;
-        border-bottom: 1px solid #67c23a;
+        border-bottom: 1px solid #5f6b73;
     }
 
     .anniubox {
@@ -330,6 +330,6 @@
     }
 
     .xiahua {
-        width: 75vw;
+        width: 80vw;
     }
 </style>

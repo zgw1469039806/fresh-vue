@@ -16,8 +16,8 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-button style="margin-left: 5px" type="success" @click="selMyVip()">查询</el-button>
-                    <el-button type="success">新增</el-button>
+                    <el-button style="margin-left: 5px" type="info" @click="selMyVip()">查询</el-button>
+                    <el-button type="info">新增</el-button>
                 </el-form>
             </div>
             <template>
@@ -239,8 +239,8 @@
 
 
     #app {
-        border: 1px solid #67c23a;
-        width: 75vw;
+        border: 1px solid #5f6b73;
+        width: 80vw;
         border-radius: 5px;
         margin: 0px auto;
         display: flex;
@@ -252,8 +252,8 @@
     }
 
     .froms {
-        width: 75vw;
-        border-bottom: 1px solid #67c23a;
+        width: 80vw;
+        border-bottom: 1px solid #5f6b73;
     }
     .danhao{
         margin-top: 10px;

@@ -11,7 +11,7 @@
                                :value="md.storeid"></el-option>
                 </el-select>
                 <el-button style="margin-left: 5px" @click="Query" type="primary">查询</el-button>
-                <el-button type="success" @click="dialogVisible = true">新增商品</el-button>
+                <el-button type="info" @click="dialogVisible = true">新增商品</el-button>
             </el-form>
             <template>
                 <el-table
@@ -92,7 +92,7 @@
                     <el-table-column
                             sortable
                             label="操作">
-                        <el-button type="success" size="mini">删除商品</el-button>
+                        <el-button type="info" size="mini">删除商品</el-button>
                     </el-table-column>
                 </el-table>
 
@@ -182,14 +182,14 @@
                                     :on-success="handlePreview"
                                     :file-list="shoplist"
                                     list-type="picture">
-                                <el-button size="small" type="success">点击上传</el-button>
+                                <el-button size="small" type="info">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
                         </el-form-item>
                     </div>
                     <div style="float: right;">
                         <el-button>取消</el-button>
-                        <el-button type="success" @click="submitForm('ruleForm')">添加</el-button>
+                        <el-button type="info" @click="submitForm('ruleForm')">添加</el-button>
                     </div>
                 </el-form>
                 <div style="clear: both;"></div>

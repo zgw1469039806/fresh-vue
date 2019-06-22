@@ -35,12 +35,12 @@
                             :on-success="handlePreview"
                             :file-list="ruleForm.fileList"
                             list-type="picture">
-                        <el-button size="small" type="success">点击上传</el-button>
+                        <el-button size="small" type="info">点击上传</el-button>
                         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                     </el-upload>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="success" @click="submitForm('ruleForm')">立即创建</el-button>
+                    <el-button type="info" @click="submitForm('ruleForm')">立即创建</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
             </el-form>

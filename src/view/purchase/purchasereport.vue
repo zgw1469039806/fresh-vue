@@ -25,9 +25,9 @@
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
                     </el-date-picker>
-                    <el-button style="margin-left: 5px" type="success" @click="Query">查询</el-button>
-                    <el-button type="success" @click="$router.push({path:'/purchaseinsert'})">新增</el-button>
-                    <el-button type="success" @click="saoma">扫码入库</el-button>
+                    <el-button style="margin-left: 5px" type="info" @click="Query">查询</el-button>
+                    <el-button type="info" @click="$router.push({path:'/purchaseinsert'})">新增</el-button>
+                    <el-button type="info" @click="saoma">扫码入库</el-button>
                 </el-form>
             </div>
             <template>
@@ -371,8 +371,8 @@
     }
 
     #app {
-        border: 1px solid #67c23a;
-        width: 75vw;
+        border: 1px solid #5f6b73;
+        width: 80vw;
         border-radius: 5px;
         margin: 0px auto;
         display: flex;
@@ -384,8 +384,8 @@
     }
 
     .froms {
-        width: 75vw;
-        border-bottom: 1px solid #67c23a;
+        width: 80vw;
+        border-bottom: 1px solid #5f6b73;
     }
 
     .danhao {

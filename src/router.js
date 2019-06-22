@@ -7,19 +7,12 @@ vue.use(Router);
 
 const routes = [
     {
-        path: '/ceshi',
-        component: () => import("./view/store/ceshi.vue"),
-        meta: {
-            title: "地图"
-        },
-        props: true
-    },
-    {
         path: '/master',
         component: () => import("./components/master.vue"),
         meta: {
             title: "格调生鲜"
         },
+        redirect:"/Welcome",
         children: [
             {
                 path: '/storeedit',
@@ -215,10 +208,18 @@ const routes = [
                 meta: {
                     title: "编辑会员信息"
                 }
+            },
+            {
+                path: '/Welcome',
+                name: 'Welcome',
+                component: () => import("./components/Welcome.vue"),
+                meta: {
+                    title: "果易联盟"
+                }
             }
         ]
     },
-    {path: '/*', component: () => import("./components/master.vue")}
+    {path: '/*', component: () => import("./components/master"),redirect:"/Welcome"}
 ];
 
 routes.forEach(route => {

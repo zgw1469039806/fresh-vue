@@ -5,7 +5,7 @@
                 <el-form-item label="员工名称">
                     <el-input v-model="Form.useraccount"></el-input>
                 </el-form-item>
-                <el-button type="success" @click="selByYg()">查询</el-button>
+                <el-button type="info" @click="selByYg()">查询</el-button>
             </el-form>
             <template>
                 <el-table

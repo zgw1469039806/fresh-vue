@@ -49,7 +49,7 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="success" @click="submitForm('ruleForm')">修改</el-button>
+                    <el-button type="info" @click="submitForm('ruleForm')">修改</el-button>
                 </el-form-item>
             </el-form>
         </div>

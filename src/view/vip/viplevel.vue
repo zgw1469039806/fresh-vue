@@ -1,7 +1,7 @@
 <template>
     <div class="box">
 
-        <el-button style="margin:0 0 30px 325px;" type="success" @click="$router.push({path:'/add_viplevel'})">新增会员等级
+        <el-button style="margin:0 0 30px 325px;" type="info" @click="$router.push({path:'/add_viplevel'})">新增会员等级
         </el-button>
 
         <div class=" forms">

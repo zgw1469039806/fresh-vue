@@ -15,7 +15,7 @@
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">
                     </el-date-picker>
-                    <el-button style="margin-left: 5px" type="success">查询</el-button>
+                    <el-button style="margin-left: 5px" type="info">查询</el-button>
                 </el-form>
             </div>
             <template>
@@ -96,7 +96,7 @@
                     </el-table-column>
                     <el-table-column
                             label="操作">
-                        <el-button type="success">删除记录</el-button>
+                        <el-button type="info">删除记录</el-button>
                     </el-table-column>
                 </el-table>
                 <div class="block">
@@ -241,8 +241,8 @@
     }
 
     #app {
-        border: 1px solid #67c23a;
-        width: 75vw;
+        border: 1px solid #5f6b73;
+        width: 80vw;
         border-radius: 5px;
         margin: 0px auto;
         display: flex;
@@ -254,8 +254,8 @@
     }
 
     .froms {
-        width: 75vw;
-        border-bottom: 1px solid #67c23a;
+        width: 80vw;
+        border-bottom: 1px solid #5f6b73;
     }
     .danhao{
         margin-top: 10px;

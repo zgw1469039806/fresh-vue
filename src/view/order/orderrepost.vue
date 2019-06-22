@@ -34,7 +34,7 @@
                     </el-select>
                 </el-form-item>
 
-                <el-button style="margin-left: 5px" type="success" @click="chaxun1()">查询</el-button>
+                <el-button style="margin-left: 5px" type="info" @click="chaxun1()">查询</el-button>
             </el-form>
             <template >
                 <el-table

@@ -2,10 +2,11 @@
     <div class="fatherbox">
         <div>
             <el-container>
-                <el-aside width="20vw" class="leftdiv">
+                <el-aside width="17vw" class="leftdiv">
                     <!--默认展开项 :default-openeds="['1', '3']"-->
                     <!--左侧导航开始-->
-                    <el-menu class="list">
+                    <el-menu class="list" background-color="#5f6b73" text-color="#fff">
+                        <span class="version">果易联盟 <span style="font-size: 10px">v1.0.1</span></span>
                         <div v-for="(qx,index) in quanxian" :key="index">
                             <el-submenu v-if="qx=='ROLE_MD'" index="1">
                                 <template slot="title">
@@ -27,12 +28,12 @@
                                   <el-menu-item index='index' @click="clickMd(list.storename,list.storeid)">{{list.storename}}</el-menu-item>
                                 </span>
                                 </el-submenu>
-<!--                                <el-submenu index="1-3">-->
-<!--                                    <template slot="title">小程序管理</template>-->
-<!--                                    <el-menu-item index="1-3-1">Banner设置</el-menu-item>-->
-<!--                                    <el-menu-item index="1-3-2">Banner设置</el-menu-item>-->
-<!--                                    <el-menu-item index="1-3-3">Banner设置</el-menu-item>-->
-<!--                                </el-submenu>-->
+                                <!--                                <el-submenu index="1-3">-->
+                                <!--                                    <template slot="title">小程序管理</template>-->
+                                <!--                                    <el-menu-item index="1-3-1">Banner设置</el-menu-item>-->
+                                <!--                                    <el-menu-item index="1-3-2">Banner设置</el-menu-item>-->
+                                <!--                                    <el-menu-item index="1-3-3">Banner设置</el-menu-item>-->
+                                <!--                                </el-submenu>-->
                             </el-submenu>
                             <el-submenu v-if="qx=='ROLE_YUANGONG'" index="2">
                                 <template slot="title">
@@ -66,12 +67,12 @@
                                     <el-menu-item index="3-1-1" @click="$router.push({path:'/purchasereport'})">进货流水
                                     </el-menu-item>
                                 </el-submenu>
-<!--                                <el-submenu index="3-2">-->
-<!--                                    <template slot="title">入库管控</template>-->
-<!--                                    &lt;!&ndash;<el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>&ndash;&gt;-->
-<!--                                    <el-menu-item index="3-2-1" @click="$router.push({path:'/depositrepost'})">入库流水-->
-<!--                                    </el-menu-item>-->
-<!--                                </el-submenu>-->
+                                <!--                                <el-submenu index="3-2">-->
+                                <!--                                    <template slot="title">入库管控</template>-->
+                                <!--                                    &lt;!&ndash;<el-menu-item index="3-2-1" @click="$router.push({path:'/depositwarehousing'})">入库</el-menu-item>&ndash;&gt;-->
+                                <!--                                    <el-menu-item index="3-2-1" @click="$router.push({path:'/depositrepost'})">入库流水-->
+                                <!--                                    </el-menu-item>-->
+                                <!--                                </el-submenu>-->
                             </el-submenu>
                             <el-submenu v-if="qx == 'ROLE_XIAOSHOU'" index="4">
                                 <template slot="title">
@@ -135,6 +136,7 @@
                                 </el-submenu>
                             </el-submenu>
                         </div>
+
                     </el-menu>
                     <!--右侧内容开始-->
                 </el-aside>
@@ -158,6 +160,9 @@
 </template>
 
 <script>
+
+    import mendianC from "../Constant.js";
+
     export default {
         name: "master",
         data() {
@@ -174,6 +179,7 @@
             clickMd: function (name, id) {
                 this.mendian.name = name;
                 this.mendian.id = id;
+                mendianC.id = id;
             },
             clearCookie: function () {
                 this.axios.get("http://localhost:8111/exitUser").then(() => {
@@ -181,11 +187,11 @@
                 });
             }
         }, created() {
-            // var demo = 'ROLE_USER-ROLE_ACCOUNTING-ROLE_YUANGONG-ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP-ROLE_HUOWU-ROLE_MD-ROLE_VIPGK'
-            // let q1 = demo.split('-');
-            // for (let i = 0; i < q1.length; i++) {
-            //     this.quanxian.push(q1[i])
-            // }
+            var demo = 'ROLE_USER-ROLE_ACCOUNTING-ROLE_YUANGONG-ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP-ROLE_HUOWU-ROLE_MD-ROLE_VIPGK'
+            let q1 = demo.split('-');
+            for (let i = 0; i < q1.length; i++) {
+                this.quanxian.push(q1[i]);
+            }
             this.axios.get("/getPrinciple").then((response) => {
                 let data = response.data;
                 let oauth = data['OAuth2'];
@@ -193,7 +199,7 @@
                 oauth = oauth.replace("]", "");
                 let q = oauth.split('-');
                 for (let i = 0; i < q.length; i++) {
-                    this.quanxian.push(q[i])
+                    this.quanxian.push(q[i]);
                 }
                 this.username = data['name'];
             });
@@ -203,6 +209,7 @@
                     this.mendianlist = data;
                     this.mendian.name = data[0].storename;
                     this.mendian.id = data[0].storeid;
+                    mendianC.id = data[0].storeid;
                 }
             });
         }
@@ -211,35 +218,34 @@
 
 <style scoped>
     .fatherbox {
-        background: #f4f6f9;
-        border-bottom: 1px solid #67c23a;
-        border-right: 1px solid #67c23a;
+        background: #fff;
     }
 
     .leftdiv {
-        background: #fff;
-        border: 1px solid #67c23a;
+        background: #5f6b73;
         border-bottom: 0px;
         height: 50vw;
         border-radius: 3px;
     }
 
     .list:after {
-        background-color: #f4f6f9;
+        background-color: #fff;
         border-radius: 5px;
     }
 
     .rightdiv {
         background: #fff;
-        width: 80vw;
+        width: 81vw;
     }
 
     #head {
+        color: white;
+        margin: 0 auto;
         display: block;
         height: 50px;
         border-radius: 2px;
-        width: 78vw;
-        background: #67c23a;
+        width: 80vw;
+        background: #5f6b73;
         margin-bottom: 15px;
     }
 
@@ -247,6 +253,19 @@
         display: block;
         text-align: center;
         line-height: 50px;
+    }
+
+    template {
         font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    }
+
+    .version {
+        width: 100%;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        line-height: 50px;
+        height: 50px;
+        display: block;
     }
 </style>
