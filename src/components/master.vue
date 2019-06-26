@@ -5,7 +5,7 @@
                 <el-aside width="17vw" class="leftdiv">
                     <!--默认展开项 :default-openeds="['1', '3']"-->
                     <!--左侧导航开始-->
-                    <el-menu class="list" background-color="#5f6b73" text-color="#fff">
+                    <el-menu class="list" background-color="#409EFF" text-color="#fff">
                         <span class="version">果易联盟 <span style="font-size: 10px">v1.0.1</span></span>
                         <div v-for="(qx,index) in quanxian" :key="index">
                             <el-submenu v-if="qx=='ROLE_MD'" index="1">
@@ -222,7 +222,7 @@
     }
 
     .leftdiv {
-        background: #5f6b73;
+        background: #409EFF;
         border-bottom: 0px;
         height: 50vw;
         border-radius: 3px;
@@ -245,7 +245,7 @@
         height: 50px;
         border-radius: 2px;
         width: 80vw;
-        background: #5f6b73;
+        background: #409EFF;
         margin-bottom: 15px;
     }
 
