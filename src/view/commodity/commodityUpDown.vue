@@ -30,7 +30,7 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-button style="margin-left: 5px" type="info" @click="Query">查询</el-button>
+                    <el-button style="margin-left: 5px" type="primary" @click="Query">查询</el-button>
 
                 </el-form>
             </div>

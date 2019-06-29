@@ -11,7 +11,7 @@
                             <div class="forms">
                                 <span class="shpoinname">商品条形码:</span>
                                 <el-input v-model="From.name" style="width: 300px;padding-right: 15px"></el-input>
-                                <el-button type="info" @click='Query'>搜索</el-button>
+                                <el-button type="primary" @click='Query'>搜索</el-button>
                             </div>
                         </div>
                         <el-table
@@ -47,8 +47,8 @@
                             </el-table-column>
                         </el-table>
                         <div style="margin-top: 20px;float: right;margin-right: 15px;">
-                            <el-button @click="close" type="info">取消</el-button>
-                            <el-button @click="addtable" type="info">确认</el-button>
+                            <el-button @click="close" type="primary">取消</el-button>
+                            <el-button @click="addtable" type="primary">确认</el-button>
                         </div>
                     </template>
                 </div>
@@ -249,7 +249,7 @@
     }
 
     .b2 {
-        border: 1px solid #5f6b73;
+        border: 1px solid #409EFF;
         margin: 0px auto;
         width: 45vw;
         height: 30vw;
@@ -260,7 +260,7 @@
         line-height: 60px;
         height: 60px;
         width: 45vw;
-        border-bottom: 1px solid #5f6b73;
+        border-bottom: 1px solid #409EFF;
     }
 
     .forms {

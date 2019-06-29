@@ -9,7 +9,7 @@
 
                 <el-form-item label="会员手机号:" prop="vipId ">
                     <el-input v-model="ruleForm.vipId " style="width:230px;"></el-input>
-                    <el-button type="info" @click="selVip()">查询</el-button>
+                    <el-button type="primary" @click="selVip()">查询</el-button>
                 </el-form-item>
 
                 <el-form-item label="会员信息:" prop="vipDiscount" v-show="ifshow">
@@ -22,7 +22,7 @@
                 </el-form-item>
 
                 <el-form-item label="选择商品:" prop="goods">
-                    <el-button type="info" @click="showDialog()">选择商品</el-button>
+                    <el-button type="primary" @click="showDialog()">选择商品</el-button>
                     <el-input placeholder="请录入商品编码" style="width: 300px;margin-left: 20px" v-model="ruleForm.comdityBM"
                               @keydown.enter.native="inoutshop"></el-input>
                     <template>
@@ -146,8 +146,8 @@
                     <el-input disabled v-model="ruleForm.gchange"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="info" @click="submitForm('ruleForm')">立即创建</el-button>
-                    <el-button type="info" @click="guaForm('ruleForm')">挂单</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                    <el-button type="primary" @click="guaForm('ruleForm')">挂单</el-button>
                 </el-form-item>
             </el-form>
         </div>

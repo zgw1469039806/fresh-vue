@@ -2,10 +2,10 @@
     <div class="fatherbox">
         <div>
             <el-container>
-                <el-aside width="17vw" class="leftdiv">
+                <el-aside width="15vw" class="leftdiv">
                     <!--默认展开项 :default-openeds="['1', '3']"-->
                     <!--左侧导航开始-->
-                    <el-menu class="list" background-color="#409EFF" text-color="#fff">
+                    <el-menu class="list" background-color="rgb(48, 65, 86)" text-color="#fff">
                         <span class="version">果易联盟 <span style="font-size: 10px">v1.0.1</span></span>
                         <div v-for="(qx,index) in quanxian" :key="index">
                             <el-submenu v-if="qx=='ROLE_MD'" index="1">
@@ -77,7 +77,7 @@
                             <el-submenu v-if="qx == 'ROLE_XIAOSHOU'" index="4">
                                 <template slot="title">
                                     <i class="el-icon-goods"></i>
-                                    销售
+                                    销售管理
                                 </template>
                                 <el-menu-item index="4-1"
                                               @click="$router.push({name:'orderinsert',params:{md : mendian.id}})">
@@ -219,10 +219,11 @@
 <style scoped>
     .fatherbox {
         background: #fff;
+        height: 100%;
     }
 
     .leftdiv {
-        background: #409EFF;
+        background: rgb(48, 65, 86);
         border-bottom: 0px;
         height: 50vw;
         border-radius: 3px;
@@ -235,17 +236,17 @@
 
     .rightdiv {
         background: #fff;
-        width: 81vw;
+        width: 83vw;
     }
 
     #head {
-        color: white;
         margin: 0 auto;
         display: block;
         height: 50px;
         border-radius: 2px;
-        width: 80vw;
-        background: #409EFF;
+        width: 81vw;
+        /*background: #409EFF;*/
+        border-bottom: 1px solid #409EFF;
         margin-bottom: 15px;
     }
 

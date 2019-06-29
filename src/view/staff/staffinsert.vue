@@ -17,7 +17,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="info" @click="submitForm('ruleForm')">立即创建</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
                     <el-button @click="resetForm('ruleForm')">重置</el-button>
                 </el-form-item>
             </el-form>

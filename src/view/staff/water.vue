@@ -10,7 +10,7 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
                 </el-date-picker>
-                <el-button type="info" @click="Query">查询</el-button>
+                <el-button type="primary" @click="Query">查询</el-button>
             </div>
         </template>
         <div id="myChart"></div>
