@@ -227,6 +227,7 @@
         border-bottom: 0px;
         height: 50vw;
         border-radius: 3px;
+        /*letter-spacing:2px;*/
     }
 
     .list:after {
