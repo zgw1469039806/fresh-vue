@@ -306,7 +306,7 @@
 <style scoped>
     #app {
         width: 80vw;
-        border: 1px solid #409EFF;
+        /*border: 1px solid #409EFF;*/
         margin: 0px auto;
         height: 50vw;
         border-radius: 5px;
@@ -316,7 +316,7 @@
         width: 80vw;
         margin: 0px auto;
         height: 77px;
-        border-bottom: 1px solid #409EFF;
+        /*border-bottom: 1px solid #409EFF;*/
     }
 
     .anniubox {

@@ -22,12 +22,12 @@
                                     <el-menu-item index="1-1-2" @click="$router.push({path:'/storeedit'})">编辑门店
                                     </el-menu-item>
                                 </el-submenu>
-                                <el-submenu index="1-2">
-                                    <template slot="title">切换店铺</template>
-                                    <span v-for="(list,index) in mendianlist" :key="index">
-                                  <el-menu-item index='index' @click="clickMd(list.storename,list.storeid)">{{list.storename}}</el-menu-item>
-                                </span>
-                                </el-submenu>
+                                <!--<el-submenu index="1-2">-->
+                                    <!--<template slot="title">切换店铺</template>-->
+                                    <!--<span v-for="(list,index) in mendianlist" :key="index">-->
+                                  <!--<el-menu-item index='index' @click="clickMd(list.storename,list.storeid)">{{list.storename}}</el-menu-item>-->
+                                <!--</span>-->
+                                <!--</el-submenu>-->
                                 <!--                                <el-submenu index="1-3">-->
                                 <!--                                    <template slot="title">小程序管理</template>-->
                                 <!--                                    <el-menu-item index="1-3-1">Banner设置</el-menu-item>-->
@@ -144,15 +144,21 @@
                     <span id="head">
                         <span id="huanying">欢迎您，
                         <span id="name">{{username}}</span>
-                        当前所在店铺:{{mendian.name}}
+                        当前所在店铺:
+                            <el-select @change="mendianchang" v-model="mendian.id">
+                            <el-option v-for="(m,index) in mendianlist" :key="index" :label="m.storename"
+                                       :value="m.storeid"></el-option>
+                            </el-select>
                             <span style="margin-left: 30px">
                             <el-button @click="clearCookie">注销</el-button>
                                 </span>
                         </span>
                     </span>
-                    <transition name="move" mode="out-in">
+                    <div class="routs" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
+                    <transition name="move" mode="out-in" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);">
                         <router-view></router-view>
                     </transition>
+                    </div>
                 </div>
             </el-container>
         </div>
@@ -179,19 +185,22 @@
             clickMd: function (name, id) {
                 this.mendian.name = name;
                 this.mendian.id = id;
-                mendianC.id = id;
+                mendianC.mendian.id = id;
             },
             clearCookie: function () {
                 this.axios.get("http://localhost:8111/exitUser").then(() => {
                     window.location.href = "http://localhost:8111/reUrl";
                 });
+            },
+            mendianchang: function () {
+                mendianC.id = this.mendian.id
             }
         }, created() {
-            var demo = 'ROLE_USER-ROLE_ACCOUNTING-ROLE_YUANGONG-ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP-ROLE_HUOWU-ROLE_MD-ROLE_VIPGK'
-            let q1 = demo.split('-');
-            for (let i = 0; i < q1.length; i++) {
-                this.quanxian.push(q1[i]);
-            }
+            // var demo = 'ROLE_USER-ROLE_ACCOUNTING-ROLE_YUANGONG-ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP-ROLE_HUOWU-ROLE_MD-ROLE_VIPGK'
+            // let q1 = demo.split('-');
+            // for (let i = 0; i < q1.length; i++) {
+            //     this.quanxian.push(q1[i]);
+            // }
             this.axios.get("/getPrinciple").then((response) => {
                 let data = response.data;
                 let oauth = data['OAuth2'];
@@ -218,14 +227,16 @@
 
 <style scoped>
     .fatherbox {
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         background: #fff;
         height: 100%;
     }
 
     .leftdiv {
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         background: rgb(48, 65, 86);
         border-bottom: 0px;
-        height: 50vw;
+        height: 60vw;
         border-radius: 3px;
         /*letter-spacing:2px;*/
     }
@@ -237,7 +248,8 @@
 
     .rightdiv {
         background: #fff;
-        width: 83vw;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
     }
 
     #head {
@@ -247,14 +259,16 @@
         border-radius: 2px;
         width: 81vw;
         /*background: #409EFF;*/
-        border-bottom: 1px solid #409EFF;
+        /*border-bottom: 1px solid #409EFF;*/
         margin-bottom: 15px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     }
 
     #huanying {
         display: block;
         text-align: center;
         line-height: 50px;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
     }
 
     template {
@@ -268,6 +282,10 @@
         font-size: 20px;
         line-height: 50px;
         height: 50px;
+        display: block;
+    }
+
+    .routs{
         display: block;
     }
 </style>

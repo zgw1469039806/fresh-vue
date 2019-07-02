@@ -249,7 +249,7 @@
     }
 
     .b2 {
-        border: 1px solid #409EFF;
+        /*border: 1px solid #409EFF;*/
         margin: 0px auto;
         width: 45vw;
         height: 30vw;
@@ -260,7 +260,7 @@
         line-height: 60px;
         height: 60px;
         width: 45vw;
-        border-bottom: 1px solid #409EFF;
+        /*border-bottom: 1px solid #409EFF;*/
     }
 
     .forms {

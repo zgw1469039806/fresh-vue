@@ -234,8 +234,8 @@
             return{
 
                 //TODO：线上分页
-                tableData: null,
-                tableData1:null,
+                tableData: [],
+                tableData1:[],
                 upForm: {
                     orderId: '',
                     startTime: null,

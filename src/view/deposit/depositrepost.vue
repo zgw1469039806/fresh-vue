@@ -241,7 +241,7 @@
     }
 
     #app {
-        border: 1px solid #409EFF;
+        /*border: 1px solid #409EFF;*/
         width: 80vw;
         border-radius: 5px;
         margin: 0px auto;
@@ -255,7 +255,7 @@
 
     .froms {
         width: 80vw;
-        border-bottom: 1px solid #409EFF;
+        /*border-bottom: 1px solid #409EFF;*/
     }
     .danhao{
         margin-top: 10px;

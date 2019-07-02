@@ -317,7 +317,7 @@
     #app {
         width: 80vw;
         margin: 0px auto;
-        border: 1px solid #409EFF;
+        /*border: 1px solid #409EFF;*/
         border-radius: 5px;
         justify-content: center;
     }
@@ -329,7 +329,7 @@
     .input {
         width: 80vw;
         height: 80px;
-        border-bottom: 1px solid #409EFF;
+        /*border-bottom: 1px solid #409EFF;*/
         display: flex;
         justify-content: center;
     }

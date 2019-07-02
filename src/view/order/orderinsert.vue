@@ -158,7 +158,7 @@
 
 <script>
     import PuchaseChoice from "../../components/puchaseChoice";
-
+    import mendianC from "../../Constant";
     export default {
         name: "orderinsert",
         components: {PuchaseChoice},
@@ -174,7 +174,7 @@
                     tableData: [],
                     ordermeans: 4, // 交易手段 ,
                     zheKou: 1,
-                    storeid: "1", //店铺编号
+                    storeid: mendianC.id, //店铺编号
                     ordertype: 0,//交易类型 (0-消费 1-退款)
                     orderscene: 1,//交易场景
                     ordermoney: 0, //总价(应付金额)
@@ -461,9 +461,8 @@
 
 <style scoped>
     .box {
-        width: border-box;
+        width: 80vw;
         display: flex;
-        margin-top: 5vw;
     }
 
     .bor {
@@ -475,7 +474,6 @@
     }
 
     .forms {
-        width: 50vw;
         display: flex;
         justify-content: center;
         margin: 0px auto;

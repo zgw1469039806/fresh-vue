@@ -1,3 +1,6 @@
-var mendian = 0;
+var mendian = {
+    id:0,
+    name:''
+};
 
-export default(mendian);
+export default mendian;
