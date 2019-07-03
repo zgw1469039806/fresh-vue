@@ -247,6 +247,10 @@
         justify-content: center;
     }
 
+    #app:hover{
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
+    }
+
     #app:hover {
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 4px 4px;
     }

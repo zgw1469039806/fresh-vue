@@ -203,7 +203,10 @@
     .box {
         width: border-box;
         display: flex;
-        height: 500px;
+        height: 50vw;
+    }
+    .box:hover{
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
     }
 
     .forms {

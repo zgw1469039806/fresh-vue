@@ -196,11 +196,11 @@
                 mendianC.id = this.mendian.id
             }
         }, created() {
-            // var demo = 'ROLE_USER-ROLE_ACCOUNTING-ROLE_YUANGONG-ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP-ROLE_HUOWU-ROLE_MD-ROLE_VIPGK'
-            // let q1 = demo.split('-');
-            // for (let i = 0; i < q1.length; i++) {
-            //     this.quanxian.push(q1[i]);
-            // }
+            var demo = 'ROLE_USER-ROLE_ACCOUNTING-ROLE_YUANGONG-ROLE_JINCUN-ROLE_XIAOSHOU-ROLE_VIP-ROLE_HUOWU-ROLE_MD-ROLE_VIPGK'
+            let q1 = demo.split('-');
+            for (let i = 0; i < q1.length; i++) {
+                this.quanxian.push(q1[i]);
+            }
             this.axios.get("/getPrinciple").then((response) => {
                 let data = response.data;
                 let oauth = data['OAuth2'];

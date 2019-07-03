@@ -114,8 +114,8 @@
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
                             :current-page="page.current"
-                            :page-sizes="[5, 10]"
-                            :page-size="5"
+                            :page-sizes="[20,50]"
+                            :page-size="1"
                             layout="total, sizes, prev, pager, next, jumper"
                             :total="page.total">
                     </el-pagination>
@@ -152,7 +152,7 @@
                     zt: ''//状态
                 },
                 page: {
-                    total: 20,
+                    total: 0,
                     current: 1,
                 },
                 options: [

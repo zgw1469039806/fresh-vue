@@ -147,7 +147,7 @@
         margin: 0 auto;
     }
 
-    .bor {
-        border: 1px solid red;
+    .div_01:hover{
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
     }
 </style>

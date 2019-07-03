@@ -93,8 +93,8 @@
                             @size-change="handleSizeChange"
                             @current-change="handleCurrentChange"
                             :current-page="page.current"
-                            :page-sizes="[5, 10]"
-                            :page-size="5"
+                            :page-sizes="[20,50]"
+                            :page-size="1"
                             layout="total, sizes, prev, pager, next, jumper"
                             :total="page.total">
                     </el-pagination>
@@ -176,9 +176,9 @@
                     } else {
                         this.$message.warning("处理失败!")
                     }
-                }).catch((error)=>{
+                }).catch((error) => {
                     $loadinged.close();
-                    this.$message.error("Error:"+error)
+                    this.$message.error("Error:" + error)
                 })
             },
             downGoods(row) {
@@ -202,9 +202,10 @@
                     } else {
                         this.$message.warning("处理失败!")
                     }
-                }).catch((error)=>{
+                    this.Query();
+                }).catch((error) => {
                     $loadinged.close();
-                    this.$message.error("Error:"+error)
+                    this.$message.error("Error:" + error)
                 })
             },
 
@@ -254,5 +255,7 @@
 </script>
 
 <style scoped>
-
+    #app:hover {
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+    }
 </style>

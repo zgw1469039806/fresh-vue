@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="tem">
         <div>
             <el-form :inline="true" ref="Form" label-width="80px">
                 <el-form-item label="员工名称">
@@ -146,11 +146,6 @@
 </script>
 
 <style scoped>
-    .block {
-        display: flex;
-        justify-content: center;
-    }
-
     .demo-table-expand {
         font-size: 0;
     }
@@ -160,9 +155,12 @@
         color: #409EFF;
     }
 
-    .demo-table-expand .el-form-item {
+    .demo-table-expand {
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
+    }
+    .tem:hover{
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
     }
 </style>

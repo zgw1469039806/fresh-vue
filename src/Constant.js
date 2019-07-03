@@ -3,4 +3,6 @@ var mendian = {
     name:''
 };
 
-export default mendian;
+var xiaoshou = 0;
+
+export default (mendian,xiaoshou);

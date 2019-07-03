@@ -143,15 +143,15 @@
 </script>
 
 <style scoped>
-    .block {
-        display: flex;
-        justify-content: center;
-    }
 
     .box {
         width: border-box;
         display: flex;
         height: 500px;
+    }
+
+    .box:hover{
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
     }
 
     .forms {

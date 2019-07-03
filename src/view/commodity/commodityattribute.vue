@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="box">
         <div>
             <el-form :inline="true" ref="Form" label-width="80px">
                 <el-form-item label="商品名称/编码">
@@ -559,5 +559,8 @@
 
     .b1title span {
         margin-left: 15px;
+    }
+    .box:hover{
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
     }
 </style>

@@ -4,18 +4,18 @@
 
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm">
                 <!--<p>新增会员</p><br/>-->
-                <el-form-item >
+                <el-form-item>
                     <h3>新增会员</h3>
                 </el-form-item>
-                <el-form-item label="用户手机号:" prop="userPhone" >
-                    <el-input  v-model="ruleForm.vipphone"></el-input>
+                <el-form-item label="用户手机号:" prop="userPhone">
+                    <el-input v-model="ruleForm.vipphone"></el-input>
                 </el-form-item>
 
-                <el-form-item label="会员名称:" prop="vipName" >
-                    <el-input  v-model="ruleForm.vipName"></el-input>
+                <el-form-item label="会员名称:" prop="vipName">
+                    <el-input v-model="ruleForm.vipName"></el-input>
                 </el-form-item>
 
-                <el-form-item label="会员初始等级:" prop="vipLeave" >
+                <el-form-item label="会员初始等级:" prop="vipLeave">
                     <el-select v-model="ruleForm.viplv" placeholder="请选择">
                         <el-option
                                 v-for="item in vipLeave"
@@ -26,12 +26,13 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="会员初始积分:" prop="vipIntegral" >
+                <el-form-item label="会员初始积分:" prop="vipIntegral">
                     <el-input-number v-model="ruleForm.vipintegral" :min="0" :max="999"></el-input-number>
                 </el-form-item>
 
-                <el-form-item label="会员初始余额:" prop="vipMoney" >
-                    <el-input-number v-model="ruleForm.vipbalance" :precision="2" :step="0.1" :min="0.00" ></el-input-number>
+                <el-form-item label="会员初始余额:" prop="vipMoney">
+                    <el-input-number v-model="ruleForm.vipbalance" :precision="2" :step="0.1"
+                                     :min="0.00"></el-input-number>
                 </el-form-item>
 
                 <el-form-item>
@@ -46,14 +47,14 @@
 <script>
     export default {
         name: "vipinsert",
-        data(){
-            return{
-                vipLeave:null,
+        data() {
+            return {
+                vipLeave: null,
                 ruleForm: {
                     vipphone: '',
-                    vipintegral:'0', //积分
-                    vipbalance:'0.00',
-                    vipName:'',
+                    vipintegral: '0', //积分
+                    vipbalance: '0.00',
+                    vipName: '',
                     viplv: '',
                 },
                 rules: {
@@ -64,7 +65,7 @@
                     vipName: [
                         {required: true, message: '请输入会员名称', trigger: 'blur'},
                     ]
-                    ,viplv: [
+                    , viplv: [
                         {required: true, message: '请输入会员初始等级', trigger: 'blur'}
                     ]
                 }
@@ -87,7 +88,7 @@
                             .then((response) => {
                                 $loadinged.close();
                                 if (response.data.code == 0) {
-                                    this.$alert(response.data.msg ,'提示', {
+                                    this.$alert(response.data.msg, '提示', {
                                         confirmButtonText: '确定',
                                         callback: action => {
                                             action
@@ -108,7 +109,7 @@
                     }
                 });
             }
-        },created(){
+        }, created() {
             const $loadinged = this.$loading({
                 lock: true,
                 text: 'Loading',
@@ -136,12 +137,8 @@
         height: 500px;
     }
 
-    .bor{
-        border: 1px solid red;
-    }
-
-    .subform{
-        width: 200px;
+    .box:hover {
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
     }
 
     .forms {

@@ -117,12 +117,8 @@
         margin-top: 50px;
     }
 
-    .bor {
-        border: 1px solid red;
-    }
-
-    .subform {
-        width: 200px;
+    .box:hover{
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
     }
 
     .forms {

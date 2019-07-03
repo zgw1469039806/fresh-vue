@@ -1,7 +1,7 @@
 <template>
     <div id="gjh">
         <template>
-            <div class="block">
+            <div>
                 <span class="demonstration">请选择报表日期</span>
                 <el-date-picker
                         v-model="Form.selyear"
@@ -13,6 +13,7 @@
                 <el-button type="primary" @click="Query">查询</el-button>
             </div>
         </template>
+        <div class="xiaoshou">今日销售额: <span style="margin-left: 10px;display: inline-block;color: #409EFF">{{xiaoshou}}</span> 元</div>
         <div id="myChart"></div>
         <div id="zlyg"></div>
     </div>
@@ -21,6 +22,9 @@
 </template>
 
 <script>
+
+    import Constant from "../../Constant.js";
+
     export default {
         name: "water",
         data() {
@@ -30,7 +34,8 @@
                     selyear: new Date(),
                     storeid: 0
                 },
-                mendian: []
+                mendian: [],
+                xiaoshou:0
             }
         },
         created() {
@@ -42,7 +47,9 @@
                 }
             }).catch((error) => {
                 this.$message.error("Error:" + error)
-            })
+            });
+            // const h = this.$createElement;
+
         },
         mounted() {
             this.drawLine();
@@ -111,8 +118,23 @@
                                 data: data.data
                             }
                         }
+                        this.$notify({
+                            title: '畅销排行榜:',
+                            message: '<div style="color: #67C23A;">宁夏甜王西瓜 <br/> 福缘笨鸡蛋 <br/> 百事可乐300ml装 <br/> 乐怡水蜜桃</div>',
+                            duration: 30000,
+                            dangerouslyUseHTMLString: true
+                        });
+                        setTimeout(() => {
+                            this.$notify({
+                                title: '滞销排行榜:',
+                                message: '<div style="color: #F56C6C;">宁夏甜王西瓜 <br/> 福缘笨鸡蛋 <br/> 百事可乐300ml装 <br/> 乐怡水蜜桃</div>',
+                                duration: 30000,
+                                dangerouslyUseHTMLString: true
+                            });
+                        }, 100)
                         this.lirun.push(lirun);
                         this.drawLine();
+                        this.xiaoshou = Constant.xiaoshou;
                     }).catch((error) => {
                         loading.close();
                         this.$message.error("Error:" + error)
@@ -132,10 +154,21 @@
         height: 50vw;
     }
 
-    #myChart {
-        width: 80%;
-        height: 80%;
+    #gjh:hover {
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3)
     }
 
+    #myChart {
+        position: absolute;
+        bottom: 2vw;
+        width: 70%;
+        height: 70%;
+    }
 
+    .xiaoshou {
+        position: absolute;
+        right: 30vw;
+        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+        font-size: 20px;
+    }
 </style>

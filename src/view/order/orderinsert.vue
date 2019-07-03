@@ -3,28 +3,25 @@
         <div class="forms">
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="150px" class="demo-ruleForm"
                      v-loading="loading">
-                <el-form-item>
-                    <h3>销售单</h3>
-                </el-form-item>
-
-                <el-form-item label="会员手机号:" prop="vipId ">
+                <el-form-item label="会员手机号:" style="float: left" prop="vipId ">
                     <el-input v-model="ruleForm.vipId " style="width:230px;"></el-input>
                     <el-button type="primary" @click="selVip()">查询</el-button>
                 </el-form-item>
 
-                <el-form-item label="会员信息:" prop="vipDiscount" v-show="ifshow">
-                    <p>
-                        名称：{{ruleForm.vipMsg.vipName}},积分：{{ruleForm.vipMsg.vipintegral}},余额：{{ruleForm.vipMsg.vipbalance}}</p>
-                </el-form-item>
+<!--                <el-form-item label="会员信息:" prop="vipDiscount" v-show="ifshow">-->
+<!--                    <p>-->
+<!--                        名称：{{ruleForm.vipMsg.vipName}},积分：{{ruleForm.vipMsg.vipintegral}},余额：{{ruleForm.vipMsg.vipbalance}}</p>-->
+<!--                </el-form-item>-->
 
-                <el-form-item label="会员折扣:" prop="vipDiscount" v-show="ifshow">
-                    <el-input v-model="ruleForm.zheKou" disabled style="width: 200px;"></el-input>
-                </el-form-item>
+<!--                <el-form-item label="会员折扣:" prop="vipDiscount" v-show="ifshow">-->
+<!--                    <el-input v-model="ruleForm.zheKou" disabled style="width: 200px;"></el-input>-->
+<!--                </el-form-item>-->
 
                 <el-form-item label="选择商品:" prop="goods">
                     <el-button type="primary" @click="showDialog()">选择商品</el-button>
                     <el-input placeholder="请录入商品编码" style="width: 300px;margin-left: 20px" v-model="ruleForm.comdityBM"
                               @keydown.enter.native="inoutshop"></el-input>
+                    <div style="margin-top: 15px"></div>
                     <template>
                         <el-table
                                 :data="ruleForm.tableData"
@@ -33,20 +30,17 @@
 
                             <el-table-column
                                     prop="comdityname"
-                                    label="品名"
-                                    width="120">
+                                    label="品名">
                             </el-table-column>
 
                             <el-table-column
                                     prop="ordermoney"
-                                    label="单价(元)"
-                                    width="80">
+                                    label="单价(元)">
                             </el-table-column>
 
                             <el-table-column
                                     prop="discount"
-                                    label="活动价(元)"
-                                    width="90">
+                                    label="活动价(元)">
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.discount == '' || scope.row.discount == null">无</span>
                                     <span v-else>{{scope.row.discount}}</span>
@@ -55,13 +49,11 @@
 
                             <el-table-column
                                     prop="comditydw"
-                                    label="单位"
-                                    width="80">
+                                    label="单位">
                             </el-table-column>
 
                             <el-table-column
-                                    label="数量"
-                                    width="160">
+                                    label="数量">
                                 <template slot-scope="scope">
                                     <el-input-number @change="numchang" v-model="scope.row.num" :precision="2"
                                                      :step="0.01" :min="0.00"
@@ -71,8 +63,7 @@
 
                             <el-table-column
                                     prop="comdtotal"
-                                    label="总价(元)"
-                                    width="120">
+                                    label="总价(元)">
                                 <template slot-scope="scope">
                                     <span v-if="ifshow == true"> <!--是否会员-->
                                         <span v-if="scope.row.discount == '' || scope.row.discount == null">
@@ -97,8 +88,7 @@
 
                             <el-table-column
                                     prop="preferentialway"
-                                    label="优惠方式"
-                                    width="80">
+                                    label="优惠方式">
 
                                 <template slot-scope="scope">
                                     <span v-if="scope.row.preferentialway == 0">无</span>
@@ -110,8 +100,7 @@
 
                             <el-table-column
                                     fixed="right"
-                                    label="操作"
-                                    width="80">
+                                    label="操作">
                                 <template slot-scope="scope">
                                     <el-button type="text" size="mini"
                                                @click.native.prevent="deleteRow(scope.$index, ruleForm.tableData)">删除
@@ -133,17 +122,17 @@
                               @keydown.enter.native="zhifu"/>
                     <p>总价：<span style="color: red;">{{ruleForm.ordermoney}}</span> 元</p>
                 </el-form-item>
-                <el-form-item label="应付金额:">
-                    <el-input v-model="ruleForm.ordermoney" disabled></el-input>
+                <el-form-item label="应付金额:" style="float: left">
+                    <el-input style="width: 300px;" v-model="ruleForm.ordermoney" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="实付金额:">
-                    <el-input @change="changprice" v-model="ruleForm.comditytrueprice"></el-input>
+                <el-form-item label="实付金额:" style="display: inline">
+                    <el-input @change="changprice" style="width: 300px;" v-model="ruleForm.comditytrueprice"></el-input>
                 </el-form-item>
                 <el-form-item label="抹零:">
                     <el-checkbox @change="mlchang" v-model="ruleForm.ispriceml"></el-checkbox>
                 </el-form-item>
                 <el-form-item label="找零:">
-                    <el-input disabled v-model="ruleForm.gchange"></el-input>
+                    <el-input disabled style="width: 300px" v-model="ruleForm.gchange"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -158,7 +147,8 @@
 
 <script>
     import PuchaseChoice from "../../components/puchaseChoice";
-    import mendianC from "../../Constant";
+    import mendianC from "../../Constant.js";
+
     export default {
         name: "orderinsert",
         components: {PuchaseChoice},
@@ -237,6 +227,7 @@
                     }).then((response) => {
                         if (response.data.code == 0) {
                             this.loading = false;
+                            mendianC.xiaoshou += this.ordermoney;
                         } else {
                             this.loading = false;
                             this.$message.error(response.data.msg);
@@ -303,6 +294,11 @@
                             } else {
                                 this.ruleForm.zheKou = response.data.data.vipdiscount;
                             }
+                            this.$notify({
+                                title: '会员信息',
+                                message: ('i', {style: 'color: teal'}, '会员名称:'+this.ruleForm.vipMsg.vipName+"会员积分:"+this.ruleForm.vipMsg.vipintegral+"会员余额:"+this.ruleForm.vipMsg.vipbalance+"会员折扣:"+this.ruleForm.zheKou),
+                                duration: 0
+                            });
                             this.jisuan();
                         }).catch((error) => {
                             this.$message.error("Error:" + error);
@@ -321,8 +317,8 @@
             },
             addtable: function (multipleSelection) {
                 var rows = multipleSelection;
-                window.console.log("ROWS:--------------------")
-                window.console.log(rows)
+                window.console.log("ROWS:--------------------");
+                window.console.log(rows);
                 //todo: belongStoreNam从父级拿到
                 if (rows.length != 0) {
                     var map = new Map();
@@ -438,13 +434,14 @@
                     },
                 };
                 this.axios.post('/QueryShopByWh', data).then((response) => {
+                    this.this.ruleForm.comdityBM = '';
                     let com = response.data.data;
                     if (response.data.msg == "处理成功") {
                         com[0].comdnum = 1;
                         this.addtable(com);
                     }
-                }).catch((error) => {
-                    this.$message.error(error)
+                }).catch(() => {
+                   this.this.ruleForm.comdityBM = ''
                 })
             },
             zhifuchang: function () {
@@ -465,19 +462,17 @@
         display: flex;
     }
 
-    .bor {
-        border: 1px solid red;
-    }
-
-    .subform {
-        width: 200px;
-    }
-
     .forms {
         display: flex;
         justify-content: center;
-        margin: 0px auto;
         background: #fff;
+        margin-top: 15px;
+    }
+
+    .demo-ruleForm {
+        justify-content: center;
+        width: 80vw;
+        margin: 0px auto;
     }
 </style>
 <!--18376645457-->
